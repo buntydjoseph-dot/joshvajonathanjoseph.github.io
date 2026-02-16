@@ -49,27 +49,40 @@
     }
 
     h1{
-      margin: 0 0 6px;
+      margin: 0 0 16px;
     }
 
     .card{
-      padding: 18px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,0.16);
       background: rgba(0,0,0,0.28);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
+      margin-bottom: 16px;
+      transition: 0.25s ease;
+    }
+
+    .card:hover{
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,0.35);
+    }
+
+    .project-link{
+      display: block;
+      padding: 18px;
+      color: white;
+      text-decoration: none;
     }
 
     .project-title{
       font-size: 18px;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
     }
 
-    video{
-      width: 100%;
-      border-radius: 12px;
-      margin-top: 10px;
+    .project-desc{
+      color: rgba(255,255,255,0.75);
+      font-size: 14px;
+      line-height: 1.4;
     }
   </style>
 </head>
@@ -86,16 +99,16 @@
       <h1>Projects</h1>
 
       <div class="card">
-        <div class="project-title">
-          Mini Line Follower Robot with RFID Detection
-        </div>
+        <a class="project-link" href="projects/line-follower.html">
+          <div class="project-title">
+            Mini Line Follower Robot with RFID Detection
+          </div>
 
-        Autonomous robot developed using ESP32, LSAA08 line sensor, and PN5180 RFID module.
-
-        <video controls>
-          <source src="linefollower.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
+          <div class="project-desc">
+            ESP32-based autonomous robot using LSAA08 line sensor and PN5180 RFID module.
+            Click to view video demonstration and full project details.
+          </div>
+        </a>
       </div>
 
     </div>
