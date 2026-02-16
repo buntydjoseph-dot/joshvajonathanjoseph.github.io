@@ -1,1 +1,169 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Agriculture System | Joshva Jonathan Joseph</title>
+
+  <style>
+    body{
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: white;
+
+      background-image: url("../background.png.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    .overlay{
+      min-height: 100vh;
+      background: rgba(0,0,0,0.6);
+      padding: 28px 16px 40px;
+    }
+
+    .container{
+      width: min(1100px, 92%);
+      margin: 0 auto;
+    }
+
+    .nav{
+      display: flex;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .nav a{
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .nav a:hover{
+      background: rgba(255,255,255,0.18);
+    }
+
+    h1{
+      margin-bottom: 10px;
+    }
+
+    .card{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.32);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .desc{
+      color: rgba(255,255,255,0.75);
+      line-height: 1.6;
+    }
+
+    img{
+      width: 100%;
+      border-radius: 12px;
+      margin-top: 14px;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    video{
+      width: 100%;
+      border-radius: 12px;
+      margin-top: 14px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: black;
+    }
+
+    ul{
+      color: rgba(255,255,255,0.8);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="overlay">
+    <div class="container">
+
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="../projects.html">Projects</a>
+      </nav>
+
+      <h1>LoRa + MQTT Smart Agriculture Monitoring & Irrigation System</h1>
+
+      <div class="card">
+        <div class="desc">
+          A distributed IoT-based agricultural automation system designed to overcome real-world
+          field constraints such as long-distance sensor deployment, network limitations, and
+          reliable actuator control.
+
+          <br><br>
+
+          The system uses a <b>central concentrator (gateway)</b> that bridges
+          <b>wired/local weather sensing</b> and <b>long-range LoRa soil nodes</b>
+          into an <b>MQTT-based communication architecture</b>. The main controller executes
+          irrigation control logic using relays driving solenoid valves, while telemetry and
+          remote commands are synchronised via MQTT.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>System Architecture</h2>
+
+        <div class="desc">
+          The concentrator acts as the communication backbone of the farm network:
+
+          <ul>
+            <li>Weather Sensors → Wired/Local → Concentrator</li>
+            <li>Soil Nodes (MCU + LoRa) → LoRa RF → Concentrator</li>
+            <li>Concentrator → MQTT → Main Controller / Cloud</li>
+            <li>Main Controller → Relays → Solenoid Valves</li>
+            <li>Local UI → Direct connection to Main Controller</li>
+          </ul>
+        </div>
+
+        <img src="../arch.jpg" alt="System Architecture Diagram">
+      </div>
+
+      <div class="card">
+        <h2>Demo / Validation</h2>
+
+        <div class="desc">
+          The video demonstrates real hardware switching and system behaviour. Light bulbs were
+          temporarily used for visual validation of relay outputs; the actual deployment uses
+          solenoid valves across the field.
+        </div>
+
+        <video controls>
+          <source src="../farmin.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <div class="card">
+        <h2>Key Engineering Aspects</h2>
+
+        <ul>
+          <li>Hybrid communication architecture (LoRa + MQTT)</li>
+          <li>Long-range low-power sensor networking</li>
+          <li>Centralised gateway design</li>
+          <li>Embedded control & relay-driven actuation</li>
+          <li>Industrial-style protection (MCB, SMPS DC rails)</li>
+          <li>Scalable multi-node sensing topology</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
