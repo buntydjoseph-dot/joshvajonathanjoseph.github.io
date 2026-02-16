@@ -87,6 +87,31 @@
       color: rgba(255,255,255,0.8);
       line-height: 1.6;
     }
+    .node-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.node-card{
+  text-align: center;
+}
+
+.node-card img{
+  width: 100%;
+  max-width: 380px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.18);
+  margin-top: 8px;
+}
+
+@media (max-width: 768px){
+  .node-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
   </style>
 </head>
 
@@ -133,10 +158,19 @@
         </div>
 
         <img src="../arch.jpeg" alt="System Architecture Diagram">
-        
-        <h3 style="margin-top:18px;">Soil Monitoring Node</h3>
 
-<img class="soil-img" src="../soil.png" alt="Soil Monitoring Node">
+<div class="node-grid">
+
+  <div class="node-card">
+    <h3>Soil Monitoring Node</h3>
+    <img src="../soil.png" alt="Soil Monitoring Node">
+  </div>
+
+  <div class="node-card">
+    <h3>Weather Monitoring Node</h3>
+    <img src="../wind.png" alt="Weather Monitoring Node">
+  </div>
+</div>
       </div>
 
       <div class="card">
