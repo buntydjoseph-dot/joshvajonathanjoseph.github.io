@@ -1,1 +1,146 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Line Follower Project | Joshva Jonathan Joseph</title>
+
+  <style>
+    body{
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: white;
+
+      background-image: url("../background.png.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    .overlay{
+      min-height: 100vh;
+      background: rgba(0,0,0,0.55);
+      padding: 28px 16px 40px;
+    }
+
+    .container{
+      width: min(1000px, 92%);
+      margin: 0 auto;
+    }
+
+    .nav{
+      display: flex;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .nav a{
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .nav a:hover{
+      background: rgba(255,255,255,0.18);
+    }
+
+    h1{
+      margin: 0 0 10px;
+    }
+
+    .card{
+      padding: 22px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.28);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    video{
+      width: 100%;
+      border-radius: 12px;
+      margin: 18px 0;
+    }
+
+    .section-title{
+      font-size: 18px;
+      margin: 18px 0 8px;
+    }
+
+    .text{
+      color: rgba(255,255,255,0.75);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    ul{
+      color: rgba(255,255,255,0.75);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="overlay">
+    <div class="container">
+
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="../projects.html">Projects</a>
+      </nav>
+
+      <div class="card">
+
+        <h1>Mini Line Follower Robot with RFID Detection</h1>
+
+        <div class="text">
+          A compact autonomous robotic system designed to perform accurate line tracking
+          while detecting RFID tags placed along the path.
+        </div>
+
+        <video controls>
+          <source src="../linefollower.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+
+        <div class="section-title">Project Overview</div>
+
+        <div class="text">
+          This project focuses on developing an embedded robotic platform capable of
+          autonomous navigation using optical sensing combined with RFID-based event detection.
+          The system was designed to demonstrate reliable sensor integration, motor control,
+          and real-time decision-making.
+        </div>
+
+        <div class="section-title">Key Components</div>
+
+        <ul>
+          <li>ESP32 Microcontroller (Main Control Unit)</li>
+          <li>LSAA08 Line Following Sensor</li>
+          <li>PN5180 RFID / NFC Reader Module</li>
+          <li>DC Motor Driver</li>
+          <li>Buck Converter for Power Regulation</li>
+        </ul>
+
+        <div class="section-title">Technical Highlights</div>
+
+        <ul>
+          <li>Embedded firmware development for multi-sensor interfacing</li>
+          <li>Closed-loop navigation logic for precise line tracking</li>
+          <li>RFID-based conditional behaviour implementation</li>
+          <li>Motor control and system optimisation</li>
+          <li>Hardware integration and debugging</li>
+        </ul>
+
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
