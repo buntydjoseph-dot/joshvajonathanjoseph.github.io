@@ -100,10 +100,14 @@
 
 .node-card img{
   width: 100%;
-  max-width: 380px;
-  border-radius: 12px;
+  max-width: 420px;
+
+  height: 260px;              /* ✅ uniform height */
+  object-fit: cover;          /* ✅ crops nicely */
+
+  border-radius: 14px;
   border: 1px solid rgba(255,255,255,0.18);
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 @media (max-width: 768px){
