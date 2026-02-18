@@ -103,15 +103,11 @@
       color: rgba(255,255,255,0.92);
     }
 
-    /* ---------- MEDIA SIZING RULES ---------- */
-
-    /* Default frame (your "middle" video stays like this) */
     .media-frame{
       width: min(650px, 100%);
       margin: 14px auto 0;
     }
 
-    /* Videos default */
     .media-frame video{
       width: 100%;
       max-height: 360px;
@@ -122,7 +118,6 @@
       background: black;
     }
 
-    /* Images smaller than videos */
     .media-frame img{
       width: min(480px, 100%);
       border-radius: 12px;
@@ -131,7 +126,6 @@
       margin: 0 auto;
     }
 
-    /* ✅ Make only FIRST + THIRD videos bigger (fill background layout more) */
     .media-frame.big{
       width: min(900px, 100%);
     }
@@ -140,12 +134,23 @@
       max-height: 520px;
     }
 
-    /* Nice on small screens */
-    @media (max-width: 520px){
-      h1{ font-size: 24px; }
-      h2{ font-size: 18px; }
-      .card{ padding: 18px; }
-      .media-frame.big video{ max-height: 420px; }
+    /* ✅ GitHub button styling */
+    .repo-link{
+      display: inline-block;
+      margin-top: 12px;
+      padding: 10px 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: white;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      transition: all 0.25s ease;
+      font-weight: 500;
+    }
+
+    .repo-link:hover{
+      background: rgba(255,255,255,0.28);
+      transform: translateY(-1px);
     }
   </style>
 </head>
@@ -186,11 +191,9 @@
         <h2>Simulation-Based Autonomous Navigation (QLabs)</h2>
         <div class="desc">
           Developed and validated autonomous navigation behaviour within the Quanser QLabs simulation
-          environment. The simulation framework enabled safe, repeatable testing of perception and
-          vehicle control algorithms prior to physical deployment.
+          environment.
         </div>
 
-        <!-- ✅ FIRST video: bigger -->
         <div class="media-frame big">
           <video controls playsinline>
             <source src="../qcarv.mp4" type="video/mp4">
@@ -201,8 +204,7 @@
       <div class="card">
         <h2>Physical QCar Platform</h2>
         <div class="desc">
-          Practical implementation and experimental validation using the Quanser QCar platform,
-          supporting real-world evaluation of perception and navigation strategies.
+          Practical implementation and experimental validation using the Quanser QCar platform.
         </div>
 
         <div class="media-frame">
@@ -213,11 +215,9 @@
       <div class="card">
         <h2>Real-Time Object Identification (Physical Vehicle Testing)</h2>
         <div class="desc">
-          Conducted physical vehicle trials using computer vision techniques for real-time object
-          identification during QCar operation.
+          Conducted physical vehicle trials using computer vision techniques.
         </div>
 
-        <!-- ✅ MIDDLE video: keep as-is (good already) -->
         <div class="media-frame">
           <video controls playsinline>
             <source src="../NavigationTesting.mp4" type="video/mp4">
@@ -228,19 +228,9 @@
       <div class="card">
         <h2>Deep Learning-Based Cone Detection & Control Pipeline</h2>
         <div class="desc">
-          Developed a deep learning model using YOLO, trained on a cone dataset for detection tasks.
-          Model inference was executed on a PC, with control commands transmitted via a client–server
-          architecture.
+          Developed a YOLO-based detection model integrated with a client–server control architecture.
         </div>
 
-        <ul>
-          <li>Deep learning model: YOLO (cone detection)</li>
-          <li>Training dataset: Cone dataset</li>
-          <li>Runtime inference: PC-based execution</li>
-          <li>Control architecture: Client–server command transmission</li>
-        </ul>
-
-        <!-- ✅ THIRD video: bigger -->
         <div class="media-frame big">
           <video controls playsinline>
             <source src="../qcarp.mp4" type="video/mp4">
@@ -248,14 +238,27 @@
         </div>
       </div>
 
+      <!-- ✅ NEW SECTION -->
+      <div class="card">
+        <h2>Project Repository</h2>
+        <div class="desc">
+          The official implementation, training pipeline, and supporting codebase for this project
+          are available on GitHub.
+        </div>
+
+        <a class="repo-link" href="https://github.com/YOUR_USERNAME/YOUR_REPO" target="_blank">
+          View Official Codebase on GitHub
+        </a>
+      </div>
+
       <div class="card">
         <h2>Key Contributions</h2>
         <ul>
-          <li>Built a simulation-to-real autonomous navigation workflow using QLabs and QCar.</li>
-          <li>Validated perception and control algorithms across simulation and physical platforms.</li>
-          <li>Implemented computer vision techniques for real-time environmental perception.</li>
-          <li>Developed a YOLO-based cone detection model integrated with PC-based inference.</li>
-          <li>Designed a client–server architecture for real-time vehicle command transmission.</li>
+          <li>Built a simulation-to-real autonomous navigation workflow.</li>
+          <li>Validated perception and control algorithms across platforms.</li>
+          <li>Implemented computer vision techniques for real-time perception.</li>
+          <li>Developed a YOLO-based cone detection model.</li>
+          <li>Designed a client–server vehicle control architecture.</li>
         </ul>
       </div>
 
