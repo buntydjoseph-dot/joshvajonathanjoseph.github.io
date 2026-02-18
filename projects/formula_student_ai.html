@@ -77,16 +77,16 @@
     img{
       width: 100%;
       border-radius: 12px;
-      margin-top: 14px;
       border: 1px solid rgba(255,255,255,0.18);
+      display: block;
     }
 
     video{
       width: 100%;
       border-radius: 12px;
-      margin-top: 14px;
       border: 1px solid rgba(255,255,255,0.18);
       background: black;
+      display: block;
     }
 
     ul{
@@ -115,6 +115,12 @@
       border: 1px solid rgba(255,255,255,0.18);
       font-size: 13px;
       color: rgba(255,255,255,0.92);
+    }
+
+    /* ✅ Controls the visual size of images/videos (except your first video if you leave it unwrapped) */
+    .media-frame{
+      max-width: 850px;     /* reduce if still too large */
+      margin: 14px auto 0;  /* centered */
     }
   </style>
 </head>
@@ -159,6 +165,7 @@
           vehicle control algorithms prior to physical deployment.
         </div>
 
+        <!-- ✅ Leave this unwrapped if you like its current size -->
         <video controls playsinline>
           <source src="../qcarv.mp4" type="video/mp4">
         </video>
@@ -171,7 +178,9 @@
           supporting real-world evaluation of perception and navigation strategies.
         </div>
 
-        <img src="../meqcar.jpg" alt="Physical QCar setup">
+        <div class="media-frame">
+          <img src="../meqcar.jpg" alt="Physical QCar setup">
+        </div>
       </div>
 
       <div class="card">
@@ -181,9 +190,11 @@
           identification during QCar operation.
         </div>
 
-        <video controls playsinline>
-          <source src="../NavigationTesting.mp4" type="video/mp4">
-        </video>
+        <div class="media-frame">
+          <video controls playsinline>
+            <source src="../NavigationTesting.mp4" type="video/mp4">
+          </video>
+        </div>
       </div>
 
       <div class="card">
@@ -201,9 +212,11 @@
           <li>Control architecture: Client–server command transmission</li>
         </ul>
 
-        <video controls playsinline>
-          <source src="../qcarp.mp4" type="video/mp4">
-        </video>
+        <div class="media-frame">
+          <video controls playsinline>
+            <source src="../qcarp.mp4" type="video/mp4">
+          </video>
+        </div>
       </div>
 
       <div class="card">
