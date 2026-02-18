@@ -103,32 +103,50 @@
       color: rgba(255,255,255,0.92);
     }
 
-    /* ✅ Media sizing: smaller + centered */
-  .media-frame{
-  width: min(650px, 100%);
-  margin: 14px auto 0;
-}
+    /* ---------- MEDIA SIZING RULES ---------- */
 
-/* Videos */
-.media-frame video{
-  width: 100%;
-  max-height: 360px;
-  object-fit: contain;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.18);
-  display: block;
-  background: black;
-}
+    /* Default frame (your "middle" video stays like this) */
+    .media-frame{
+      width: min(650px, 100%);
+      margin: 14px auto 0;
+    }
 
-/* Images (smaller than videos) */
-.media-frame img{
-  width: min(480px, 100%);
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.18);
-  display: block;
-  margin: 0 auto;
-}
+    /* Videos default */
+    .media-frame video{
+      width: 100%;
+      max-height: 360px;
+      object-fit: contain;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.18);
+      display: block;
+      background: black;
+    }
 
+    /* Images smaller than videos */
+    .media-frame img{
+      width: min(480px, 100%);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.18);
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* ✅ Make only FIRST + THIRD videos bigger (fill background layout more) */
+    .media-frame.big{
+      width: min(900px, 100%);
+    }
+
+    .media-frame.big video{
+      max-height: 520px;
+    }
+
+    /* Nice on small screens */
+    @media (max-width: 520px){
+      h1{ font-size: 24px; }
+      h2{ font-size: 18px; }
+      .card{ padding: 18px; }
+      .media-frame.big video{ max-height: 420px; }
+    }
   </style>
 </head>
 
@@ -172,7 +190,8 @@
           vehicle control algorithms prior to physical deployment.
         </div>
 
-        <div class="media-frame">
+        <!-- ✅ FIRST video: bigger -->
+        <div class="media-frame big">
           <video controls playsinline>
             <source src="../qcarv.mp4" type="video/mp4">
           </video>
@@ -198,6 +217,7 @@
           identification during QCar operation.
         </div>
 
+        <!-- ✅ MIDDLE video: keep as-is (good already) -->
         <div class="media-frame">
           <video controls playsinline>
             <source src="../NavigationTesting.mp4" type="video/mp4">
@@ -220,7 +240,8 @@
           <li>Control architecture: Client–server command transmission</li>
         </ul>
 
-        <div class="media-frame">
+        <!-- ✅ THIRD video: bigger -->
+        <div class="media-frame big">
           <video controls playsinline>
             <source src="../qcarp.mp4" type="video/mp4">
           </video>
