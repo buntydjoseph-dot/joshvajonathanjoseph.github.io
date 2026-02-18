@@ -1,1 +1,244 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formula Student AI (QCar + QLabs) | Joshva Jonathan Joseph</title>
+
+  <style>
+    body{
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: white;
+
+      background-image: url("../background.png.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    .overlay{
+      min-height: 100vh;
+      background: rgba(0,0,0,0.6);
+      padding: 28px 16px 40px;
+    }
+
+    .container{
+      width: min(1100px, 92%);
+      margin: 0 auto;
+    }
+
+    .nav{
+      display: flex;
+      gap: 14px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav a{
+      text-decoration: none;
+      color: white;
+      font-size: 16px;
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .nav a:hover{
+      background: rgba(255,255,255,0.28);
+      transform: translateY(-1px);
+    }
+
+    h1{ margin: 8px 0 10px; }
+    h2{ margin: 0 0 10px; }
+
+    .card{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.32);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .desc{
+      color: rgba(255,255,255,0.78);
+      line-height: 1.65;
+    }
+
+    img{
+      width: 100%;
+      border-radius: 12px;
+      margin-top: 14px;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    video{
+      width: 100%;
+      border-radius: 12px;
+      margin-top: 14px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: black;
+    }
+
+    ul{
+      color: rgba(255,255,255,0.85);
+      line-height: 1.65;
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+
+    .meta{
+      color: rgba(255,255,255,0.75);
+      margin-top: 6px;
+    }
+
+    .grid-2{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 850px){
+      .grid-2{ grid-template-columns: 1fr; }
+    }
+
+    .badge-row{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .badge{
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      font-size: 13px;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .project-nav{
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .project-nav a{
+      flex: 1;
+      min-width: 220px;
+      justify-content: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="overlay">
+    <div class="container">
+
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="../projects.html">Projects</a>
+      </nav>
+
+      <h1>AI-Driven Autonomous Navigation – Formula Student AI (QCar + QLabs)</h1>
+      <div class="meta">
+        MSc Academic Project • Simulation + Physical QCar Validation
+      </div>
+
+      <div class="card">
+        <h2>One-line Description</h2>
+        <div class="desc">
+          Developed and validated an AI-driven autonomous navigation system using Quanser QCar and QLabs, bridging simulation and physical vehicle testing.
+        </div>
+
+        <div class="badge-row">
+          <div class="badge">Quanser QCar</div>
+          <div class="badge">QLabs</div>
+          <div class="badge">Computer Vision</div>
+          <div class="badge">YOLO</div>
+          <div class="badge">Client–Server</div>
+          <div class="badge">Real-World Testing</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Physical QCar Setup</h2>
+        <div class="desc">
+          A practical implementation and testing setup using the Quanser QCar platform. This work included real-world trials in addition to simulation.
+        </div>
+
+        <!-- Image file you mentioned -->
+        <img src="meqcar.jpg" alt="Physical QCar setup (meqcar.jpg)">
+      </div>
+
+      <div class="card">
+        <h2>Demo 1 — Physical QCar Object Identification (Computer Vision)</h2>
+        <div class="desc">
+          Navigation testing on the physical QCar using computer vision to identify objects in real time during vehicle operation.
+        </div>
+
+        <!-- Video file you mentioned -->
+        <video controls playsinline>
+          <source src="NavigationTesting.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <div class="card">
+        <h2>Demo 2 — YOLO Cone Detection + Client–Server Control</h2>
+        <div class="desc">
+          Developed a deep learning model using YOLO, trained on a cone dataset for detection. The model runs on a PC and uses a client–server
+          architecture to send control commands from the PC to the vehicle system.
+        </div>
+
+        <ul>
+          <li>Deep learning model: YOLO (cone detection)</li>
+          <li>Training: cone dataset</li>
+          <li>Runtime: model inference executed on PC</li>
+          <li>Control: commands sent via client–server architecture</li>
+        </ul>
+
+        <!-- Video file you mentioned -->
+        <video controls playsinline>
+          <source src="qcarp.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <div class="card">
+        <h2>Key Contributions</h2>
+        <ul>
+          <li>Built an autonomous navigation workflow using QLabs simulation and physical QCar testing.</li>
+          <li>Implemented computer vision for object identification and validated behaviour on the physical platform.</li>
+          <li>Developed a YOLO-based cone detection model and integrated it with a PC-based inference + client–server control pipeline.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Navigate Projects</h2>
+        <div class="project-nav">
+          <!-- Update these links to match your site -->
+          <a href="../projects/smartagriculture.html">← Previous Project</a>
+          <a href="../projects.html">Back to Projects</a>
+          <a href="../projects/next_project.html">Next Project →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
