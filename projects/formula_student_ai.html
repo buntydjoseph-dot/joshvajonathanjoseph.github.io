@@ -9,6 +9,7 @@
     body{
       margin: 0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-size: 16px;
       color: white;
 
       background-image: url("../background.png.png");
@@ -25,7 +26,7 @@
     }
 
     .container{
-      width: min(1100px, 92%);
+      width: min(1000px, 92%);
       margin: 0 auto;
     }
 
@@ -56,8 +57,8 @@
       transform: translateY(-1px);
     }
 
-    h1{ margin: 8px 0 10px; }
-    h2{ margin: 0 0 10px; }
+    h1{ margin: 8px 0 10px; font-size: 28px; }
+    h2{ margin: 0 0 10px; font-size: 20px; }
 
     .card{
       border-radius: 18px;
@@ -72,21 +73,6 @@
     .desc{
       color: rgba(255,255,255,0.78);
       line-height: 1.65;
-    }
-
-    img{
-      width: 100%;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.18);
-      display: block;
-    }
-
-    video{
-      width: 100%;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.18);
-      background: black;
-      display: block;
     }
 
     ul{
@@ -117,10 +103,24 @@
       color: rgba(255,255,255,0.92);
     }
 
-    /* ✅ Controls the visual size of images/videos (except your first video if you leave it unwrapped) */
+    /* ✅ Media sizing: smaller + centered */
     .media-frame{
-      max-width: 850px;     /* reduce if still too large */
-      margin: 14px auto 0;  /* centered */
+      width: min(650px, 100%);
+      margin: 14px auto 0;
+    }
+
+    .media-frame img,
+    .media-frame video{
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.18);
+      display: block;
+      background: black;
+    }
+
+    .media-frame video{
+      max-height: 360px;
+      object-fit: contain;
     }
   </style>
 </head>
@@ -165,10 +165,11 @@
           vehicle control algorithms prior to physical deployment.
         </div>
 
-        <!-- ✅ Leave this unwrapped if you like its current size -->
-        <video controls playsinline>
-          <source src="../qcarv.mp4" type="video/mp4">
-        </video>
+        <div class="media-frame">
+          <video controls playsinline>
+            <source src="../qcarv.mp4" type="video/mp4">
+          </video>
+        </div>
       </div>
 
       <div class="card">
