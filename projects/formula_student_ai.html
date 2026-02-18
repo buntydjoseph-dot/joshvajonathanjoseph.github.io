@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -102,17 +101,6 @@
       margin-top: 6px;
     }
 
-    .grid-2{
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-top: 12px;
-    }
-
-    @media (max-width: 850px){
-      .grid-2{ grid-template-columns: 1fr; }
-    }
-
     .badge-row{
       display: flex;
       flex-wrap: wrap;
@@ -128,20 +116,6 @@
       font-size: 13px;
       color: rgba(255,255,255,0.92);
     }
-
-    .project-nav{
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-
-    .project-nav a{
-      flex: 1;
-      min-width: 220px;
-      justify-content: center;
-    }
   </style>
 </head>
 
@@ -156,79 +130,92 @@
 
       <h1>AI-Driven Autonomous Navigation – Formula Student AI (QCar + QLabs)</h1>
       <div class="meta">
-        MSc Academic Project • Simulation + Physical QCar Validation
+        MSc Academic Project • Simulation + Physical Vehicle Validation
       </div>
 
       <div class="card">
-        <h2>One-line Description</h2>
+        <h2>Project Summary</h2>
         <div class="desc">
-          Developed and validated an AI-driven autonomous navigation system using Quanser QCar and QLabs, bridging simulation and physical vehicle testing.
+          Developed and validated an AI-driven autonomous navigation system using Quanser QCar and QLabs,
+          bridging simulation-based development with physical vehicle testing.
         </div>
 
         <div class="badge-row">
           <div class="badge">Quanser QCar</div>
           <div class="badge">QLabs</div>
           <div class="badge">Computer Vision</div>
+          <div class="badge">Deep Learning</div>
           <div class="badge">YOLO</div>
           <div class="badge">Client–Server</div>
-          <div class="badge">Real-World Testing</div>
+          <div class="badge">Simulation-to-Real</div>
         </div>
       </div>
 
       <div class="card">
-        <h2>Physical QCar Setup</h2>
+        <h2>Simulation-Based Autonomous Navigation (QLabs)</h2>
         <div class="desc">
-          A practical implementation and testing setup using the Quanser QCar platform. This work included real-world trials in addition to simulation.
+          Developed and validated autonomous navigation behaviour within the Quanser QLabs simulation
+          environment. The simulation framework enabled safe, repeatable testing of perception and
+          vehicle control algorithms prior to physical deployment.
         </div>
 
-        <!-- Image file you mentioned -->
-        <img src="../meqcar.jpg" alt="Physical QCar setup">
-      </div>
-
-      <div class="card">
-        <h2>Demo 1 — Physical QCar Object Identification (Computer Vision)</h2>
-        <div class="desc">
-          Navigation testing on the physical QCar using computer vision to identify objects in real time during vehicle operation.
-        </div>
-
-        <!-- Video file you mentioned -->
         <video controls playsinline>
-          <source src="../NavigationTesting.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          <source src="../qcarv.mp4" type="video/mp4">
         </video>
       </div>
 
       <div class="card">
-        <h2>Demo 2 — YOLO Cone Detection + Client–Server Control</h2>
+        <h2>Physical QCar Platform</h2>
         <div class="desc">
-          Developed a deep learning model using YOLO, trained on a cone dataset for detection. The model runs on a PC and uses a client–server
-          architecture to send control commands from the PC to the vehicle system.
+          Practical implementation and experimental validation using the Quanser QCar platform,
+          supporting real-world evaluation of perception and navigation strategies.
+        </div>
+
+        <img src="../meqcar.jpg" alt="Physical QCar setup">
+      </div>
+
+      <div class="card">
+        <h2>Real-Time Object Identification (Physical Vehicle Testing)</h2>
+        <div class="desc">
+          Conducted physical vehicle trials using computer vision techniques for real-time object
+          identification during QCar operation.
+        </div>
+
+        <video controls playsinline>
+          <source src="../NavigationTesting.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <div class="card">
+        <h2>Deep Learning-Based Cone Detection & Control Pipeline</h2>
+        <div class="desc">
+          Developed a deep learning model using YOLO, trained on a cone dataset for detection tasks.
+          Model inference was executed on a PC, with control commands transmitted via a client–server
+          architecture.
         </div>
 
         <ul>
           <li>Deep learning model: YOLO (cone detection)</li>
-          <li>Training: cone dataset</li>
-          <li>Runtime: model inference executed on PC</li>
-          <li>Control: commands sent via client–server architecture</li>
+          <li>Training dataset: Cone dataset</li>
+          <li>Runtime inference: PC-based execution</li>
+          <li>Control architecture: Client–server command transmission</li>
         </ul>
 
-        <!-- Video file you mentioned -->
         <video controls playsinline>
           <source src="../qcarp.mp4" type="video/mp4">
-          Your browser does not support the video tag.
         </video>
       </div>
 
       <div class="card">
         <h2>Key Contributions</h2>
         <ul>
-          <li>Built an autonomous navigation workflow using QLabs simulation and physical QCar testing.</li>
-          <li>Implemented computer vision for object identification and validated behaviour on the physical platform.</li>
-          <li>Developed a YOLO-based cone detection model and integrated it with a PC-based inference + client–server control pipeline.</li>
+          <li>Built a simulation-to-real autonomous navigation workflow using QLabs and QCar.</li>
+          <li>Validated perception and control algorithms across simulation and physical platforms.</li>
+          <li>Implemented computer vision techniques for real-time environmental perception.</li>
+          <li>Developed a YOLO-based cone detection model integrated with PC-based inference.</li>
+          <li>Designed a client–server architecture for real-time vehicle command transmission.</li>
         </ul>
       </div>
-
-      
 
     </div>
   </div>
