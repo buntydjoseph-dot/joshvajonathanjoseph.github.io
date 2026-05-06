@@ -6,83 +6,119 @@
   <title>Projects | Joshva Jonathan Joseph</title>
 
   <style>
-    body{
+    /* ---------- Base + Background ---------- */
+    body {
       margin: 0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: white;
-
+      color: #f8fafc; /* Crisp white for contrast */
+      
       background-image: url("background.png.png");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
+      background-color: #0f172a; 
     }
 
-    .overlay{
+    /* Darker overall overlay for readability */
+    .overlay {
       min-height: 100vh;
-      background: rgba(0,0,0,0.55);
-      padding: 28px 16px 40px;
+      background: rgba(15, 23, 42, 0.65); 
+      padding: 40px 16px 60px;
     }
 
-    .container{
-      width: min(1200px, 92%);
+    .container {
+      width: min(1000px, 92%);
       margin: 0 auto;
     }
 
-    .nav{
+    /* ---------- Navigation ---------- */
+    .nav {
       display: flex;
-      gap: 14px;
-      margin-bottom: 18px;
+      gap: 16px;
+      margin-bottom: 24px;
     }
 
-    .nav a{
+    .nav a {
       text-decoration: none;
-      color: white;
-      font-size: 14px;
-      padding: 6px 10px;
-      border-radius: 8px;
-      background: rgba(255,255,255,0.08);
+      color: #fbbf24; /* Warm amber */
+      font-size: 16px;
+      font-weight: 600;
+      padding: 8px 20px;
+      border-radius: 12px;
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      transition: all 0.25s ease-out;
     }
 
-    .nav a:hover{
-      background: rgba(255,255,255,0.18);
+    .nav a:hover {
+      background: rgba(251, 191, 36, 0.2);
+      border-color: rgba(251, 191, 36, 0.5);
+      transform: translateY(-1px);
+      color: #fff;
     }
 
-    h1{
-      margin: 0 0 16px;
+    /* ---------- Headings ---------- */
+    h1 {
+      margin: 0 0 24px 0;
+      font-size: 36px;
+      line-height: 1.3;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, #ffffff, #bae6fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .card{
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(0,0,0,0.28);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      margin-bottom: 16px;
-      transition: 0.25s ease;
+    /* ---------- Project Cards ---------- */
+    .card {
+      border-radius: 20px;
+      margin-bottom: 20px;
+      
+      /* Deep slate glass effect */
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
     }
 
-    .card:hover{
+    .card:hover {
+      background: rgba(15, 23, 42, 0.85);
+      border-color: #38bdf8; /* Terminal blue highlight on hover */
       transform: translateY(-3px);
-      border-color: rgba(255,255,255,0.35);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
     }
 
-    .project-link{
+    .project-link {
       display: block;
-      padding: 18px;
+      padding: 24px;
       color: white;
       text-decoration: none;
     }
 
-    .project-title{
-      font-size: 18px;
-      margin-bottom: 6px;
+    .project-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #fff;
+      transition: color 0.2s ease;
     }
 
-    .project-desc{
-      color: rgba(255,255,255,0.75);
-      font-size: 14px;
-      line-height: 1.4;
+    .card:hover .project-title {
+      color: #38bdf8; /* Title turns blue on hover */
+    }
+
+    .project-desc {
+      color: #cbd5e1;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ---------- Mobile Polish ---------- */
+    @media (max-width: 768px) {
+      h1 { font-size: 28px; text-align: center; }
+      .nav { justify-content: center; width: 100%; }
     }
   </style>
 </head>
@@ -91,6 +127,7 @@
   <div class="overlay">
     <div class="container">
 
+      <!-- NAVIGATION -->
       <nav class="nav">
         <a href="index.html">Home</a>
         <a href="projects.html">Projects</a>
@@ -98,9 +135,17 @@
 
       <h1>Projects</h1>
 
-      
-
- 
+      <!-- Sentinel Project (NEW) -->
+      <div class="card">
+        <a class="project-link" href="projects/sentinel.html">
+          <div class="project-title">
+            Sentinel: Custom Embedded Linux & System Monitor
+          </div>
+          <div class="project-desc">
+            Built a highly optimized, lightweight Linux operating system from scratch using Buildroot. Integrated a custom C-based TCP/IP system monitoring daemon that interfaces directly with the Linux kernel to serve real-time telemetry.
+          </div>
+        </a>
+      </div>
 
       <!-- Smart Agriculture -->
       <div class="card">
@@ -108,20 +153,18 @@
           <div class="project-title">
             LoRa + MQTT Smart Agriculture Monitoring & Irrigation System
           </div>
-
           <div class="project-desc">
-           A central concentrator bridges local weather sensing and long-range LoRa soil sensing into MQTT,
-            while a main controller (with local Ul) performs closed-loop irrigation control via relays and solenoids, 
-            and syncs telemetry/commands to/from the cloud over MQTT.
+            A central concentrator bridges local weather sensing and long-range LoRa soil sensing into MQTT, while a main controller (with local UI) performs closed-loop irrigation control via relays and solenoids, and syncs telemetry/commands to/from the cloud over MQTT.
           </div>
         </a>
       </div>
-            <div class="card">
+
+      <!-- Formula Student AI -->
+      <div class="card">
         <a class="project-link" href="projects/formula_student_ai.html">
           <div class="project-title">
             AI-Driven Autonomous Navigation for Formula Student using QLabs & QCar
           </div>
-
           <div class="project-desc">
             Developed and validated an AI-driven autonomous navigation system for FS-AI using Quanser QCar and QLabs, bridging simulation and physical vehicle testing.
           </div>
