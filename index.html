@@ -10,19 +10,24 @@
     body {
       margin: 0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: #e2e8f0; 
-      background-image: url("background.png.png");
+      color: #f8fafc; /* Crisp white for contrast against the busy image */
+      
+      /* Make sure to save your new image with this exact name in the same folder */
+      background-image: url("background.png"); 
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      background-color: #0d1117; 
+      background-color: #0f172a; 
     }
 
-    /* Lighter, semi-transparent overlay to let the background show through */
+    /* 
+      Darker overall overlay because the desk surface and lamp are very bright.
+      This ensures the white text stays readable everywhere.
+    */
     .overlay {
       min-height: 100vh;
-      background: rgba(13, 17, 23, 0.35); /* Much less dark */
+      background: rgba(15, 23, 42, 0.65); 
       padding: 40px 16px 60px;
     }
 
@@ -38,21 +43,22 @@
       margin-bottom: 16px;
     }
 
+    /* Using the warm amber from the desk lamp */
     .nav a {
       text-decoration: none;
-      color: #fca311; 
+      color: #fbbf24; 
       font-size: 16px;
       font-weight: 600;
       padding: 8px 20px;
       border-radius: 12px;
-      background: rgba(252, 163, 17, 0.08);
-      border: 1px solid rgba(252, 163, 17, 0.2);
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.25);
       transition: all 0.25s ease-out;
     }
 
     .nav a:hover {
-      background: rgba(252, 163, 17, 0.15);
-      border-color: rgba(252, 163, 17, 0.4);
+      background: rgba(251, 191, 36, 0.2);
+      border-color: rgba(251, 191, 36, 0.5);
       transform: translateY(-1px);
       color: #fff;
     }
@@ -64,30 +70,30 @@
       gap: 24px;
       padding: 24px;
       
-      /* Slightly opaque with a blur effect */
-      background: rgba(31, 41, 55, 0.55); 
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      /* Deep slate glass effect to match multimeter/laptop */
+      background: rgba(15, 23, 42, 0.75); 
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
       transition: all 0.3s ease;
     }
 
     .header:hover {
       transform: translateY(-1px);
-      border-color: rgba(255, 255, 255, 0.15);
-      background: rgba(31, 41, 55, 0.65);
+      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(15, 23, 42, 0.85);
     }
 
-    /* DP without glow, simple elegant border */
+    /* Simple elegant border matching the tags */
     .avatar {
       width: 100px;
       height: 100px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid #a7f3d0;
+      border: 2px solid #38bdf8;
       flex: 0 0 auto;
     }
 
@@ -96,7 +102,8 @@
       font-size: 36px;
       line-height: 1.2;
       letter-spacing: -0.5px;
-      background: linear-gradient(90deg, #ffffff, #a7f3d0);
+      /* Subtle gradient from white to the terminal blue */
+      background: linear-gradient(90deg, #ffffff, #bae6fd);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -104,7 +111,7 @@
     .title {
       margin-top: 6px;
       font-size: 18px;
-      color: #94a3b8;
+      color: #cbd5e1;
       font-weight: 500;
       letter-spacing: 0.5px;
     }
@@ -117,21 +124,22 @@
       gap: 10px;
     }
 
+    /* Using the vibrant blue from the OLED screen and IDE */
     .tag {
       font-size: 13px;
       font-weight: 600;
       padding: 6px 14px;
       border-radius: 999px;
-      border: 1px solid rgba(167, 243, 208, 0.2);
-      background: rgba(167, 243, 208, 0.05);
-      color: #a7f3d0;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      background: rgba(56, 189, 248, 0.1);
+      color: #38bdf8;
       text-decoration: none;
       transition: all 0.2s ease;
     }
 
     .tag:hover {
-      background: rgba(167, 243, 208, 0.15);
-      border-color: #a7f3d0;
+      background: rgba(56, 189, 248, 0.25);
+      border-color: #38bdf8;
       color: #fff;
       transform: translateY(-1px);
     }
@@ -151,35 +159,35 @@
       gap: 8px;
     }
 
+    /* Amber dot next to headers */
     .section h2::before {
       content: "";
       display: block;
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #fca311;
-      box-shadow: 0 0 6px rgba(252, 163, 17, 0.4);
+      background: #fbbf24;
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
     }
 
-    /* Slightly opaque cards with blur */
+    /* Deep slate glass effect for content cards */
     .card {
       padding: 24px;
       border-radius: 20px;
       
-      /* Glass effect */
-      background: rgba(31, 41, 55, 0.55);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       transition: all 0.3s ease;
     }
 
     .card:hover {
-      background: rgba(31, 41, 55, 0.65);
-      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(15, 23, 42, 0.85);
+      border-color: rgba(255, 255, 255, 0.2);
       transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
     }
 
     .card h3 {
@@ -188,9 +196,10 @@
       color: #fff;
     }
 
+    /* Sub-headers in terminal blue */
     .meta {
       margin: 8px 0 0;
-      color: #a7f3d0;
+      color: #38bdf8;
       font-size: 14px;
       font-weight: 500;
     }
@@ -203,7 +212,7 @@
     .card li {
       margin: 10px 0;
       line-height: 1.6;
-      color: #cbd5e1;
+      color: #e2e8f0;
     }
 
     .card li strong {
@@ -239,10 +248,10 @@
           <div class="title">Graduate Embedded Engineer</div>
 
           <div class="tags">
-            <a href="embedded-c.html" class="tag">Embedded C / C++</a>
+            <a href="embedded-c.html" class="tag">Embedded C/C++</a>
             <a href="embedded-linux.html" class="tag">Embedded Linux</a>
-            <a href="bare-metal.html" class="tag">Bare Metal</a>
-            <a href="freertos.html" class="tag">Free RTOS</a>
+            <a href="bare-metal.html" class="tag">Bare-Metal Firmware</a>
+            <a href="freertos.html" class="tag">FreeRTOS</a>
           </div>
         </div>
       </header>
@@ -255,12 +264,12 @@
           <p class="meta">Cenaura Technologies • July 2022 – Sep 2023 • Hyderabad</p>
 
           <ul>
-            <li>Designed, tested, and validated microcontroller-based embedded systems for automation and control applications in greenhouse and outdoor farming environments.</li>
-            <li>Worked with multiple communication protocols including SPI, I²C, UART, RS485, and CAN to support reliable interfacing and real-time data exchange between embedded subsystems.</li>
-            <li>Developed and tested LoRa-based devices for long-range sensor data transmission in distributed sensing applications.</li>
-            <li>Maintained MQTT-based communication between ESP-based sensor nodes using the Mosquitto MQTT broker.</li>
-            <li>Supported PCB bring-up, hardware debugging, and fault diagnosis, resolving power, communication, and signal integrity issues during prototype stages.</li>
-            <li>Performed fine-pitch soldering, component replacement, PCB rework, and micro-soldering using microscope during hardware modification and bring-up activities.</li>
+            <li>Architected and validated microcontroller-based firmware for precision automation and closed-loop control systems within agricultural environments.</li>
+            <li>Implemented and debugged low-level peripheral drivers for I²C, SPI, UART, RS-485, and CAN bus, ensuring robust real-time inter-system telemetry.</li>
+            <li>Engineered low-power LoRa-based sensor nodes for reliable, long-range data transmission in distributed IoT edge networks.</li>
+            <li>Deployed and optimized MQTT telemetry pipelines on Mosquitto brokers to facilitate seamless data exchange across ESP-based edge devices.</li>
+            <li>Spearheaded initial PCB bring-up and hardware validation, utilizing logic analyzers and oscilloscopes to resolve complex signal integrity and power sequencing issues.</li>
+            <li>Executed precision component-level PCB rework, including fine-pitch micro-soldering under magnification for rapid prototype iteration.</li>
           </ul>
         </div>
       </section>
@@ -270,11 +279,11 @@
         <h2>Skills</h2>
         <div class="card">
           <ul class="skills-list">
-            <li><strong>Programming:</strong> C, C++, Python, Arduino</li>
-            <li><strong>Embedded Systems:</strong> Microcontrollers, Firmware Development</li>
-            <li><strong>Hardware:</strong> PCB Bring-up, Soldering, Oscilloscope & Multimeter Debugging</li>
-            <li><strong>IoT & Communication:</strong> LoRa, Serial Communication, IoT Applications</li>
-            <li><strong>Machine Learning & AI:</strong> Deep Learning, Dataset Clustering & Classification</li>
+            <li><strong>Programming:</strong> Embedded C, C++ (OOP), Python, Bash Scripting</li>
+            <li><strong>Architecture & OS:</strong> ARM Cortex-M, FreeRTOS, Embedded Linux, Bare-Metal Development, Bootloaders</li>
+            <li><strong>Hardware & Debugging:</strong> PCB Bring-up, JTAG/SWD Debugging, Logic Analyzers, Oscilloscopes, Fine-pitch Soldering</li>
+            <li><strong>Protocols & IoT:</strong> I²C, SPI, UART/USART, CAN, RS-485, LoRa/LoRaWAN, MQTT, BLE</li>
+            <li><strong>Machine Learning:</strong> Edge AI / TinyML, Deep Learning, Sensor Data Classification</li>
           </ul>
         </div>
       </section>
