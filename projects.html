@@ -32,6 +32,24 @@
       margin: 0 auto;
     }
 
+    /* ---------- Animations ---------- */
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* Applying staggered animations */
+    .nav { animation: fadeUp 0.6s ease-out forwards; }
+    h1 { animation: fadeUp 0.6s ease-out 0.1s forwards; opacity: 0; }
+    .card:nth-of-type(1) { animation: fadeUp 0.6s ease-out 0.2s forwards; opacity: 0; }
+    .card:nth-of-type(2) { animation: fadeUp 0.6s ease-out 0.3s forwards; opacity: 0; }
+    .card:nth-of-type(3) { animation: fadeUp 0.6s ease-out 0.4s forwards; opacity: 0; }
+
     /* ---------- Navigation ---------- */
     .nav {
       display: flex;
@@ -54,7 +72,8 @@
     .nav a:hover {
       background: rgba(251, 191, 36, 0.2);
       border-color: rgba(251, 191, 36, 0.5);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
       color: #fff;
     }
 
@@ -64,9 +83,13 @@
       font-size: 36px;
       line-height: 1.3;
       letter-spacing: -0.5px;
-      background: linear-gradient(90deg, #ffffff, #bae6fd);
+      
+      /* Advanced Shimmering Text Effect */
+      background: linear-gradient(90deg, #38bdf8, #ffffff, #38bdf8);
+      background-size: 200% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      animation: shimmer 5s linear infinite, fadeUp 0.6s ease-out 0.1s forwards;
     }
 
     /* ---------- Project Cards ---------- */
@@ -85,7 +108,7 @@
 
     .card:hover {
       background: rgba(15, 23, 42, 0.85);
-      border-color: #38bdf8; /* Terminal blue highlight on hover */
+      border-color: rgba(56, 189, 248, 0.4); /* Terminal blue highlight on hover */
       transform: translateY(-3px);
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
     }
@@ -127,7 +150,6 @@
   <div class="overlay">
     <div class="container">
 
-      <!-- NAVIGATION -->
       <nav class="nav">
         <a href="index.html">Home</a>
         <a href="projects.html">Projects</a>
@@ -135,7 +157,6 @@
 
       <h1>Projects</h1>
 
-      <!-- Sentinel Project (NEW) -->
       <div class="card">
         <a class="project-link" href="projects/Sentinel.html">
           <div class="project-title">
@@ -147,7 +168,6 @@
         </a>
       </div>
 
-      <!-- Smart Agriculture -->
       <div class="card">
         <a class="project-link" href="projects/smartagriculture.html">
           <div class="project-title">
@@ -159,7 +179,6 @@
         </a>
       </div>
 
-      <!-- Formula Student AI -->
       <div class="card">
         <a class="project-link" href="projects/formula_student_ai.html">
           <div class="project-title">
