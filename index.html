@@ -10,21 +10,16 @@
     body {
       margin: 0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: #f8fafc; /* Crisp white for contrast against the busy image */
-      
-      /* Make sure to save your new image with this exact name in the same folder */
+      color: #f8fafc;
       background-image: url("background.png.png"); 
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
       background-color: #0f172a; 
+      overflow-x: hidden;
     }
 
-    /* 
-      Darker overall overlay because the desk surface and lamp are very bright.
-      This ensures the white text stays readable everywhere.
-    */
     .overlay {
       min-height: 100vh;
       background: rgba(15, 23, 42, 0.65); 
@@ -43,7 +38,6 @@
       margin-bottom: 16px;
     }
 
-    /* Using the warm amber from the desk lamp */
     .nav a {
       text-decoration: none;
       color: #fbbf24; 
@@ -69,12 +63,9 @@
       align-items: center;
       gap: 24px;
       padding: 24px;
-      
-      /* Deep slate glass effect to match multimeter/laptop */
       background: rgba(15, 23, 42, 0.75); 
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
@@ -87,7 +78,6 @@
       background: rgba(15, 23, 42, 0.85);
     }
 
-    /* Simple elegant border matching the tags */
     .avatar {
       width: 100px;
       height: 100px;
@@ -102,7 +92,6 @@
       font-size: 36px;
       line-height: 1.2;
       letter-spacing: -0.5px;
-      /* Subtle gradient from white to the terminal blue */
       background: linear-gradient(90deg, #ffffff, #bae6fd);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -116,7 +105,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* ---------- Interactive Tags / Links ---------- */
+    /* ---------- Interactive Tags ---------- */
     .tags {
       margin-top: 14px;
       display: flex;
@@ -124,7 +113,6 @@
       gap: 10px;
     }
 
-    /* Using the vibrant blue from the OLED screen and IDE */
     .tag {
       font-size: 13px;
       font-weight: 600;
@@ -159,7 +147,6 @@
       gap: 8px;
     }
 
-    /* Amber dot next to headers */
     .section h2::before {
       content: "";
       display: block;
@@ -170,15 +157,12 @@
       box-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
     }
 
-    /* Deep slate glass effect for content cards */
     .card {
       padding: 24px;
       border-radius: 20px;
-      
       background: rgba(15, 23, 42, 0.75);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      
       border: 1px solid rgba(255, 255, 255, 0.1);
       transition: all 0.3s ease;
     }
@@ -196,7 +180,6 @@
       color: #fff;
     }
 
-    /* Sub-headers in terminal blue */
     .meta {
       margin: 8px 0 0;
       color: #38bdf8;
@@ -219,6 +202,90 @@
       color: #fff;
     }
 
+    /* ---------- NEW: Boot Sequence ---------- */
+    #boot-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #000;
+      color: #0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: opacity 0.5s ease-out;
+    }
+    
+    .boot-line {
+      margin: 2px 0;
+      white-space: nowrap;
+    }
+
+    /* ---------- NEW: Terminal Section ---------- */
+    .terminal-container {
+      background: #1e1e1e;
+      border-radius: 12px;
+      border: 1px solid #333;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .terminal-header {
+      background: #333;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #aaa;
+      font-size: 12px;
+      font-family: system-ui, sans-serif;
+    }
+
+    .mac-btn {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .mac-btn.close { background: #ff5f56; }
+    .mac-btn.min { background: #ffbd2e; }
+    .mac-btn.max { background: #27c93f; }
+
+    .terminal-body {
+      padding: 16px;
+      height: 250px;
+      overflow-y: auto;
+      color: #d4d4d4;
+      font-size: 14px;
+    }
+
+    .terminal-line { margin-bottom: 6px; }
+    .prompt-user { color: #85d95e; font-weight: bold; }
+    .prompt-dir { color: #3b8eea; font-weight: bold; }
+    
+    .input-line {
+      display: flex;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .terminal-input {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      flex-grow: 1;
+      margin-left: 8px;
+      outline: none;
+    }
+
     /* ---------- Mobile Polish ---------- */
     @media (max-width: 600px) {
       .header { flex-direction: column; text-align: center; padding: 24px 16px; }
@@ -231,22 +298,20 @@
 </head>
 
 <body>
-  <div class="overlay">
+  <div id="boot-screen"></div>
+
+  <div class="overlay" id="main-content" style="opacity: 0; transition: opacity 0.5s ease-in;">
     <div class="container">
 
-      <!-- HEADER -->
       <header class="header">
         <img class="avatar" src="dp.jpg" alt="Joshva Jonathan Joseph">
-
         <div>
           <nav class="nav">
             <a href="index.html">Home</a>
             <a href="projects.html">Projects</a>
           </nav>
-          
           <h1>Joshva Jonathan Joseph</h1>
           <div class="title">Graduate Embedded Engineer</div>
-
           <div class="tags">
             <a href="projects/smartagriculture.html" class="tag">Embedded C/C++</a>
             <a href="projects/Sentinel.html" class="tag">Embedded Linux</a>
@@ -256,39 +321,12 @@
         </div>
       </header>
 
-      <!-- EXPERIENCE -->
       <section class="section">
         <h2>Experience</h2>
         <div class="card">
           <h3>Embedded Engineer</h3>
           <p class="meta">Cenaura Technologies • July 2022 – Dec 2023 • Hyderabad</p>
-
           <ul>
             <li>Architected and validated microcontroller-based firmware for precision automation and closed-loop control systems within agricultural environments.</li>
             <li>Implemented and debugged low-level peripheral drivers for I²C, SPI, UART, RS-485, and CAN bus, ensuring robust real-time inter-system telemetry.</li>
-            <li>Engineered low-power LoRa-based sensor nodes for reliable, long-range data transmission in distributed IoT edge networks.</li>
-            <li>Deployed and optimized MQTT telemetry pipelines on Mosquitto brokers to facilitate seamless data exchange across ESP-based edge devices.</li>
-            <li>Spearheaded initial PCB bring-up and hardware validation, utilizing logic analyzers and oscilloscopes to resolve complex signal integrity and power sequencing issues.</li>
-            <li>Executed precision component-level PCB rework, including fine-pitch micro-soldering under magnification for rapid prototype iteration.</li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- SKILLS -->
-      <section class="section">
-        <h2>Skills</h2>
-        <div class="card">
-          <ul class="skills-list">
-            <li><strong>Programming:</strong> Embedded C, C++ (OOP), Python, Bash Scripting</li>
-            <li><strong>Architecture & OS:</strong> ARM Cortex-M, FreeRTOS, Embedded Linux, Bare-Metal Development, Bootloaders</li>
-            <li><strong>Hardware & Debugging:</strong> PCB Bring-up, JTAG/SWD Debugging, Logic Analyzers, Oscilloscopes, Fine-pitch Soldering</li>
-            <li><strong>Protocols & IoT:</strong> I²C, SPI, UART/USART, CAN, RS-485, LoRa/LoRaWAN, MQTT, BLE</li>
-            <li><strong>Machine Learning:</strong> Edge AI / TinyML, Deep Learning, Sensor Data Classification</li>
-          </ul>
-        </div>
-      </section>
-
-    </div>
-  </div>
-</body>
-</html>
+            <li>Engineered low-power LoRa-based sensor nodes for reliable, long-range data
