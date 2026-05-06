@@ -356,14 +356,14 @@
             <div class="mac-btn close"></div>
             <div class="mac-btn min"></div>
             <div class="mac-btn max"></div>
-            <span>guest@portfolio: ~</span>
+            <span>root@stm32-board: ~</span>
           </div>
           <div class="terminal-body" id="terminal-body">
             <div class="terminal-line">Welcome to JoshOS v1.0.0 LTS (Embedded Linux)</div>
             <div class="terminal-line">Type 'help' to see available commands.</div>
             
             <div class="input-line">
-              <span class="prompt-user">guest@portfolio</span>:<span class="prompt-dir">~</span>$ 
+              <span class="prompt-user">root@stm32-board</span>:<span class="prompt-dir">~</span>$ 
               <input type="text" class="terminal-input" id="cmd-input" autocomplete="off" spellcheck="false" autofocus>
             </div>
           </div>
@@ -430,7 +430,7 @@
         // Print what the user typed
         const historyLine = document.createElement('div');
         historyLine.className = 'terminal-line';
-        historyLine.innerHTML = `<span class="prompt-user">guest@portfolio</span>:<span class="prompt-dir">~</span>$ ${this.value}`;
+        historyLine.innerHTML = `<span class="prompt-user">root@stm32-board</span>:<span class="prompt-dir">~</span>$ ${this.value}`;
         terminalBody.appendChild(historyLine);
 
         // Process Command
@@ -443,10 +443,10 @@
             response = "Joshva Jonathan Joseph - Graduate Embedded Engineer<br>Passionate about bare-metal firmware, RTOS, and hardware bring-up.";
             break;
           case 'skills':
-            response = "Loading skills array...<br>[C, C++, Python, Bash, FreeRTOS, Linux, I2C, SPI, MQTT, PCB Design]";
+            response = "Loading skills array...<br>[C, C++, Python, Bash, FreeRTOS, Linux, I2C, SPI, MQTT,]";
             break;
           case 'contact':
-            response = "Email: mailto:your.email@example.com (Update this in the code!)";
+            response = "Email: detroit8milejoe@gmail.com";
             break;
           case 'clear':
             terminalBody.innerHTML = '';
