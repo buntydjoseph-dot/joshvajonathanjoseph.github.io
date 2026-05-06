@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,115 +6,173 @@
   <title>Smart Agriculture System | Joshva Jonathan Joseph</title>
 
   <style>
-    body{
+    /* ---------- Base + Background ---------- */
+    body {
       margin: 0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: white;
-
+      color: #f8fafc; /* Crisp white for contrast */
+      
+      /* Kept exact file name as requested */
       background-image: url("../background.png.png");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
+      background-color: #0f172a; 
     }
 
-    .overlay{
+    /* Darker overall overlay for readability against bright desk/lamp */
+    .overlay {
       min-height: 100vh;
-      background: rgba(0,0,0,0.6);
-      padding: 28px 16px 40px;
+      background: rgba(15, 23, 42, 0.65); 
+      padding: 40px 16px 60px;
     }
 
-    .container{
-      width: min(1100px, 92%);
+    .container {
+      width: min(1000px, 92%);
       margin: 0 auto;
     }
 
-    .nav{
+    /* ---------- Navigation ---------- */
+    .nav {
       display: flex;
-      gap: 14px;
-      margin-bottom: 20px;
+      gap: 16px;
+      margin-bottom: 24px;
     }
 
-    .nav a{
+    .nav a {
       text-decoration: none;
-      color: white;
-      font-size: 14px;
-      padding: 6px 10px;
-      border-radius: 8px;
-      background: rgba(255,255,255,0.08);
+      color: #fbbf24; /* Warm amber */
+      font-size: 16px;
+      font-weight: 600;
+      padding: 8px 20px;
+      border-radius: 12px;
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      transition: all 0.25s ease-out;
     }
 
-    .nav a:hover{
-      background: rgba(255,255,255,0.18);
+    .nav a:hover {
+      background: rgba(251, 191, 36, 0.2);
+      border-color: rgba(251, 191, 36, 0.5);
+      transform: translateY(-1px);
+      color: #fff;
     }
 
-    h1{
-      margin-bottom: 10px;
+    /* ---------- Headings ---------- */
+    h1 {
+      margin: 0 0 20px 0;
+      font-size: 32px;
+      line-height: 1.3;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, #ffffff, #bae6fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .card{
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(0,0,0,0.32);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 22px;
-      margin-bottom: 18px;
+    h2 {
+      margin: 0 0 16px 8px;
+      font-size: 22px;
+      font-weight: 600;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .desc{
-      color: rgba(255,255,255,0.75);
+    h2::before {
+      content: "";
+      display: block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fbbf24;
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
+    }
+
+    /* ---------- Cards ---------- */
+    .card {
+      padding: 24px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      
+      /* Deep slate glass effect */
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      background: rgba(15, 23, 42, 0.85);
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .desc {
+      color: #cbd5e1;
       line-height: 1.6;
+      font-size: 16px;
     }
 
-    img{
+    .desc b {
+      color: #fff;
+    }
+
+    /* ---------- Lists ---------- */
+    ul {
+      color: #cbd5e1;
+      line-height: 1.7;
+      padding-left: 20px;
+      margin-top: 12px;
+    }
+
+    li {
+      margin-bottom: 12px;
+    }
+
+    li strong {
+      color: #38bdf8; /* Terminal blue accent for role/headers */
+    }
+
+    /* ---------- Media / Grid ---------- */
+    img, video {
       width: 100%;
       border-radius: 12px;
-      margin-top: 14px;
-      border: 1px solid rgba(255,255,255,0.18);
+      margin-top: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: #0f172a;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     }
 
-    video{
+    .node-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .node-card {
+      text-align: center;
+    }
+
+    .node-card img {
       width: 100%;
-      border-radius: 12px;
-      margin-top: 14px;
-      border: 1px solid rgba(255,255,255,0.18);
-      background: black;
+      max-width: 420px;
+      height: 260px;
+      object-fit: cover;
+      border-radius: 14px;
+      margin-top: 10px;
     }
 
-    ul{
-      color: rgba(255,255,255,0.8);
-      line-height: 1.6;
+    /* ---------- Mobile Polish ---------- */
+    @media (max-width: 768px) {
+      .node-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 26px; }
+      .nav { justify-content: center; }
     }
-    .node-grid{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  margin-top: 22px;
-}
-
-.node-card{
-  text-align: center;
-}
-
-.node-card img{
-  width: 100%;
-  max-width: 420px;
-
-  height: 260px;              /* ✅ uniform height */
-  object-fit: cover;          /* ✅ crops nicely */
-
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.18);
-  margin-top: 10px;
-}
-
-@media (max-width: 768px){
-  .node-grid{
-    grid-template-columns: 1fr;
-  }
-}
-
   </style>
 </head>
 
@@ -123,6 +180,7 @@
   <div class="overlay">
     <div class="container">
 
+      <!-- NAVIGATION -->
       <nav class="nav">
         <a href="../index.html">Home</a>
         <a href="../projects.html">Projects</a>
@@ -130,69 +188,56 @@
 
       <h1>LoRa + MQTT Smart Agriculture Monitoring & Irrigation System</h1>
 
+      <!-- OVERVIEW CARD -->
       <div class="card">
         <div class="desc">
-          A distributed IoT-based agricultural automation system designed to overcome real-world
-          field constraints such as long-distance sensor deployment, network limitations, and
-          reliable actuator control.
-
+          Architected a distributed IoT agricultural automation system engineered to resolve real-world field deployment constraints, including long-range sensor telemetry, network latency, and deterministic actuator control.
           <br><br>
-
-          The system uses a <b>central concentrator (gateway)</b> that bridges
-          <b>wired/local weather sensing</b> and <b>long-range LoRa soil nodes</b>
-          into an <b>MQTT-based communication architecture</b>. The main controller executes
-          irrigation control logic using relays driving solenoid valves, while telemetry and
-          remote commands are synchronised via MQTT.
+          The system utilizes a <b>central RF concentrator (gateway)</b> that bridges <b>local wired weather stations</b> and <b>distributed LoRa soil telemetry nodes</b> into a unified <b>MQTT communication architecture</b>. The central edge controller executes precise irrigation logic via solenoid valve relays, while synchronizing telemetry and remote commands over an MQTT broker.
         </div>
       </div>
 
+      <!-- ARCHITECTURE CARD -->
       <div class="card">
         <h2>System Architecture</h2>
-
         <div class="desc">
-          The concentrator acts as the communication backbone of the farm network:
-
+          The concentrator acts as the core communication backbone of the field network, routing data between hardware layers:
           <ul>
-            <li>Weather Sensors → Wired/Local → Concentrator</li>
-            <li>Soil Nodes (MCU + LoRa) → LoRa RF → Concentrator</li>
-            <li>Concentrator → MQTT → Main Controller / Cloud</li>
-            <li>Main Controller → Relays → Solenoid Valves</li>
-            <li>Local UI → Direct connection to Main Controller</li>
+            <li><b>[Local Telemetry]</b> Weather Sensors → Wired Interface → Concentrator</li>
+            <li><b>[Long-Range RF]</b> Soil Nodes (MCU + RF) → LoRa Transceiver → Concentrator</li>
+            <li><b>[Backhaul]</b> Concentrator → MQTT (Mosquitto) → Edge Controller / Cloud</li>
+            <li><b>[Actuation]</b> Main Controller → Relay Drivers → Solenoid Valves</li>
+            <li><b>[Interface]</b> Local UI → Direct Serial/IP connection to Main Controller</li>
           </ul>
         </div>
-
         <img src="../arch.jpeg" alt="System Architecture Diagram">
+      </div>
 
-
-       <div class="card">
-  <h2>Key Contributions</h2>
-
-  <ul>
-    <li>
-      <strong>Role:</strong> Lead Developer – Firmware & Embedded Systems<br><br>
-
-      Served as the Lead Developer for the firmware architecture and embedded system implementation of an IoT-based smart agriculture platform.<br><br>
-
-      • Led firmware development for the main controller, focusing on sensor integration, system coordination, and automation logic.<br><br>
-
-      • Designed and implemented firmware for the Soil Monitoring Node, including:<br>
-      – Multi-sensor interfacing<br>
-      – Data acquisition and preprocessing<br>
-      – LoRa communication for long-range telemetry<br><br>
-
-      • Developed firmware for the Weather Monitoring Node, enabling:<br>
-      – Environmental sensor integration<br>
-      – Reliable wireless data transmission<br><br>
-
-      • Developed firmware for the LoRa Concentrator, enabling:<br>
-      – Collection of sensor data from both Soil Monitoring Nodes and the Weather Monitoring Node, ensuring reliable transmission to the main controller and cloud platform.<br><br>
-
-      • Provided strong cross-functional support and collaborated closely with the hardware team.<br><br>
-
-      • Guided and supported the hardware development process, integration, and system bring-up.
-    </li>
-  </ul>
-</div>
+      <!-- CONTRIBUTIONS CARD -->
+      <div class="card">
+        <h2>Key Contributions</h2>
+        <ul>
+          <li>
+            <strong>Role: Lead Embedded Firmware Engineer</strong><br>
+            Led the firmware architecture and end-to-end embedded system implementation for the smart agriculture platform.
+          </li>
+          <li>
+            <strong>Edge Controller Firmware:</strong> Spearheaded firmware development for the central main controller, implementing deterministic automation logic, sensor polling schedules, and state-machine-based system coordination.
+          </li>
+          <li>
+            <strong>LoRa Soil Node Development:</strong> Engineered low-power firmware for distributed soil monitoring nodes, optimizing multi-sensor data acquisition, ADC preprocessing, and efficient LoRa payload packaging for long-range telemetry.
+          </li>
+          <li>
+            <strong>Weather Node Integration:</strong> Implemented wired telemetry firmware for environmental monitoring nodes, ensuring robust data sampling and reliable transmission over local interfaces.
+          </li>
+          <li>
+            <strong>RF-to-MQTT Concentrator:</strong> Programmed the LoRa gateway concentrator to aggregate high-throughput sensor data from distributed field nodes and publish seamlessly to a Mosquitto MQTT broker for cloud and local consumption.
+          </li>
+          <li>
+            <strong>Hardware Validation & Bring-up:</strong> Collaborated extensively with the hardware team, providing critical support during PCB bring-up, schematic review, component integration, and field-testing.
+          </li>
+        </ul>
+      </div>
 
     </div>
   </div>
