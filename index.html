@@ -329,4 +329,157 @@
           <ul>
             <li>Architected and validated microcontroller-based firmware for precision automation and closed-loop control systems within agricultural environments.</li>
             <li>Implemented and debugged low-level peripheral drivers for I²C, SPI, UART, RS-485, and CAN bus, ensuring robust real-time inter-system telemetry.</li>
-            <li>Engineered low-power LoRa-based sensor nodes for reliable, long-range data
+            <li>Engineered low-power LoRa-based sensor nodes for reliable, long-range data transmission in distributed IoT edge networks.</li>
+            <li>Deployed and optimized MQTT telemetry pipelines on Mosquitto brokers to facilitate seamless data exchange across ESP-based edge devices.</li>
+            <li>Spearheaded initial PCB bring-up and hardware validation, utilizing logic analyzers and oscilloscopes to resolve complex signal integrity and power sequencing issues.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Skills</h2>
+        <div class="card">
+          <ul class="skills-list">
+            <li><strong>Programming:</strong> Embedded C, C++ (OOP), Python, Bash Scripting</li>
+            <li><strong>Architecture & OS:</strong> ARM Cortex-M, FreeRTOS, Embedded Linux, Bare-Metal Development, Bootloaders</li>
+            <li><strong>Hardware & Debugging:</strong> PCB Bring-up, JTAG/SWD Debugging, Logic Analyzers, Oscilloscopes, Fine-pitch Soldering</li>
+            <li><strong>Protocols & IoT:</strong> I²C, SPI, UART/USART, CAN, RS-485, LoRa/LoRaWAN, MQTT, BLE</li>
+            <li><strong>Machine Learning:</strong> Edge AI / TinyML, Deep Learning, Sensor Data Classification</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Interactive Shell</h2>
+        <div class="terminal-container">
+          <div class="terminal-header">
+            <div class="mac-btn close"></div>
+            <div class="mac-btn min"></div>
+            <div class="mac-btn max"></div>
+            <span>guest@portfolio: ~</span>
+          </div>
+          <div class="terminal-body" id="terminal-body">
+            <div class="terminal-line">Welcome to JoshOS v1.0.0 LTS (Embedded Linux)</div>
+            <div class="terminal-line">Type 'help' to see available commands.</div>
+            
+            <div class="input-line">
+              <span class="prompt-user">guest@portfolio</span>:<span class="prompt-dir">~</span>$ 
+              <input type="text" class="terminal-input" id="cmd-input" autocomplete="off" spellcheck="false" autofocus>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    // --- FEATURE 1: BOOT SEQUENCE ---
+    const bootLogs = [
+      "[    0.000000] Booting Linux on physical CPU 0x0",
+      "[    0.000000] Linux version 5.15.0-embedded (joshva@build-server) (gcc version 11.2.0)",
+      "[    0.002345] Machine model: Joshva Portfolio Board Rev 1.0",
+      "[    0.045123] Memory: 16384K/16384K available (1024K kernel code)",
+      "[    0.102344] smp: Bringing up secondary CPUs ...",
+      "[    0.156789] FreeRTOS coprocessor initialized on core 1",
+      "[    0.201234] Initializing SPI bus 0... OK",
+      "[    0.245678] I2C bus 1 registered, speed 400kHz",
+      "[    0.301234] UART0: ttyS0 at MMIO 0x3f201000 (irq = 81) is a PL011 rev2",
+      "[    0.450000] Loading compiled portfolio assets... OK",
+      "[    0.500000] Mounting root filesystem...",
+      "[    0.650000] Welcome to Joshva's Portfolio!"
+    ];
+
+    const bootScreen = document.getElementById('boot-screen');
+    const mainContent = document.getElementById('main-content');
+    
+    // Simulate boot logs printing
+    let delay = 0;
+    bootLogs.forEach((log, index) => {
+      setTimeout(() => {
+        const p = document.createElement('div');
+        p.className = 'boot-line';
+        p.textContent = log;
+        bootScreen.appendChild(p);
+      }, delay);
+      delay += Math.random() * 100 + 50; // Random delay between logs
+    });
+
+    // Hide boot screen and show portfolio
+    setTimeout(() => {
+      bootScreen.style.opacity = '0';
+      setTimeout(() => {
+        bootScreen.style.display = 'none';
+        mainContent.style.opacity = '1';
+      }, 500); // wait for fade out
+    }, delay + 300);
+
+
+    // --- FEATURE 2: INTERACTIVE TERMINAL ---
+    const inputField = document.getElementById('cmd-input');
+    const terminalBody = document.getElementById('terminal-body');
+
+    inputField.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        const cmd = this.value.trim().toLowerCase();
+        
+        // Remove current input line
+        const currentInputLine = this.parentElement;
+        terminalBody.removeChild(currentInputLine);
+
+        // Print what the user typed
+        const historyLine = document.createElement('div');
+        historyLine.className = 'terminal-line';
+        historyLine.innerHTML = `<span class="prompt-user">guest@portfolio</span>:<span class="prompt-dir">~</span>$ ${this.value}`;
+        terminalBody.appendChild(historyLine);
+
+        // Process Command
+        let response = "";
+        switch(cmd) {
+          case 'help':
+            response = "Available commands:<br>- <b>whoami</b>: Display user info<br>- <b>skills</b>: List technical proficiencies<br>- <b>contact</b>: Get email address<br>- <b>clear</b>: Clear terminal";
+            break;
+          case 'whoami':
+            response = "Joshva Jonathan Joseph - Graduate Embedded Engineer<br>Passionate about bare-metal firmware, RTOS, and hardware bring-up.";
+            break;
+          case 'skills':
+            response = "Loading skills array...<br>[C, C++, Python, Bash, FreeRTOS, Linux, I2C, SPI, MQTT, PCB Design]";
+            break;
+          case 'contact':
+            response = "Email: mailto:your.email@example.com (Update this in the code!)";
+            break;
+          case 'clear':
+            terminalBody.innerHTML = '';
+            break;
+          case 'sudo':
+            response = "guest is not in the sudoers file. This incident will be reported.";
+            break;
+          case '':
+            response = ""; // empty enter press
+            break;
+          default:
+            response = `bash: ${cmd}: command not found`;
+        }
+
+        if (response) {
+          const responseLine = document.createElement('div');
+          responseLine.className = 'terminal-line';
+          responseLine.innerHTML = response;
+          terminalBody.appendChild(responseLine);
+        }
+
+        // Re-add input line
+        terminalBody.appendChild(currentInputLine);
+        this.value = '';
+        this.focus();
+        terminalBody.scrollTop = terminalBody.scrollHeight; // auto-scroll
+      }
+    });
+
+    // Keep focus on input when clicking inside terminal
+    terminalBody.addEventListener('click', () => {
+      inputField.focus();
+    });
+  </script>
+</body>
+</html>
