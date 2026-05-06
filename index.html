@@ -6,6 +6,53 @@
   <title>Joshva Jonathan Joseph | Embedded Engineer</title>
 
   <style>
+    /* ---------- Hex / Binary Clock Widget ---------- */
+    .hw-clock {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-family: 'Courier New', Courier, monospace;
+      color: #38bdf8;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      transition: all 0.2s ease;
+      user-select: none; /* Prevents text highlighting when clicking */
+    }
+
+    .hw-clock:hover {
+      border-color: #38bdf8;
+      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .clock-label {
+      font-size: 11px;
+      color: #fbbf24; /* Amber accent */
+      margin-bottom: 6px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    #clock-display {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 2px;
+    }
+
+    /* Hide on very small mobile screens to save space */
+    @media (max-width: 600px) {
+      .hw-clock { display: none; }
+    }
 
     /* Activity LEDs Container */
 .led-container {
@@ -520,6 +567,49 @@
     terminalBody.addEventListener('click', () => {
       inputField.focus();
     });
+    // --- FEATURE 3: HEX / BINARY CLOCK ---
+    const clockDisplay = document.getElementById('clock-display');
+    const clockBaseLabel = document.getElementById('clock-base');
+    const clockContainer = document.getElementById('hw-clock');
+    
+    let clockMode = 'hex'; // starts in hexadecimal mode
+
+    function updateClock() {
+      const now = new Date();
+      let h = now.getHours();
+      let m = now.getMinutes();
+      let s = now.getSeconds();
+
+      if (clockMode === 'hex') {
+        // Convert to Hex and pad to 2 digits (e.g., 0A, 1F)
+        h = '0x' + h.toString(16).padStart(2, '0').toUpperCase();
+        m = '0x' + m.toString(16).padStart(2, '0').toUpperCase();
+        s = '0x' + s.toString(16).padStart(2, '0').toUpperCase();
+        clockDisplay.textContent = `${h} : ${m} : ${s}`;
+        clockBaseLabel.textContent = "[HEX]";
+      } else {
+        // Convert to Binary and pad to 8 bits (e.g., 00010110)
+        h = h.toString(2).padStart(8, '0');
+        m = m.toString(2).padStart(8, '0');
+        s = s.toString(2).padStart(8, '0');
+        clockDisplay.textContent = `${h} : ${m} : ${s}`;
+        clockBaseLabel.textContent = "[BIN]";
+      }
+    }
+
+    // Toggle mode on click
+    clockContainer.addEventListener('click', () => {
+      clockMode = clockMode === 'hex' ? 'bin' : 'hex';
+      updateClock(); // Force immediate update on click
+    });
+
+    // Start the clock pulse (1Hz frequency)
+    setInterval(updateClock, 1000);
+    updateClock(); // Initial call to avoid 1-second delay
   </script>
+  <div id="hw-clock" class="hw-clock" title="Click to toggle Base-16 / Base-2">
+    <div class="clock-label">SYS_RTC_CLK <span id="clock-base">[HEX]</span></div>
+    <div id="clock-display">0x00 : 0x00 : 0x00</div>
+  </div>
 </body>
 </html>
