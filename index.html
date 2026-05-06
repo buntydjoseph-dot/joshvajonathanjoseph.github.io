@@ -9,7 +9,7 @@
     /* ---------- Hex / Binary Clock Widget ---------- */
     .hw-clock {
       position: fixed;
-      bottom: 24px;
+      top: 24px; /* Changed from bottom to top */
       right: 24px;
       background: rgba(15, 23, 42, 0.85);
       backdrop-filter: blur(8px);
@@ -26,7 +26,7 @@
       z-index: 1000;
       box-shadow: 0 4px 20px rgba(0,0,0,0.5);
       transition: all 0.2s ease;
-      user-select: none; /* Prevents text highlighting when clicking */
+      user-select: none;
     }
 
     .hw-clock:hover {
@@ -37,7 +37,7 @@
 
     .clock-label {
       font-size: 11px;
-      color: #fbbf24; /* Amber accent */
+      color: #fbbf24;
       margin-bottom: 6px;
       font-weight: bold;
       letter-spacing: 1px;
@@ -49,46 +49,42 @@
       letter-spacing: 2px;
     }
 
-    /* Hide on very small mobile screens to save space */
     @media (max-width: 600px) {
       .hw-clock { display: none; }
     }
 
     /* Activity LEDs Container */
-.led-container {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  display: flex;
-  gap: 6px;
-  opacity: 0.3; /* Dim when inactive */
-  transition: opacity 0.3s;
-}
+    .led-container {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      gap: 6px;
+      opacity: 0.3;
+      transition: opacity 0.3s;
+    }
 
-/* Base LED styling */
-.led {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #333;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-}
+    .led {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #333;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+    }
 
-/* Active LED Colors */
-.led.rx { background-color: #22c55e; } /* Green */
-.led.tx { background-color: #f97316; } /* Orange */
+    .led.rx { background-color: #22c55e; }
+    .led.tx { background-color: #f97316; }
 
-/* The Flicker Animation */
-@keyframes flicker {
-  0%, 100% { opacity: 1; box-shadow: 0 0 8px currentColor; }
-  50% { opacity: 0.2; box-shadow: none; }
-}
+    @keyframes flicker {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px currentColor; }
+      50% { opacity: 0.2; box-shadow: none; }
+    }
 
-/* Trigger animation on card hover */
-.card { position: relative; } /* Ensure LEDs position correctly inside the card */
-.card:hover .led-container { opacity: 1; }
-.card:hover .led.rx { animation: flicker 0.15s infinite alternate; }
-.card:hover .led.tx { animation: flicker 0.2s infinite alternate-reverse; }
+    .card { position: relative; }
+    .card:hover .led-container { opacity: 1; }
+    .card:hover .led.rx { animation: flicker 0.15s infinite alternate; }
+    .card:hover .led.tx { animation: flicker 0.2s infinite alternate-reverse; }
+
     /* ---------- Base + Background ---------- */
     body {
       margin: 0;
@@ -383,6 +379,12 @@
 <body>
   <div id="boot-screen"></div>
 
+  <!-- MOVED CLOCK HTML HERE (Above the script) -->
+  <div id="hw-clock" class="hw-clock" title="Click to toggle Base-16 / Base-2">
+    <div class="clock-label">SYS_RTC_CLK <span id="clock-base">[HEX]</span></div>
+    <div id="clock-display">0x00 : 0x00 : 0x00</div>
+  </div>
+
   <div class="overlay" id="main-content" style="opacity: 0; transition: opacity 0.5s ease-in;">
     <div class="container">
 
@@ -408,9 +410,9 @@
         <h2>Experience</h2>
         <div class="card">
           <div class="led-container">
-  <div class="led rx" title="Rx Activity"></div>
-  <div class="led tx" title="Tx Activity"></div>
-</div>
+            <div class="led rx" title="Rx Activity"></div>
+            <div class="led tx" title="Tx Activity"></div>
+          </div>
           <h3>Embedded Engineer</h3>
           <p class="meta">Cenaura Technologies • July 2022 – Dec 2023 • Hyderabad</p>
           <ul>
@@ -567,6 +569,8 @@
     terminalBody.addEventListener('click', () => {
       inputField.focus();
     });
+
+
     // --- FEATURE 3: HEX / BINARY CLOCK ---
     const clockDisplay = document.getElementById('clock-display');
     const clockBaseLabel = document.getElementById('clock-base');
@@ -607,9 +611,5 @@
     setInterval(updateClock, 1000);
     updateClock(); // Initial call to avoid 1-second delay
   </script>
-  <div id="hw-clock" class="hw-clock" title="Click to toggle Base-16 / Base-2">
-    <div class="clock-label">SYS_RTC_CLK <span id="clock-base">[HEX]</span></div>
-    <div id="clock-display">0x00 : 0x00 : 0x00</div>
-  </div>
 </body>
 </html>
