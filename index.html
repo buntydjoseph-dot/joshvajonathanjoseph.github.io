@@ -10,19 +10,19 @@
     body {
       margin: 0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: #e2e8f0; /* Softer white for better eye comfort */
+      color: #e2e8f0; 
       background-image: url("background.png.png");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      background-color: #0d1117; /* Fallback very dark color */
+      background-color: #0d1117; 
     }
 
-    /* Subtler gradient overlay to focus on new background pattern */
+    /* Lighter, semi-transparent overlay to let the background show through */
     .overlay {
       min-height: 100vh;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(13, 17, 23, 0.35); /* Much less dark */
       padding: 40px 16px 60px;
     }
 
@@ -40,7 +40,7 @@
 
     .nav a {
       text-decoration: none;
-      color: #fca311; /* Clean orange */
+      color: #fca311; 
       font-size: 16px;
       font-weight: 600;
       padding: 8px 20px;
@@ -63,29 +63,32 @@
       align-items: center;
       gap: 24px;
       padding: 24px;
-      /* Solid base, not frosted */
-      background: #1f2937;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      
+      /* Slightly opaque with a blur effect */
+      background: rgba(31, 41, 55, 0.55); 
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
       transition: all 0.3s ease;
     }
 
     .header:hover {
       transform: translateY(-1px);
-      border-color: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(31, 41, 55, 0.65);
     }
 
-    /* NO GLOWING EFFECT and cleaner border */
+    /* DP without glow, simple elegant border */
     .avatar {
       width: 100px;
       height: 100px;
       border-radius: 50%;
       object-fit: cover;
-      /* Simple solid border, matches background lines */
       border: 2px solid #a7f3d0;
       flex: 0 0 auto;
-      /* Removed all shadows/glows */
     }
 
     h1 {
@@ -93,7 +96,6 @@
       font-size: 36px;
       line-height: 1.2;
       letter-spacing: -0.5px;
-      /* Refined gradient, cleaner look */
       background: linear-gradient(90deg, #ffffff, #a7f3d0);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -115,13 +117,11 @@
       gap: 10px;
     }
 
-    /* Changed to match clean, cool background traces */
     .tag {
       font-size: 13px;
       font-weight: 600;
       padding: 6px 14px;
       border-radius: 999px;
-      /* New cyan accent */
       border: 1px solid rgba(167, 243, 208, 0.2);
       background: rgba(167, 243, 208, 0.05);
       color: #a7f3d0;
@@ -130,7 +130,7 @@
     }
 
     .tag:hover {
-      background: rgba(167, 243, 208, 0.1);
+      background: rgba(167, 243, 208, 0.15);
       border-color: #a7f3d0;
       color: #fff;
       transform: translateY(-1px);
@@ -151,7 +151,6 @@
       gap: 8px;
     }
 
-    /* Cleaner header accent */
     .section h2::before {
       content: "";
       display: block;
@@ -162,20 +161,25 @@
       box-shadow: 0 0 6px rgba(252, 163, 17, 0.4);
     }
 
-    /* Solid bases, not frosted, cleaner look */
+    /* Slightly opaque cards with blur */
     .card {
       padding: 24px;
       border-radius: 20px;
-      background: #1f2937;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      
+      /* Glass effect */
+      background: rgba(31, 41, 55, 0.55);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      
+      border: 1px solid rgba(255, 255, 255, 0.08);
       transition: all 0.3s ease;
     }
 
     .card:hover {
-      background: #111827;
-      border-color: rgba(255, 255, 255, 0.12);
+      background: rgba(31, 41, 55, 0.65);
+      border-color: rgba(255, 255, 255, 0.15);
       transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
     }
 
     .card h3 {
@@ -184,7 +188,6 @@
       color: #fff;
     }
 
-    /* Cleaner metadata color */
     .meta {
       margin: 8px 0 0;
       color: #a7f3d0;
@@ -235,7 +238,6 @@
           <h1>Joshva Jonathan Joseph</h1>
           <div class="title">Graduate Embedded Engineer</div>
 
-          <!-- TAGS UPDATED TO HYPERLINKS -->
           <div class="tags">
             <a href="embedded-c.html" class="tag">Embedded C / C++</a>
             <a href="embedded-linux.html" class="tag">Embedded Linux</a>
