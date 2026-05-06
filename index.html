@@ -16,13 +16,13 @@
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      background-color: #0f172a; /* Fallback dark color */
+      background-color: #0d1117; /* Fallback very dark color */
     }
 
-    /* Richer gradient overlay instead of flat black */
+    /* Subtler gradient overlay to focus on new background pattern */
     .overlay {
       min-height: 100vh;
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(0, 0, 0, 0.7) 100%);
+      background: rgba(0, 0, 0, 0.6);
       padding: 40px 16px 60px;
     }
 
@@ -40,21 +40,20 @@
 
     .nav a {
       text-decoration: none;
-      color: #ff9d00; /* Vibrant orange */
+      color: #fca311; /* Clean orange */
       font-size: 16px;
       font-weight: 600;
       padding: 8px 20px;
       border-radius: 12px;
-      background: rgba(255, 157, 0, 0.1);
-      border: 1px solid rgba(255, 157, 0, 0.2);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: rgba(252, 163, 17, 0.08);
+      border: 1px solid rgba(252, 163, 17, 0.2);
+      transition: all 0.25s ease-out;
     }
 
     .nav a:hover {
-      background: rgba(255, 157, 0, 0.2);
-      border-color: rgba(255, 157, 0, 0.6);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(255, 157, 0, 0.2);
+      background: rgba(252, 163, 17, 0.15);
+      border-color: rgba(252, 163, 17, 0.4);
+      transform: translateY(-1px);
       color: #fff;
     }
 
@@ -64,30 +63,29 @@
       align-items: center;
       gap: 24px;
       padding: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(255, 255, 255, 0.03);
+      /* Solid base, not frosted */
+      background: #1f2937;
+      border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 20px;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-      transition: transform 0.3s ease;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
     }
 
     .header:hover {
-      transform: translateY(-2px);
-      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.1);
     }
 
+    /* NO GLOWING EFFECT and cleaner border */
     .avatar {
       width: 100px;
       height: 100px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid transparent;
-      background: linear-gradient(#0f172a, #0f172a) padding-box, 
-                  linear-gradient(135deg, #ff9d00, #ff0080) border-box;
+      /* Simple solid border, matches background lines */
+      border: 2px solid #a7f3d0;
       flex: 0 0 auto;
-      box-shadow: 0 0 20px rgba(255, 157, 0, 0.3);
+      /* Removed all shadows/glows */
     }
 
     h1 {
@@ -95,8 +93,8 @@
       font-size: 36px;
       line-height: 1.2;
       letter-spacing: -0.5px;
-      /* Gradient text effect to make it pop */
-      background: linear-gradient(90deg, #ffffff, #cbd5e1);
+      /* Refined gradient, cleaner look */
+      background: linear-gradient(90deg, #ffffff, #a7f3d0);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -117,25 +115,25 @@
       gap: 10px;
     }
 
-    /* Changed to style <a> tags instead of spans */
+    /* Changed to match clean, cool background traces */
     .tag {
       font-size: 13px;
       font-weight: 600;
       padding: 6px 14px;
       border-radius: 999px;
-      border: 1px solid rgba(56, 189, 248, 0.3); /* Cyan tint */
-      background: rgba(56, 189, 248, 0.05);
-      color: #38bdf8; /* Cyan text */
+      /* New cyan accent */
+      border: 1px solid rgba(167, 243, 208, 0.2);
+      background: rgba(167, 243, 208, 0.05);
+      color: #a7f3d0;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
     }
 
     .tag:hover {
-      background: rgba(56, 189, 248, 0.2);
-      border-color: #38bdf8;
+      background: rgba(167, 243, 208, 0.1);
+      border-color: #a7f3d0;
       color: #fff;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+      transform: translateY(-1px);
     }
 
     /* ---------- Sections & Cards ---------- */
@@ -153,31 +151,30 @@
       gap: 8px;
     }
 
-    /* Adding a small colored dot next to headers */
+    /* Cleaner header accent */
     .section h2::before {
       content: "";
       display: block;
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #ff9d00;
-      box-shadow: 0 0 10px #ff9d00;
+      background: #fca311;
+      box-shadow: 0 0 6px rgba(252, 163, 17, 0.4);
     }
 
+    /* Solid bases, not frosted, cleaner look */
     .card {
       padding: 24px;
       border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: #1f2937;
+      border: 1px solid rgba(255, 255, 255, 0.06);
       transition: all 0.3s ease;
     }
 
     .card:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(255, 255, 255, 0.15);
-      transform: translateY(-4px);
+      background: #111827;
+      border-color: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
     }
 
@@ -187,9 +184,10 @@
       color: #fff;
     }
 
+    /* Cleaner metadata color */
     .meta {
       margin: 8px 0 0;
-      color: #38bdf8;
+      color: #a7f3d0;
       font-size: 14px;
       font-weight: 500;
     }
