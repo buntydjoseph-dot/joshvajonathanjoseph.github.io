@@ -231,9 +231,9 @@
         <h3>1. The Sentinel Application (/sentinel_source)</h3>
         <ul>
           <li>A C-based system monitoring program designed for low-overhead execution.</li>
-          <li>Interfaces directly with the Linux Kernel (via the <code>/proc</code> filesystem) to acquire real-time system load, memory, and performance metrics.</li>
-          <li>Implements a custom <b>TCP/IP socket server from scratch</b> to transmit diagnostic data over the network via a lightweight, HTTP-compatible protocol.</li>
-          <li>Manages custom logging via low-level POSIX system calls (<code>open</code>, <code>read</code>, <code>write</code>).</li>
+          <li>Interfaces directly with the Linux Kernel (via the <code>/proc/loadavg</code> filesystem) to acquire real-time system load averages.</li>
+          <li>Implements a custom <b>TCP/IP socket server from scratch</b> to transmit diagnostic data over the network via a lightweight, HTTP-compatible protocol on port 8080.</li>
+          <li>Manages custom logging to <code>sentinel.log</code> via low-level POSIX system calls (<code>open</code>, <code>read</code>, <code>write</code>).</li>
         </ul>
 
         <h3>2. The OS Build System (/buildroot_integration & defconfig)</h3>
