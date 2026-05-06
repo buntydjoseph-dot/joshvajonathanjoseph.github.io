@@ -6,85 +6,6 @@
   <title>Joshva Jonathan Joseph | Embedded Engineer</title>
 
   <style>
-    /* ---------- Hex / Binary Clock Widget ---------- */
-    .hw-clock {
-      position: fixed;
-      top: 24px; /* Changed from bottom to top */
-      right: 24px;
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 12px 16px;
-      border-radius: 12px;
-      font-family: 'Courier New', Courier, monospace;
-      color: #38bdf8;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      z-index: 1000;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-      transition: all 0.2s ease;
-      user-select: none;
-    }
-
-    .hw-clock:hover {
-      border-color: #38bdf8;
-      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.2);
-      transform: translateY(-2px);
-    }
-
-    .clock-label {
-      font-size: 11px;
-      color: #fbbf24;
-      margin-bottom: 6px;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-
-    #clock-display {
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 2px;
-    }
-
-    @media (max-width: 600px) {
-      .hw-clock { display: none; }
-    }
-
-    /* Activity LEDs Container */
-    .led-container {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      display: flex;
-      gap: 6px;
-      opacity: 0.3;
-      transition: opacity 0.3s;
-    }
-
-    .led {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background-color: #333;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-    }
-
-    .led.rx { background-color: #22c55e; }
-    .led.tx { background-color: #f97316; }
-
-    @keyframes flicker {
-      0%, 100% { opacity: 1; box-shadow: 0 0 8px currentColor; }
-      50% { opacity: 0.2; box-shadow: none; }
-    }
-
-    .card { position: relative; }
-    .card:hover .led-container { opacity: 1; }
-    .card:hover .led.rx { animation: flicker 0.15s infinite alternate; }
-    .card:hover .led.tx { animation: flicker 0.2s infinite alternate-reverse; }
-
     /* ---------- Base + Background ---------- */
     body {
       margin: 0;
@@ -138,6 +59,7 @@
 
     /* ---------- Header ---------- */
     .header {
+      position: relative; /* REQUIRED for the absolute clock to attach here */
       display: flex;
       align-items: center;
       gap: 24px;
@@ -211,6 +133,45 @@
       transform: translateY(-1px);
     }
 
+    /* ---------- Hex / Binary Clock Widget (Smaller & Anchored) ---------- */
+    .hw-clock {
+      position: absolute; /* Attaches to the nearest relative parent (.header) */
+      top: 16px;
+      right: 16px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 8px 12px; /* Made smaller */
+      border-radius: 10px;
+      font-family: 'Courier New', Courier, monospace;
+      color: #38bdf8;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .hw-clock:hover {
+      border-color: #38bdf8;
+      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
+    }
+
+    .clock-label {
+      font-size: 10px; /* Reduced text size */
+      color: #fbbf24;
+      margin-bottom: 4px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    #clock-display {
+      font-size: 13px; /* Reduced text size */
+      font-weight: 600;
+      letter-spacing: 1.5px;
+    }
+
     /* ---------- Sections & Cards ---------- */
     .section {
       margin-top: 32px;
@@ -237,6 +198,7 @@
     }
 
     .card {
+      position: relative;
       padding: 24px;
       border-radius: 20px;
       background: rgba(15, 23, 42, 0.75);
@@ -281,7 +243,38 @@
       color: #fff;
     }
 
-    /* ---------- NEW: Boot Sequence ---------- */
+    /* Activity LEDs Container */
+    .led-container {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      gap: 6px;
+      opacity: 0.3;
+      transition: opacity 0.3s;
+    }
+
+    .led {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #333;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+    }
+
+    .led.rx { background-color: #22c55e; } 
+    .led.tx { background-color: #f97316; } 
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px currentColor; }
+      50% { opacity: 0.2; box-shadow: none; }
+    }
+
+    .card:hover .led-container { opacity: 1; }
+    .card:hover .led.rx { animation: flicker 0.15s infinite alternate; }
+    .card:hover .led.tx { animation: flicker 0.2s infinite alternate-reverse; }
+
+    /* ---------- Boot Sequence ---------- */
     #boot-screen {
       position: fixed;
       top: 0;
@@ -306,7 +299,7 @@
       white-space: nowrap;
     }
 
-    /* ---------- NEW: Terminal Section ---------- */
+    /* ---------- Terminal Section ---------- */
     .terminal-container {
       background: #1e1e1e;
       border-radius: 12px;
@@ -372,18 +365,13 @@
       h1 { font-size: 28px; }
       .nav { justify-content: center; width: 100%; }
       .section h2 { justify-content: center; margin-left: 0; }
+      .hw-clock { display: none; } /* Hide clock on mobile so it doesn't overlap text */
     }
   </style>
 </head>
 
 <body>
   <div id="boot-screen"></div>
-
-  <!-- MOVED CLOCK HTML HERE (Above the script) -->
-  <div id="hw-clock" class="hw-clock" title="Click to toggle Base-16 / Base-2">
-    <div class="clock-label">SYS_RTC_CLK <span id="clock-base">[HEX]</span></div>
-    <div id="clock-display">0x00 : 0x00 : 0x00</div>
-  </div>
 
   <div class="overlay" id="main-content" style="opacity: 0; transition: opacity 0.5s ease-in;">
     <div class="container">
@@ -403,6 +391,11 @@
             <a href="bare-metal.html" class="tag">Bare-Metal Firmware</a>
             <a href="freertos.html" class="tag">FreeRTOS</a>
           </div>
+        </div>
+
+        <div id="hw-clock" class="hw-clock" title="Click to toggle Base-16 / Base-2">
+          <div class="clock-label">SYS_RTC_CLK <span id="clock-base">[HEX]</span></div>
+          <div id="clock-display">0x00 : 0x00 : 0x00</div>
         </div>
       </header>
 
@@ -453,7 +446,7 @@
             
             <div class="input-line">
               <span class="prompt-user">root@stm32-board</span>:<span class="prompt-dir">~</span>$ 
-              <input type="text" class="terminal-input" id="cmd-input" autocomplete="off" spellcheck="false" autofocus>
+              <input type="text" class="terminal-input" id="cmd-input" autocomplete="off" spellcheck="false">
             </div>
           </div>
         </div>
@@ -482,7 +475,6 @@
     const bootScreen = document.getElementById('boot-screen');
     const mainContent = document.getElementById('main-content');
     
-    // Simulate boot logs printing
     let delay = 0;
     bootLogs.forEach((log, index) => {
       setTimeout(() => {
@@ -491,18 +483,18 @@
         p.textContent = log;
         bootScreen.appendChild(p);
       }, delay);
-      delay += Math.random() * 100 + 50; // Random delay between logs
+      delay += Math.random() * 100 + 50; 
     });
 
-    // Hide boot screen and show portfolio
     setTimeout(() => {
       bootScreen.style.opacity = '0';
       setTimeout(() => {
         bootScreen.style.display = 'none';
         mainContent.style.opacity = '1';
-      }, 500); // wait for fade out
+        // Auto focus terminal after boot sequence
+        document.getElementById('cmd-input').focus();
+      }, 500); 
     }, delay + 300);
-
 
     // --- FEATURE 2: INTERACTIVE TERMINAL ---
     const inputField = document.getElementById('cmd-input');
@@ -511,18 +503,14 @@
     inputField.addEventListener('keypress', function (e) {
       if (e.key === 'Enter') {
         const cmd = this.value.trim().toLowerCase();
-        
-        // Remove current input line
         const currentInputLine = this.parentElement;
         terminalBody.removeChild(currentInputLine);
 
-        // Print what the user typed
         const historyLine = document.createElement('div');
         historyLine.className = 'terminal-line';
         historyLine.innerHTML = `<span class="prompt-user">root@stm32-board</span>:<span class="prompt-dir">~</span>$ ${this.value}`;
         terminalBody.appendChild(historyLine);
 
-        // Process Command
         let response = "";
         switch(cmd) {
           case 'help':
@@ -544,7 +532,7 @@
             response = "guest is not in the sudoers file. This incident will be reported.";
             break;
           case '':
-            response = ""; // empty enter press
+            response = ""; 
             break;
           default:
             response = `bash: ${cmd}: command not found`;
@@ -557,26 +545,23 @@
           terminalBody.appendChild(responseLine);
         }
 
-        // Re-add input line
         terminalBody.appendChild(currentInputLine);
         this.value = '';
         this.focus();
-        terminalBody.scrollTop = terminalBody.scrollHeight; // auto-scroll
+        terminalBody.scrollTop = terminalBody.scrollHeight; 
       }
     });
 
-    // Keep focus on input when clicking inside terminal
     terminalBody.addEventListener('click', () => {
       inputField.focus();
     });
-
 
     // --- FEATURE 3: HEX / BINARY CLOCK ---
     const clockDisplay = document.getElementById('clock-display');
     const clockBaseLabel = document.getElementById('clock-base');
     const clockContainer = document.getElementById('hw-clock');
     
-    let clockMode = 'hex'; // starts in hexadecimal mode
+    let clockMode = 'hex'; 
 
     function updateClock() {
       const now = new Date();
@@ -585,14 +570,12 @@
       let s = now.getSeconds();
 
       if (clockMode === 'hex') {
-        // Convert to Hex and pad to 2 digits (e.g., 0A, 1F)
         h = '0x' + h.toString(16).padStart(2, '0').toUpperCase();
         m = '0x' + m.toString(16).padStart(2, '0').toUpperCase();
         s = '0x' + s.toString(16).padStart(2, '0').toUpperCase();
         clockDisplay.textContent = `${h} : ${m} : ${s}`;
         clockBaseLabel.textContent = "[HEX]";
       } else {
-        // Convert to Binary and pad to 8 bits (e.g., 00010110)
         h = h.toString(2).padStart(8, '0');
         m = m.toString(2).padStart(8, '0');
         s = s.toString(2).padStart(8, '0');
@@ -601,15 +584,13 @@
       }
     }
 
-    // Toggle mode on click
     clockContainer.addEventListener('click', () => {
       clockMode = clockMode === 'hex' ? 'bin' : 'hex';
-      updateClock(); // Force immediate update on click
+      updateClock(); 
     });
 
-    // Start the clock pulse (1Hz frequency)
     setInterval(updateClock, 1000);
-    updateClock(); // Initial call to avoid 1-second delay
+    updateClock(); 
   </script>
 </body>
 </html>
