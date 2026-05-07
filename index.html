@@ -400,6 +400,27 @@
       </header>
 
       <section class="section">
+        <h2>Interactive Shell</h2>
+        <div class="terminal-container">
+          <div class="terminal-header">
+            <div class="mac-btn close"></div>
+            <div class="mac-btn min"></div>
+            <div class="mac-btn max"></div>
+            <span>root@stm32-board: ~</span>
+          </div>
+          <div class="terminal-body" id="terminal-body">
+            <div class="terminal-line">Welcome to JoshOS v1.0.0 LTS (Embedded Linux)</div>
+            <div class="terminal-line">Type 'help' to see available commands.</div>
+            
+            <div class="input-line">
+              <span class="prompt-user">root@stm32-board</span>:<span class="prompt-dir">~</span>$ 
+              <input type="text" class="terminal-input" id="cmd-input" autocomplete="off" spellcheck="false">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
         <h2>Experience</h2>
         <div class="card">
           <div class="led-container">
@@ -428,27 +449,6 @@
             <li><strong>Protocols & IoT:</strong> I²C, SPI, UART/USART, CAN, RS-485, LoRa/LoRaWAN, MQTT, BLE</li>
             <li><strong>Machine Learning:</strong> Edge AI / TinyML, Deep Learning, Sensor Data Classification</li>
           </ul>
-        </div>
-      </section>
-
-      <section class="section">
-        <h2>Interactive Shell</h2>
-        <div class="terminal-container">
-          <div class="terminal-header">
-            <div class="mac-btn close"></div>
-            <div class="mac-btn min"></div>
-            <div class="mac-btn max"></div>
-            <span>root@stm32-board: ~</span>
-          </div>
-          <div class="terminal-body" id="terminal-body">
-            <div class="terminal-line">Welcome to JoshOS v1.0.0 LTS (Embedded Linux)</div>
-            <div class="terminal-line">Type 'help' to see available commands.</div>
-            
-            <div class="input-line">
-              <span class="prompt-user">root@stm32-board</span>:<span class="prompt-dir">~</span>$ 
-              <input type="text" class="terminal-input" id="cmd-input" autocomplete="off" spellcheck="false">
-            </div>
-          </div>
         </div>
       </section>
 
@@ -514,13 +514,19 @@
         let response = "";
         switch(cmd) {
           case 'help':
-            response = "Available commands:<br>- <b>whoami</b>: Display info<br>- <b>skills</b>: List technical proficiencies<br>- <b>contact</b>: Get email address<br>- <b>clear</b>: Clear terminal";
+            response = "Available commands:<br>- <b>whoami</b>: Display info<br>- <b>skills</b>: List technical proficiencies<br>- <b>projects</b>: View portfolio projects<br>- <b>contact</b>: Get email address<br>- <b>clear</b>: Clear terminal";
             break;
           case 'whoami':
             response = "Joshva Jonathan Joseph - Graduate Embedded Engineer<br>Passionate about Micro-Controllers, Embedded systems.";
             break;
           case 'skills':
             response = "Loading skills array...<br>[Embedded C, C++, Python, Bash, Linux, BareMetal, ComProtocols, Hardware-Bringup]";
+            break;
+          case 'projects':
+            response = "Loading projects module... redirecting...";
+            setTimeout(() => {
+              window.location.href = 'projects.html';
+            }, 600); // Redirects after a short terminal delay
             break;
           case 'contact':
             response = "Email: detroit8milejoe@gmail.com";
