@@ -180,7 +180,6 @@
   <div class="overlay">
     <div class="container">
 
-      <!-- NAVIGATION -->
       <nav class="nav">
         <a href="../index.html">Home</a>
         <a href="../projects.html">Projects</a>
@@ -188,7 +187,6 @@
 
       <h1>LoRa + MQTT Smart Agriculture Monitoring & Irrigation System</h1>
 
-      <!-- OVERVIEW CARD -->
       <div class="card">
         <div class="desc">
           Architected a distributed IoT agricultural automation system engineered to resolve real-world field deployment constraints, including long-range sensor telemetry, network latency, and deterministic actuator control.
@@ -197,7 +195,19 @@
         </div>
       </div>
 
-      <!-- ARCHITECTURE CARD -->
+      <div class="card">
+        <h2>Greenhouse Wi-Fi IoT Architecture</h2>
+        <div class="desc">
+          To manage high-throughput environmental data across the greenhouse, the system implements a localized Wi-Fi sensor network utilizing the ESP32 ecosystem alongside a dedicated MQTT broker.
+          <ul>
+            <li><b>[Sensor Nodes]</b> Distributed ESP32 microcontrollers are positioned across the greenhouse. They sample local telemetry and utilize their onboard Wi-Fi to publish real-time data payloads.</li>
+            <li><b>[MQTT Hub]</b> A Raspberry Pi, configured with an MQTT broker, acts as the central hub on the same Wi-Fi network. It orchestrates all message routing, ensuring reliable data flow from the nodes.</li>
+            <li><b>[Main Controller]</b> An Arduino Mega2560 paired with an ESP8266 acts as the master edge controller. It subscribes to the MQTT topics via Wi-Fi, retrieves the aggregated sensor data from the Raspberry Pi, and executes deterministic irrigation and climate control logic.</li>
+          </ul>
+        </div>
+        <img src="../im.png" alt="Greenhouse Wi-Fi MQTT Architecture Diagram">
+      </div>
+
       <div class="card">
         <h2>System Architecture</h2>
         <div class="desc">
@@ -213,7 +223,6 @@
         <img src="../arch.jpeg" alt="System Architecture Diagram">
       </div>
 
-      <!-- CONTRIBUTIONS CARD -->
       <div class="card">
         <h2>Key Contributions</h2>
         <ul>
@@ -225,10 +234,10 @@
             <strong>Edge Controller Firmware:</strong> Spearheaded firmware development for the central main controller, implementing deterministic automation logic, sensor polling schedules, and state-machine-based system coordination.
           </li>
           <li>
-            <strong>LoRa Soil Node Development:</strong> Engineered low-power firmware for distributed soil monitoring nodes, optimizing multi-sensor data acquisition, ADC preprocessing, and efficient LoRa payload packaging for long-range telemetry.
+            <strong>Wi-Fi Sensor Node Development:</strong> Engineered firmware for distributed ESP32 monitoring nodes, optimizing multi-sensor data acquisition and establishing reliable MQTT publish/subscribe routines over local Wi-Fi.
           </li>
           <li>
-            <strong>Weather Node Integration:</strong> Implemented wired telemetry firmware for environmental monitoring nodes, ensuring robust data sampling and reliable transmission over local interfaces.
+            <strong>LoRa Soil Node Development:</strong> Engineered low-power firmware for distributed soil monitoring nodes, optimizing multi-sensor data acquisition, ADC preprocessing, and efficient LoRa payload packaging for long-range telemetry.
           </li>
           <li>
             <strong>RF-to-MQTT Concentrator:</strong> Programmed the LoRa gateway concentrator to aggregate high-throughput sensor data from distributed field nodes and publish seamlessly to a Mosquitto MQTT broker for cloud and local consumption.
