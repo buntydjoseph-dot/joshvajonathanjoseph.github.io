@@ -1,3 +1,6 @@
+Here is the updated HTML with your two new experiences added to the **Experience** section in reverse chronological order. They seamlessly inherit the "card" and "LED activity" styling from your existing portfolio.
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -206,6 +209,7 @@
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.1);
       transition: all 0.3s ease;
+      margin-bottom: 24px; /* Added spacing between cards */
     }
 
     .card:hover {
@@ -422,6 +426,48 @@
 
       <section class="section">
         <h2>Experience</h2>
+        
+        <!-- Roedan Embedded Systems Limited Card -->
+        <div class="card">
+          <div class="led-container">
+            <div class="led rx" title="Rx Activity"></div>
+            <div class="led tx" title="Tx Activity"></div>
+          </div>
+          <h3>Firmware & Embedded Systems Engineer</h3>
+          <p class="meta">Roedan Embedded Systems Limited • Oct 2025 – May 2026 • United Kingdom</p>
+          <ul>
+            <li>Developed and maintained embedded firmware and C/C++ software for embedded Linux and microcontroller-based systems.</li>
+            <li>Supported full software development lifecycle activities including software design, implementation, testing, debugging, deployment, and maintenance.</li>
+            <li>Performed embedded system debugging, diagnostics, and troubleshooting using GDB, Linux logs, and low-level debugging tools.</li>
+            <li>Supported embedded communication and connected device integration activities involving embedded networking and communication interfaces.</li>
+            <li>Conducted firmware validation, integration testing, system testing, and performance analysis for embedded products.</li>
+            <li>Assisted with hardware–software integration and board-level system interaction activities.</li>
+            <li>Produced technical documentation including design specifications, validation procedures, operating instructions, and engineering notes.</li>
+            <li>Supported version control, software maintenance, and structured engineering development processes.</li>
+          </ul>
+        </div>
+
+        <!-- Mutex Embedded Solutions Card -->
+        <div class="card">
+          <div class="led-container">
+            <div class="led rx" title="Rx Activity"></div>
+            <div class="led tx" title="Tx Activity"></div>
+          </div>
+          <h3>Firmware & Embedded Systems Engineer</h3>
+          <p class="meta">Mutex Embedded Solutions • Sep 2024 – Sep 2025 • United Kingdom</p>
+          <ul>
+            <li>Developed embedded firmware and supported software integration across IoT-enabled and embedded hardware platforms.</li>
+            <li>Participated in embedded system design, testing, validation, and verification activities within Agile engineering environments.</li>
+            <li>Supported embedded communication and IoT integration activities involving wireless device communication and embedded networking concepts.</li>
+            <li>Worked with embedded communication interfaces including UART, SPI, I2C, and Ethernet.</li>
+            <li>Assisted with debugging firmware, communication interfaces, and hardware-connected embedded systems.</li>
+            <li>Supported system reliability improvements, firmware troubleshooting, and embedded diagnostics activities.</li>
+            <li>Contributed to technical documentation, engineering reports, and structured validation procedures.</li>
+            <li>Assisted with integration and testing activities for connected embedded systems and smart device applications.</li>
+          </ul>
+        </div>
+
+        <!-- Cenaura Technologies Card (Original) -->
         <div class="card">
           <div class="led-container">
             <div class="led rx" title="Rx Activity"></div>
@@ -595,3 +641,5 @@
   </script>
 </body>
 </html>
+
+```
