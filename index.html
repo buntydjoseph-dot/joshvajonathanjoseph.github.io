@@ -134,14 +134,14 @@
       transform: translateY(-1px);
     }
 
-    /* ---------- Hex / Binary Clock Widget ---------- */
+    /* ---------- Hex / Binary Clock Widget (Smaller & Anchored) ---------- */
     .hw-clock {
-      position: absolute; 
+      position: absolute; /* Attaches to the nearest relative parent (.header) */
       top: 16px;
       right: 16px;
       background: rgba(15, 23, 42, 0.85);
       border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 8px 12px; 
+      padding: 8px 12px; /* Made smaller */
       border-radius: 10px;
       font-family: 'Courier New', Courier, monospace;
       color: #38bdf8;
@@ -160,7 +160,7 @@
     }
 
     .clock-label {
-      font-size: 10px; 
+      font-size: 10px; /* Reduced text size */
       color: #fbbf24;
       margin-bottom: 4px;
       font-weight: bold;
@@ -168,7 +168,7 @@
     }
 
     #clock-display {
-      font-size: 13px; 
+      font-size: 13px; /* Reduced text size */
       font-weight: 600;
       letter-spacing: 1.5px;
     }
@@ -207,7 +207,7 @@
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.1);
       transition: all 0.3s ease;
-      margin-bottom: 24px; 
+      margin-bottom: 24px; /* Added spacing between cards */
     }
 
     .card:hover {
@@ -367,7 +367,7 @@
       h1 { font-size: 28px; }
       .nav { justify-content: center; width: 100%; }
       .section h2 { justify-content: center; margin-left: 0; }
-      .hw-clock { display: none; } 
+      .hw-clock { display: none; } /* Hide clock on mobile so it doesn't overlap text */
     }
   </style>
 </head>
@@ -429,27 +429,16 @@
             <div class="led rx" title="Rx Activity"></div>
             <div class="led tx" title="Tx Activity"></div>
           </div>
-          
-          <div style="display: flex; flex-direction: column; gap: 20px;">
-            <div>
-              <h3>Firmware & Embedded Systems Engineer</h3>
-              <p class="meta">Roedan Embedded Systems Limited • Oct 2025 – May 2026 • United Kingdom</p>
-              <p style="color: #e2e8f0; font-size: 14px; margin-top: 8px; line-height: 1.5;">Developed and maintained embedded firmware for Linux and microcontroller systems, leading full-lifecycle software design, hardware-software validation, and low-level system debugging.</p>
-            </div>
-            
-            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
-              <h3>Firmware & Embedded Systems Engineer</h3>
-              <p class="meta">Mutex Embedded Solutions • Sep 2024 – Sep 2025 • United Kingdom</p>
-              <p style="color: #e2e8f0; font-size: 14px; margin-top: 8px; line-height: 1.5;">Engineered IoT firmware and wireless device communication within Agile environments, integrating protocols (UART, SPI, I2C, Ethernet) to ensure robust connected embedded architectures.</p>
-            </div>
-
-            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
-              <h3>Embedded Engineer</h3>
-              <p class="meta">Cenaura Technologies • July 2022 – Dec 2023 • Hyderabad</p>
-              <p style="color: #e2e8f0; font-size: 14px; margin-top: 8px; line-height: 1.5;">Architected precision automation firmware and long-range LoRa/MQTT edge networks, spearheading initial PCB bring-up, telemetry pipeline optimization, and hardware signal validation.</p>
-            </div>
-          </div>
-
+          <h3>Firmware & Embedded Systems Engineer</h3>
+          <p class="meta">~3 Years Total Industry Experience</p>
+          <ul>
+            <li>Developed and maintained robust embedded firmware and C/C++ software for various embedded Linux and microcontroller-based platforms, managing the full software development lifecycle from design to deployment.</li>
+            <li>Architected and optimized IoT and connected device integration pipelines, leveraging wireless protocols such as LoRa/LoRaWAN, Wi-Fi, and MQTT over Mosquitto brokers for reliable data telemetry.</li>
+            <li>Engineered precision automation firmware and low-level peripheral drivers for UART, SPI, I²C, CAN, and RS-485 interfaces, ensuring deterministic inter-system communication.</li>
+            <li>Performed deep system diagnostics, troubleshooting, and PCB bring-up using JTAG/SWD debuggers, logic analyzers, oscilloscopes, and analysis of Linux kernel logs to resolve complex integration issues.</li>
+            <li>Spearheaded system reliability improvements, firmware troubleshooting, and hardware-software interaction activities within dynamic Agile engineering environments.</li>
+            <li>Produced comprehensive technical documentation, including design specifications, validation procedures, engineering reports, and operating instructions aligned with structured engineering development processes.</li>
+          </ul>
         </div>
       </section>
 
@@ -538,7 +527,7 @@
             }, 600); // Redirects after a short terminal delay
             break;
           case 'contact':
-            response = "Email: detroit8milejoe@gmail.com";
+            response = "Email: josephjoshvajonathan@gmail.com";
             break;
           case 'clear':
             terminalBody.innerHTML = '';
