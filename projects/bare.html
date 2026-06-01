@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bare-Metal GPIO Controller | Joshva Jonathan Joseph</title>
+
+  <style>
+    /* ---------- Base + Background ---------- */
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: #f8fafc; /* Crisp white for contrast */
+      
+      /* Kept exact file name as requested */
+      background-image: url("../background.png.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-color: #0f172a; 
+    }
+
+    /* Darker overall overlay for readability against bright desk/lamp */
+    .overlay {
+      min-height: 100vh;
+      background: rgba(15, 23, 42, 0.65); 
+      padding: 40px 16px 60px;
+    }
+
+    .container {
+      width: min(1000px, 92%);
+      margin: 0 auto;
+    }
+
+    /* ---------- Navigation ---------- */
+    .nav {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: #fbbf24; /* Warm amber */
+      font-size: 16px;
+      font-weight: 600;
+      padding: 8px 20px;
+      border-radius: 12px;
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      transition: all 0.25s ease-out;
+    }
+
+    .nav a:hover {
+      background: rgba(251, 191, 36, 0.2);
+      border-color: rgba(251, 191, 36, 0.5);
+      transform: translateY(-1px);
+      color: #fff;
+    }
+
+    /* ---------- Headings ---------- */
+    h1 {
+      margin: 0 0 20px 0;
+      font-size: 32px;
+      line-height: 1.3;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, #ffffff, #bae6fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h2 {
+      margin: 0 0 16px 8px;
+      font-size: 22px;
+      font-weight: 600;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h2::before {
+      content: "";
+      display: block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fbbf24;
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
+    }
+
+    /* ---------- Cards ---------- */
+    .card {
+      padding: 24px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      
+      /* Deep slate glass effect */
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      background: rgba(15, 23, 42, 0.85);
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .desc {
+      color: #cbd5e1;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .desc b {
+      color: #fff;
+    }
+
+    /* ---------- Lists ---------- */
+    ul {
+      color: #cbd5e1;
+      line-height: 1.7;
+      padding-left: 20px;
+      margin-top: 12px;
+    }
+
+    li {
+      margin-bottom: 12px;
+    }
+
+    li strong {
+      color: #38bdf8; /* Terminal blue accent for role/headers */
+    }
+
+    /* ---------- Media / Grid ---------- */
+    img, video {
+      width: 100%;
+      border-radius: 12px;
+      margin-top: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: #0f172a;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .node-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .node-card {
+      text-align: center;
+    }
+
+    .node-card img {
+      width: 100%;
+      max-width: 420px;
+      height: 260px;
+      object-fit: cover;
+      border-radius: 14px;
+      margin-top: 10px;
+    }
+
+    /* ---------- Mobile Polish ---------- */
+    @media (max-width: 768px) {
+      .node-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 26px; }
+      .nav { justify-content: center; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="overlay">
+    <div class="container">
+
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="../projects.html">Projects</a>
+      </nav>
+
+      <h1>Bare-Metal STM32F407VET6 GPIO Controller (No HAL)</h1>
+
+      <div class="card">
+        <div class="desc">
+          Engineered a functional General-Purpose Input/Output (GPIO) controller entirely from scratch, intentionally bypassing the Hardware Abstraction Layer (HAL) to develop a foundational understanding of the underlying ARM Cortex-M hardware architecture and memory-mapped I/O.
+          <br><br>
+          The implementation was written purely in <b>C</b>, utilizing direct pointer manipulation to interact with specific memory addresses derived from the <b>STM32 Reference Manual (RM0090)</b> and the board's hardware schematics.
+        </div>
+        <video src="../bare.mp4" controls autoplay loop muted></video>
+      </div>
+
+      <div class="card">
+        <h2>Hardware & Implementation Strategy</h2>
+        <div class="desc">
+          The core objective was to bridge physical hardware schematics with low-level firmware initialization, resulting in functional LED toggle control based on physical pin states.
+          <ul>
+            <li><b>[Hardware Target]</b> Executed on an STM32F407VET6 development board.</li>
+            <li><b>[Clock Configuration]</b> Manually enabled the peripheral clock by configuring the Reset and Clock Control (RCC) registers.</li>
+            <li><b>[Pin Configuration]</b> Set the required input and output modes using the GPIO MODER registers.</li>
+            <li><b>[Control Logic]</b> Established the software logic by continuously polling the Input Data Register (IDR) and writing the resulting output state to the Output Data Register (ODR).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Validation & Debugging</h2>
+        <div class="desc">
+          Hardware behavior was validated through direct manipulation and real-time monitoring to ensure exact register compliance.
+          <ul>
+            <li><b>[Physical Interaction]</b> Altered the input state manually by jumping a pin on the board to trigger the control logic.</li>
+            <li><b>[Live Hex Monitoring]</b> Conducted live debugging sessions via an <b>ST-LINK V2</b> interface.</li>
+            <li><b>[Verification]</b> Observed raw register hex values updating dynamically in the IDE, perfectly mirroring the physical state changes and confirming the successful execution of the custom bare-metal driver.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
