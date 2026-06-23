@@ -719,10 +719,11 @@
     const dataTopic = "esp32/bmp280/data";
     const commandTopic = "esp32/bmp280/command";
 
-    const mqttClient = mqtt.connect("ws://broker.hivemq.com:8000/mqtt", {
-      clientId: "joshva_portfolio_" + Math.random().toString(16).substring(2, 10),
-      protocolVersion: 4
-    });
+   
+    const mqttClient = mqtt.connect("ws://broker.mqttdashboard.com:8000/mqtt", {
+  clientId: "joshva_portfolio_" + Math.random().toString(16).substring(2, 10),
+  protocolVersion: 4
+});
 
     mqttClient.on("connect", function () {
       console.log("Portfolio connected to HiveMQ WebSocket");
