@@ -720,9 +720,11 @@
     const commandTopic = "esp32/bmp280/command";
 
    
-    const mqttClient = mqtt.connect("ws://broker.mqttdashboard.com:8000/mqtt", {
+    const mqttClient = mqtt.connect("wss://broker.hivemq.com:8884/mqtt", {
   clientId: "joshva_portfolio_" + Math.random().toString(16).substring(2, 10),
-  protocolVersion: 4
+  protocolVersion: 4,
+  reconnectPeriod: 2000,
+  connectTimeout: 8000
 });
 
     mqttClient.on("connect", function () {
