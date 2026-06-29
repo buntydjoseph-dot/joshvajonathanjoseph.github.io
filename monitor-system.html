@@ -1,18 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Environmental Monitoring System | Joshva Jonathan Joseph</title>
+  <meta name="description" content="Embedded Linux environmental monitoring system with MQTT telemetry, fan control, service logs, and system architecture." />
+  <title>Home Monitor System | Joshva Jonathan Joseph</title>
+
   <style>
     :root {
       --bg: #020617;
-      --panel: rgba(15, 23, 42, 0.78);
-      --panel-strong: rgba(2, 6, 23, 0.86);
+      --panel: rgba(15, 23, 42, 0.80);
+      --panel-strong: rgba(2, 6, 23, 0.88);
       --line: rgba(148, 163, 184, 0.18);
       --cyan: #38bdf8;
-      --cyan-soft: rgba(56, 189, 248, 0.15);
+      --cyan-soft: rgba(56, 189, 248, 0.14);
       --amber: #fbbf24;
       --green: #22c55e;
       --red: #fb7185;
@@ -23,15 +24,17 @@
 
     * { box-sizing: border-box; }
 
+    html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
       min-height: 100vh;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 18% 20%, rgba(56, 189, 248, 0.25), transparent 32%),
-        radial-gradient(circle at 82% 8%, rgba(251, 191, 36, 0.18), transparent 28%),
-        radial-gradient(circle at 65% 80%, rgba(34, 197, 94, 0.16), transparent 30%),
+        radial-gradient(circle at 18% 20%, rgba(56, 189, 248, 0.22), transparent 32%),
+        radial-gradient(circle at 82% 8%, rgba(251, 191, 36, 0.16), transparent 28%),
+        radial-gradient(circle at 65% 80%, rgba(34, 197, 94, 0.13), transparent 30%),
         linear-gradient(135deg, #020617 0%, #0f172a 48%, #111827 100%);
       overflow-x: hidden;
     }
@@ -42,11 +45,11 @@
       inset: 0;
       pointer-events: none;
       background-image:
-        linear-gradient(rgba(56, 189, 248, 0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(56, 189, 248, 0.06) 1px, transparent 1px);
+        linear-gradient(rgba(56, 189, 248, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.055) 1px, transparent 1px);
       background-size: 52px 52px;
       mask-image: radial-gradient(circle at center, black, transparent 78%);
-      animation: driftGrid 16s linear infinite;
+      animation: driftGrid 18s linear infinite;
     }
 
     @keyframes driftGrid {
@@ -60,7 +63,7 @@
       height: 260px;
       border-radius: 999px;
       filter: blur(55px);
-      opacity: 0.38;
+      opacity: 0.34;
       pointer-events: none;
       animation: floatOrb 10s ease-in-out infinite alternate;
     }
@@ -95,19 +98,23 @@
       gap: 10px;
       color: var(--text);
       text-decoration: none;
-      font-weight: 800;
+      font-weight: 850;
       letter-spacing: 0.3px;
     }
 
     .brand-mark {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 12px;
       background: linear-gradient(135deg, var(--cyan), var(--amber));
       box-shadow: 0 0 28px rgba(56, 189, 248, 0.35);
     }
 
-    .nav-links { display: flex; flex-wrap: wrap; gap: 10px; }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
 
     .nav a:not(.brand) {
       color: var(--muted);
@@ -120,11 +127,13 @@
       font-weight: 650;
     }
 
-    .nav a:not(.brand):hover {
+    .nav a:not(.brand):hover,
+    .nav a:not(.brand):focus-visible {
       color: white;
       border-color: rgba(56, 189, 248, 0.45);
       background: rgba(56, 189, 248, 0.11);
       transform: translateY(-1px);
+      outline: none;
     }
 
     .hero {
@@ -134,14 +143,16 @@
       align-items: stretch;
     }
 
-    .glass {
+    .glass,
+    .card {
       border: 1px solid var(--line);
       background: var(--panel);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border-radius: 28px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.42);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.38);
     }
+
+    .glass { border-radius: 28px; }
 
     .hero-copy {
       padding: 34px;
@@ -209,26 +220,6 @@
       margin: 0;
     }
 
-    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
-
-    .btn {
-      border: 0;
-      border-radius: 16px;
-      padding: 12px 18px;
-      font-size: 14px;
-      font-weight: 850;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: 0.22s ease;
-    }
-
-    .btn.primary { color: #04111f; background: var(--amber); }
-    .btn.secondary { color: var(--text); background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); }
-    .btn:hover { transform: translateY(-2px); filter: brightness(1.06); }
-
     .hero-panel {
       padding: 22px;
       display: flex;
@@ -255,7 +246,7 @@
       gap: 12px;
       align-items: center;
       color: var(--dim);
-      font-family: Consolas, 'Courier New', monospace;
+      font-family: Consolas, "Courier New", monospace;
       font-size: 12px;
       margin-bottom: 16px;
     }
@@ -266,7 +257,14 @@
       color: #bbf7d0;
       border-radius: 999px;
       padding: 6px 10px;
-      font-weight: 800;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .status-pill.offline {
+      border-color: rgba(251, 113, 133, 0.38);
+      background: rgba(251, 113, 133, 0.12);
+      color: #fecdd3;
     }
 
     .gauge-grid {
@@ -308,9 +306,16 @@
       letter-spacing: -1.5px;
     }
 
-    .metric-unit { color: var(--cyan); font-size: 15px; font-weight: 800; }
+    .metric-unit {
+      color: var(--cyan);
+      font-size: 15px;
+      font-weight: 800;
+    }
 
-    .metric.full { grid-column: 1 / -1; min-height: auto; }
+    .metric.full {
+      grid-column: 1 / -1;
+      min-height: auto;
+    }
 
     .bar {
       margin-top: 12px;
@@ -353,49 +358,25 @@
 
     .dashboard-grid {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 0.9fr 1.1fr;
       gap: 20px;
     }
 
     .card {
       padding: 22px;
       border-radius: 24px;
-      border: 1px solid var(--line);
-      background: var(--panel);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
     }
 
-    .card h3 { margin: 0 0 6px; font-size: 18px; }
-    .card p { margin: 0; color: var(--muted); line-height: 1.65; }
-
-    .telemetry-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 18px;
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
     }
 
-    .tile {
-      border: 1px solid rgba(148, 163, 184, 0.15);
-      background: var(--panel-strong);
-      border-radius: 18px;
-      padding: 15px;
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
     }
-
-    .tile small {
-      display: block;
-      color: var(--dim);
-      font-weight: 800;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      font-size: 11px;
-      margin-bottom: 9px;
-    }
-
-    .tile strong { font-size: 24px; letter-spacing: -0.5px; }
-    .tile span { color: var(--cyan); font-weight: 800; margin-left: 2px; }
 
     .controls {
       display: grid;
@@ -417,8 +398,42 @@
     }
 
     .control-btn.alt { background: var(--cyan); }
-    .control-btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
 
+    .control-btn:hover,
+    .control-btn:focus-visible {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+      outline: none;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .status-card {
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      background: var(--panel-strong);
+      border-radius: 18px;
+      padding: 15px;
+    }
+
+    .status-card small {
+      display: block;
+      color: var(--dim);
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      font-size: 11px;
+      margin-bottom: 9px;
+    }
+
+    .status-card strong {
+      font-size: 22px;
+      letter-spacing: -0.4px;
+    }
 
     .flow {
       display: grid;
@@ -450,22 +465,16 @@
 
     .node-icon { font-size: 26px; }
     .node h3 { margin: 12px 0 8px; font-size: 16px; }
-    .node p { color: var(--dim); font-size: 13px; line-height: 1.5; }
-
-    .split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
+    .node p { color: var(--dim); font-size: 13px; line-height: 1.5; margin: 0; }
 
     .log-box {
-      height: 270px;
+      height: 290px;
       overflow-y: auto;
       border-radius: 18px;
       background: #020617;
       border: 1px solid rgba(148, 163, 184, 0.14);
       padding: 15px;
-      font-family: Consolas, 'Courier New', monospace;
+      font-family: Consolas, "Courier New", monospace;
       color: #d1fae5;
       font-size: 13px;
       line-height: 1.6;
@@ -477,37 +486,6 @@
     .log-warn { color: #fde68a; }
     .log-err { color: #fda4af; }
 
-    .feature-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 14px;
-    }
-
-    .feature {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      padding: 14px;
-      border-radius: 18px;
-      background: rgba(2, 6, 23, 0.55);
-      border: 1px solid rgba(148, 163, 184, 0.14);
-    }
-
-    .tick {
-      width: 25px;
-      height: 25px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      flex: 0 0 auto;
-      color: #04111f;
-      background: var(--green);
-      font-weight: 900;
-    }
-
-    .feature strong { display: block; margin-bottom: 4px; }
-    .feature span { color: var(--dim); font-size: 14px; line-height: 1.5; }
-
     .footer {
       margin-top: 30px;
       color: var(--dim);
@@ -516,21 +494,64 @@
     }
 
     @media (max-width: 950px) {
-      .hero, .dashboard-grid, .split { grid-template-columns: 1fr; }
-      .flow { grid-template-columns: repeat(2, 1fr); }
-      .telemetry-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero,
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .flow {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .status-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     @media (max-width: 600px) {
-      .wrap { width: min(94%, 1180px); padding-top: 18px; }
-      .nav { align-items: flex-start; flex-direction: column; }
-      .hero-copy { padding: 24px; }
-      .gauge-grid, .telemetry-grid, .controls, .flow { grid-template-columns: 1fr; }
-      .device-frame { min-height: auto; }
-      h1 { letter-spacing: -1.4px; }
+      .wrap {
+        width: min(94%, 1180px);
+        padding-top: 18px;
+      }
+
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero-copy {
+        padding: 24px;
+      }
+
+      .gauge-grid,
+      .controls,
+      .flow,
+      .status-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .device-frame {
+        min-height: auto;
+      }
+
+      h1 {
+        letter-spacing: -1.4px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="orb one"></div>
   <div class="orb two"></div>
@@ -538,13 +559,16 @@
   <main class="wrap">
     <nav class="nav">
       <a class="brand" href="index.html" aria-label="Back to homepage">
-        <span>Joshva Embedded Systems </span>
+        <span class="brand-mark"></span>
+        <span>Joshva Embedded Systems</span>
       </a>
-      <div class="nav-links">
+
+      <div class="nav-links" aria-label="Page navigation">
         <a href="index.html">Home</a>
         <a href="projects.html">Projects</a>
-        <a href="#dashboard">Dashboard</a>
+        <a href="#dashboard">Control</a>
         <a href="#architecture">Architecture</a>
+        <a href="#logs">Logs</a>
       </div>
     </nav>
 
@@ -553,31 +577,31 @@
         <span class="eyebrow"><span class="pulse-dot"></span> Environmental Monitoring Gateway</span>
         <h1>Home Monitor System</h1>
         <p class="hero-text">
-          A compact embedded monitoring system that reads environmental data, publishes telemetry through MQTT,
-          watches device health, and controls a fan/relay from a browser dashboard. This page is designed as a
-          portfolio showcase for the full hardware-software pipeline.
+          A compact embedded Linux monitoring system that reads environmental data over I²C,
+          publishes telemetry through MQTT, and controls a fan or relay from a browser interface.
         </p>
-        <div class="cta-row">
-        </div>
       </div>
 
-      <aside class="glass hero-panel" aria-label="Device screen preview">
+      <aside class="glass hero-panel" aria-label="Device status preview">
         <div class="device-frame">
           <div class="screen-top">
             <span>gateway@raspberrypi:/dev/i2c-1</span>
-            <span class="status-pill" id="hero-status">DEMO MODE</span>
+            <span class="status-pill offline" id="hero-status">WAITING</span>
           </div>
+
           <div class="gauge-grid">
             <div class="metric">
               <div class="metric-label">Temperature</div>
               <div class="metric-value"><span id="hero-temp">24.7</span><span class="metric-unit"> °C</span></div>
               <div class="bar"><span id="hero-temp-bar"></span></div>
             </div>
+
             <div class="metric">
               <div class="metric-label">Pressure</div>
               <div class="metric-value"><span id="hero-pressure">1012</span><span class="metric-unit"> hPa</span></div>
               <div class="bar"><span id="hero-pressure-bar"></span></div>
             </div>
+
             <div class="metric full">
               <div class="metric-label">Fan / Relay State</div>
               <div class="metric-value"><span id="hero-fan">AUTO</span></div>
@@ -590,28 +614,40 @@
 
     <section class="section" id="dashboard">
       <div class="section-title">
-        <h2>Manual Control</h2>
+        <h2>Control & Status</h2>
         <span class="tiny" id="last-seen">Last update: --</span>
       </div>
 
       <div class="dashboard-grid">
         <div class="card">
-          <div class="controls">
-            <button class="control-btn" onclick="sendFanCommand('ON')">Send Fan ON</button>
-            <button class="control-btn alt" onclick="sendFanCommand('OFF')">Send Fan OFF</button>
-          </div>
+          <h3>Manual Control</h3>
+          <p>Send fan or relay commands through the MQTT command topic.</p>
 
+          <div class="controls">
+            <button class="control-btn" type="button" onclick="sendFanCommand('ON')">Fan ON</button>
+            <button class="control-btn alt" type="button" onclick="sendFanCommand('OFF')">Fan OFF</button>
+          </div>
         </div>
 
         <div class="card">
-          <h3>Gateway Health</h3>
-          <p>Designed to show practical embedded Linux features: service status, sensor freshness, error reporting, and command acknowledgement.</p>
+          <h3>Gateway Status</h3>
+          <p id="mqtt-status">Connecting to MQTT stream...</p>
 
-          <div class="feature-list">
-            <div class="feature"><span class="tick">✓</span><div><strong>I²C Sensor Readout</strong><span>BME280/BMP280 data path through Linux user-space.</span></div></div>
-            <div class="feature"><span class="tick">✓</span><div><strong>MQTT Telemetry</strong><span>Publishes JSON sensor data and receives fan/relay commands.</span></div></div>
-            <div class="feature"><span class="tick">✓</span><div><strong>Systemd Reliability</strong><span>Auto-start on boot, restart on failure, logs through journalctl.</span></div></div>
-            <div class="feature"><span class="tick">✓</span><div><strong>Error Handling</strong><span>Detects stale data, failed reads, and connection loss.</span></div></div>
+          <div class="status-grid">
+            <div class="status-card">
+              <small>Connection</small>
+              <strong id="connection-status">Waiting</strong>
+            </div>
+
+            <div class="status-card">
+              <small>Fan State</small>
+              <strong id="fan-status">AUTO</strong>
+            </div>
+
+            <div class="status-card">
+              <small>Service</small>
+              <strong id="service-status">Active</strong>
+            </div>
           </div>
         </div>
       </div>
@@ -620,158 +656,226 @@
     <section class="section" id="architecture">
       <div class="section-title">
         <h2>System Architecture</h2>
-        <span class="tiny">Sensor → Gateway → Cloud → Dashboard → Control</span>
+        <span class="tiny">Sensor → Gateway → MQTT → Dashboard → Control</span>
       </div>
-     
+
+      <div class="flow">
+        <div class="node">
+          <div class="node-icon">🌡️</div>
+          <h3>BMP/BME280</h3>
+          <p>Collects temperature and pressure data over I²C.</p>
+        </div>
+
+        <div class="node">
+          <div class="node-icon">🐧</div>
+          <h3>Linux Gateway</h3>
+          <p>C application reads from /dev/i2c-1 and validates sensor values.</p>
+        </div>
+
+        <div class="node">
+          <div class="node-icon">📡</div>
+          <h3>MQTT Broker</h3>
+          <p>Telemetry and control commands move as JSON messages.</p>
+        </div>
+
+        <div class="node">
+          <div class="node-icon">🖥️</div>
+          <h3>Web Dashboard</h3>
+          <p>Browser interface displays status and command controls.</p>
+        </div>
+
+        <div class="node">
+          <div class="node-icon">🌀</div>
+          <h3>Fan / Relay</h3>
+          <p>Control output responds to ON and OFF commands.</p>
+        </div>
+      </div>
     </section>
 
-    <section class="section">
-      <div class="split">
-        <div class="card">
-          <h3>Live Gateway Logs</h3>
-          <p>Simulated journal-style logs for the page. Real deployment can map this to journalctl/system service output.</p>
-          <div class="log-box" id="log-box"></div>
-        </div>
-        <div class="card">
-          <h3>Why this project matters</h3>
-          <p>
-            This showcase presents more than a simple web page. It demonstrates embedded Linux, sensor integration,
-            device communication, cloud telemetry, fault handling, and a user-facing control dashboard in one complete system.
-          </p>
-          <div class="feature-list">
-            <div class="feature"><span class="tick">1</span><div><strong>Embedded C foundation</strong><span>Low-level sensor communication and register-based data collection.</span></div></div>
-            <div class="feature"><span class="tick">2</span><div><strong>Python/MQTT bridge</strong><span>Parses sensor output and publishes structured telemetry.</span></div></div>
-            <div class="feature"><span class="tick">3</span><div><strong> UI</strong><span>Clean dashboard that helps quickly understand the system.</span></div></div>
-          </div>
-        </div>
+    <section class="section" id="logs">
+      <div class="section-title">
+        <h2>Gateway Logs</h2>
+        <span class="tiny">journalctl-style service output</span>
+      </div>
+
+      <div class="card">
+        <div class="log-box" id="log-box" aria-live="polite"></div>
       </div>
     </section>
 
-    <p class="footer">Built by Joshva Jonathan Joseph · Embedded Linux · MQTT · Sensor Monitoring · Control Systems</p>
+    <p class="footer">Joshva Jonathan Joseph · Embedded Linux · MQTT · I²C Sensor Monitoring · Fan Control</p>
   </main>
 
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <script>
     const dataTopic = "esp32/bmp280/data";
     const commandTopic = "esp32/bmp280/command";
+
     let fanState = "AUTO";
     let mqttClient = null;
     let liveConnected = false;
 
     const el = (id) => document.getElementById(id);
 
+    function setText(id, value) {
+      const target = el(id);
+      if (target) target.textContent = value;
+    }
+
+    function setBarWidth(id, value) {
+      const target = el(id);
+      if (target) target.style.width = value;
+    }
+
     function clamp(value, min, max) {
       return Math.max(min, Math.min(max, value));
     }
 
     function formatTime() {
-      return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      return new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
     }
 
-    function addLog(message, type = 'ok') {
-      const box = el('log-box');
-      const line = document.createElement('div');
-      line.className = 'log-line';
-      line.innerHTML = `<span class="log-time">[${formatTime()}]</span> <span class="log-${type}">${message}</span>`;
+    function addLog(message, type = "ok") {
+      const box = el("log-box");
+      if (!box) return;
+
+      const line = document.createElement("div");
+      const time = document.createElement("span");
+      const text = document.createElement("span");
+
+      line.className = "log-line";
+      time.className = "log-time";
+      text.className = "log-" + type;
+
+      time.textContent = "[" + formatTime() + "] ";
+      text.textContent = message;
+
+      line.appendChild(time);
+      line.appendChild(text);
       box.appendChild(line);
       box.scrollTop = box.scrollHeight;
-      while (box.children.length > 32) box.removeChild(box.firstChild);
+
+      while (box.children.length > 32) {
+        box.removeChild(box.firstChild);
+      }
     }
 
-    function updateDashboard(data, source = 'demo') {
+    function updateConnectionStatus(status, isLive) {
+      liveConnected = isLive;
+
+      const heroStatus = el("hero-status");
+      if (heroStatus) {
+        heroStatus.textContent = isLive ? "LIVE MQTT" : status;
+        heroStatus.classList.toggle("offline", !isLive);
+      }
+
+      setText("connection-status", isLive ? "Live" : status);
+      setBarWidth("hero-health-bar", isLive ? "92%" : "72%");
+    }
+
+    function updateDashboard(data, source = "preview") {
       const temp = Number(data.temperature ?? data.temp ?? 24.5);
       const pressure = Number(data.pressure ?? 1012);
       fanState = data.fan ?? fanState;
-      el('sensor-temp').textContent = temp.toFixed(1);
-      el('sensor-pressure').textContent = pressure.toFixed(0);
-      el('fan-status').textContent = fanState;
-      el('last-seen').textContent = `Last update: ${formatTime()}`;
 
-      el('hero-temp').textContent = temp.toFixed(1);
-      el('hero-pressure').textContent = pressure.toFixed(0);
-      el('hero-fan').textContent = fanState;
-      el('hero-temp-bar').style.width = clamp((temp / 45) * 100, 10, 100) + '%';
-      el('hero-pressure-bar').style.width = clamp(((pressure - 950) / 120) * 100, 10, 100) + '%';
-      el('hero-health-bar').style.width = liveConnected ? '92%' : '72%';
-      el('hero-status').textContent = liveConnected ? 'LIVE MQTT' : 'DEMO MODE';
+      setText("last-seen", "Last update: " + formatTime());
+      setText("fan-status", fanState);
+      setText("hero-temp", temp.toFixed(1));
+      setText("hero-pressure", pressure.toFixed(0));
+      setText("hero-fan", fanState);
 
+      setBarWidth("hero-temp-bar", clamp((temp / 45) * 100, 10, 100) + "%");
+      setBarWidth("hero-pressure-bar", clamp(((pressure - 950) / 120) * 100, 10, 100) + "%");
 
-      addLog(`${source}: temp=${temp.toFixed(1)}C pressure=${pressure.toFixed(0)}hPa fan=${fanState}`, source === 'mqtt' ? 'ok' : 'warn');
+      addLog(source + ": temp=" + temp.toFixed(1) + "C pressure=" + pressure.toFixed(0) + "hPa fan=" + fanState, source === "mqtt" ? "ok" : "warn");
     }
 
     function simulateTelemetry() {
       if (liveConnected) return;
+
       const base = 24 + Math.sin(Date.now() / 9000) * 2.2;
-      const data = {
+      updateDashboard({
         temperature: base + (Math.random() - 0.5) * 0.7,
         pressure: 1012 + Math.sin(Date.now() / 11000) * 5 + (Math.random() - 0.5) * 2,
-        fan: fanState === 'AUTO' ? (base > 25.4 ? 'ON' : 'OFF') : fanState
-      };
-      updateDashboard(data, 'demo');
+        fan: fanState === "AUTO" ? (base > 25.4 ? "ON" : "OFF") : fanState
+      }, "preview");
     }
 
     function sendFanCommand(state) {
       fanState = state;
-      updateDashboard({ temperature: Number(el('sensor-temp').textContent) || 24.5, pressure: Number(el('sensor-pressure').textContent) || 1012, fan: state }, liveConnected ? 'mqtt-cmd' : 'demo-cmd');
-      addLog(`command publish request: fan=${state}`, 'ok');
+
+      updateDashboard({
+        temperature: Number(el("hero-temp")?.textContent) || 24.5,
+        pressure: Number(el("hero-pressure")?.textContent) || 1012,
+        fan: state
+      }, liveConnected ? "mqtt-cmd" : "local-cmd");
+
+      addLog("command request: fan=" + state, "ok");
+
       if (mqttClient && liveConnected) {
         mqttClient.publish(commandTopic, JSON.stringify({ fan: state }));
       }
     }
 
     function startMqtt() {
-      if (typeof mqtt === 'undefined') {
-        el('mqtt-status').textContent = 'MQTT Status: demo mode only. MQTT library not loaded.';
-        addLog('mqtt.js not loaded, continuing with demo telemetry', 'warn');
+      if (typeof mqtt === "undefined") {
+        setText("mqtt-status", "MQTT library unavailable. Local preview is active.");
+        updateConnectionStatus("Preview", false);
+        addLog("mqtt.js not loaded; local preview active", "warn");
         return;
       }
 
       try {
-        mqttClient = mqtt.connect('wss://broker.hivemq.com:8884/mqtt', {
-          clientId: 'joshva_monitor_showcase_' + Math.random().toString(16).slice(2, 10),
+        mqttClient = mqtt.connect("wss://broker.hivemq.com:8884/mqtt", {
+          clientId: "joshva_monitor_showcase_" + Math.random().toString(16).slice(2, 10),
           protocolVersion: 4,
           reconnectPeriod: 2500,
           connectTimeout: 8000
         });
 
-        mqttClient.on('connect', () => {
-          liveConnected = true;
-          el('mqtt-status').textContent = 'MQTT Status: connected to HiveMQ WebSocket. Waiting for sensor data.';
-          addLog('mqtt connected; subscribing to ' + dataTopic, 'ok');
+        mqttClient.on("connect", () => {
+          updateConnectionStatus("Live", true);
+          setText("mqtt-status", "Connected to HiveMQ WebSocket. Waiting for sensor data.");
+          addLog("mqtt connected; subscribed to " + dataTopic, "ok");
           mqttClient.subscribe(dataTopic);
         });
 
-        mqttClient.on('message', (topic, message) => {
+        mqttClient.on("message", (topic, message) => {
           if (topic !== dataTopic) return;
+
           try {
-            const data = JSON.parse(message.toString());
-            updateDashboard(data, 'mqtt');
+            updateDashboard(JSON.parse(message.toString()), "mqtt");
           } catch (error) {
-            addLog('json parse error: ' + error.message, 'err');
+            addLog("json parse error: " + error.message, "err");
           }
         });
 
-        mqttClient.on('error', (error) => {
-          liveConnected = false;
-          el('mqtt-status').textContent = 'MQTT Status: connection error. Demo data continues.';
-          addLog('mqtt error: ' + error.message, 'err');
+        mqttClient.on("error", (error) => {
+          updateConnectionStatus("Preview", false);
+          setText("mqtt-status", "MQTT connection issue. Local preview remains active.");
+          addLog("mqtt error: " + error.message, "err");
         });
 
-        mqttClient.on('close', () => {
-          liveConnected = false;
-          el('mqtt-status').textContent = 'MQTT Status: disconnected. Demo data continues until live data returns.';
-          addLog('mqtt disconnected', 'warn');
+        mqttClient.on("close", () => {
+          updateConnectionStatus("Preview", false);
+          setText("mqtt-status", "MQTT disconnected. Local preview remains active.");
+          addLog("mqtt disconnected", "warn");
         });
       } catch (error) {
-        liveConnected = false;
-        el('mqtt-status').textContent = 'MQTT Status: demo mode only. Browser blocked MQTT connection.';
-        addLog('mqtt init failed: ' + error.message, 'err');
+        updateConnectionStatus("Preview", false);
+        setText("mqtt-status", "MQTT connection blocked by browser or network. Local preview remains active.");
+        addLog("mqtt init failed: " + error.message, "err");
       }
     }
 
-    addLog('system boot: monitoring dashboard loaded', 'ok');
-    addLog('sensor service: waiting for telemetry', 'warn');
-    updateDashboard({ temperature: 24.7, pressure: 1012, fan: 'AUTO' }, 'boot');
+    addLog("system boot: monitoring page loaded", "ok");
+    addLog("sensor service: waiting for telemetry", "warn");
+    updateConnectionStatus("Waiting", false);
+    updateDashboard({ temperature: 24.7, pressure: 1012, fan: "AUTO" }, "boot");
     startMqtt();
     setInterval(simulateTelemetry, 2200);
   </script>
