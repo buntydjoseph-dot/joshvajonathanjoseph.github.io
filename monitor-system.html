@@ -559,8 +559,6 @@
           portfolio showcase for the full hardware-software pipeline.
         </p>
         <div class="cta-row">
-          <a class="btn primary" href="#dashboard">View Live Dashboard →</a>
-          <a class="btn secondary" href="#architecture">See System Flow</a>
         </div>
       </div>
 
@@ -593,21 +591,12 @@
 
     <section class="section" id="dashboard">
       <div class="section-title">
-        <h2>Live Monitoring Dashboard</h2>
+        <h2>Manual Control</h2>
         <span class="tiny" id="last-seen">Last update: --</span>
       </div>
 
       <div class="dashboard-grid">
         <div class="card">
-          <h3>Telemetry Stream</h3>
-          <p id="mqtt-status">MQTT Status: starting demo mode. Live MQTT will connect if internet access is available.</p>
-
-          <div class="telemetry-grid">
-            <div class="tile"><small>Temperature</small><strong id="sensor-temp">--</strong><span>°C</span></div>
-            <div class="tile"><small>Pressure</small><strong id="sensor-pressure">--</strong><span>hPa</span></div>
-            <div class="tile"><small>Fan</small><strong id="fan-status">--</strong></div>
-          </div>
-
           <div class="controls">
             <button class="control-btn" onclick="sendFanCommand('ON')">Send Fan ON</button>
             <button class="control-btn alt" onclick="sendFanCommand('OFF')">Send Fan OFF</button>
@@ -620,7 +609,7 @@
           <p>Designed to show practical embedded Linux features: service status, sensor freshness, error reporting, and command acknowledgement.</p>
 
           <div class="feature-list">
-            <div class="feature"><span class="tick">✓</span><div><strong>I²C Sensor Readout</strong><span>BME280/BMP280 data path through Linux user-space I²C.</span></div></div>
+            <div class="feature"><span class="tick">✓</span><div><strong>I²C Sensor Readout</strong><span>BME280/BMP280 data path through Linux user-space.</span></div></div>
             <div class="feature"><span class="tick">✓</span><div><strong>MQTT Telemetry</strong><span>Publishes JSON sensor data and receives fan/relay commands.</span></div></div>
             <div class="feature"><span class="tick">✓</span><div><strong>Systemd Reliability</strong><span>Auto-start on boot, restart on failure, logs through journalctl.</span></div></div>
             <div class="feature"><span class="tick">✓</span><div><strong>Error Handling</strong><span>Detects stale data, failed reads, and connection loss.</span></div></div>
@@ -634,20 +623,14 @@
         <h2>System Architecture</h2>
         <span class="tiny">Sensor → Gateway → Cloud → Dashboard → Control</span>
       </div>
-      <div class="flow">
-        <div class="node"><div class="node-icon">🌡️</div><h3>BMP/BME280</h3><p>Measures temperature and pressure through I²C.</p></div>
-        <div class="node"><div class="node-icon">🐧</div><h3>Linux Gateway</h3><p>C application opens /dev/i2c-1 and validates sensor data.</p></div>
-        <div class="node"><div class="node-icon">📡</div><h3>MQTT Broker</h3><p>JSON payloads are published to a broker over WebSocket/TCP.</p></div>
-        <div class="node"><div class="node-icon">📊</div><h3>Web Dashboard</h3><p>Browser UI displays live readings, status, and control actions.</p></div>
-        <div class="node"><div class="node-icon">🌀</div><h3>Fan Control</h3><p>Commands are sent back to the gateway to control a relay/fan.</p></div>
-      </div>
+     
     </section>
 
     <section class="section">
       <div class="split">
         <div class="card">
           <h3>Live Gateway Logs</h3>
-          <p>Simulated journal-style logs for the portfolio page. Real deployment can map this to journalctl/system service output.</p>
+          <p>Simulated journal-style logs for the page. Real deployment can map this to journalctl/system service output.</p>
           <div class="log-box" id="log-box"></div>
         </div>
         <div class="card">
@@ -659,7 +642,7 @@
           <div class="feature-list">
             <div class="feature"><span class="tick">1</span><div><strong>Embedded C foundation</strong><span>Low-level sensor communication and register-based data collection.</span></div></div>
             <div class="feature"><span class="tick">2</span><div><strong>Python/MQTT bridge</strong><span>Parses sensor output and publishes structured telemetry.</span></div></div>
-            <div class="feature"><span class="tick">3</span><div><strong>Portfolio-ready UI</strong><span>Clean dashboard that helps recruiters quickly understand the system.</span></div></div>
+            <div class="feature"><span class="tick">3</span><div><strong> UI</strong><span>Clean dashboard that helps quickly understand the system.</span></div></div>
           </div>
         </div>
       </div>
