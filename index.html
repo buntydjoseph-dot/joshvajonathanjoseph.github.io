@@ -243,72 +243,6 @@
     .card li strong {
       color: #fff;
     }
-
-    /* ---------- Live IoT Dashboard ---------- */
-    .sensor-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 14px;
-      margin-top: 18px;
-    }
-
-    .sensor-box {
-      padding: 16px;
-      border-radius: 16px;
-      background: rgba(2, 6, 23, 0.55);
-      border: 1px solid rgba(56, 189, 248, 0.2);
-    }
-
-    .sensor-label {
-      color: #cbd5e1;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .sensor-value {
-      font-size: 26px;
-      font-weight: 700;
-      color: #f8fafc;
-    }
-
-    .sensor-unit {
-      font-size: 14px;
-      color: #38bdf8;
-      margin-left: 4px;
-    }
-
-    .iot-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .iot-btn {
-      border: none;
-      border-radius: 12px;
-      padding: 10px 18px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      color: #0f172a;
-      background: #fbbf24;
-      transition: all 0.2s ease;
-    }
-
-    .iot-btn:hover {
-      transform: translateY(-1px);
-      background: #fde68a;
-    }
-
-    .iot-btn.off {
-      background: #38bdf8;
-    }
-
-    .iot-btn.off:hover {
-      background: #bae6fd;
-    }
-
     /* Activity LEDs Container */
     .led-container {
       position: absolute;
@@ -449,6 +383,7 @@
           <nav class="nav">
             <a href="index.html">Home</a>
             <a href="projects.html">Projects</a>
+            <a href="monitor-system.html">Monitor System</a>
           </nav>
           <h1>Joshva Jonathan Joseph</h1>
           <div class="title">Graduate Embedded Engineer</div>
@@ -487,58 +422,6 @@
         </div>
       </section>
 
-      <!-- ---------- LIVE SENSOR DASHBOARD ---------- -->
-      <section class="section">
-        <h2>Live Sensor Data</h2>
-
-        <div class="card">
-          <div class="led-container">
-            <div class="led rx" title="MQTT Rx Activity"></div>
-            <div class="led tx" title="MQTT Tx Activity"></div>
-          </div>
-
-          <h3>Home IoT Dashboard</h3>
-          <p class="meta" id="mqtt-status">MQTT Status: Connecting...</p>
-
-          <div class="sensor-grid">
-            <div class="sensor-box">
-              <div class="sensor-label">Temperature</div>
-              <div>
-                <span class="sensor-value" id="sensor-temp">--</span>
-                <span class="sensor-unit">°C</span>
-              </div>
-            </div>
-
-            <div class="sensor-box">
-              <div class="sensor-label">Pressure</div>
-              <div>
-                <span class="sensor-value" id="sensor-pressure">--</span>
-                <span class="sensor-unit">hPa</span>
-              </div>
-            </div>
-
-            <div class="sensor-box">
-              <div class="sensor-label">Fan Status</div>
-              <div>
-                <span class="sensor-value" id="fan-status">--</span>
-              </div>
-            </div>
-
-            <div class="sensor-box">
-              <div class="sensor-label">Last Update</div>
-              <div>
-                <span class="sensor-value" id="last-update">--</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="iot-actions">
-            <button class="iot-btn" onclick="sendFanCommand('ON')">Fan ON</button>
-            <button class="iot-btn off" onclick="sendFanCommand('OFF')">Fan OFF</button>
-          </div>
-        </div>
-      </section>
-
       <section class="section">
         <h2>Experience</h2>
         <div class="card">
@@ -547,7 +430,6 @@
             <div class="led tx" title="Tx Activity"></div>
           </div>
           <h3>Firmware & Embedded Systems Engineer</h3>
-          <p class="meta">~3 Years Total Industry Experience</p>
           <ul>
             <li>Developed and maintained robust embedded firmware and C/C++ software for various embedded Linux and microcontroller-based platforms, managing the full software development lifecycle from design to deployment.</li>
             <li>Architected and optimized IoT and connected device integration pipelines, leveraging wireless protocols such as LoRa/LoRaWAN, Wi-Fi, and MQTT over Mosquitto brokers for reliable data telemetry.</li>
@@ -574,8 +456,6 @@
 
     </div>
   </div>
-
-  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 
   <script>
     // --- FEATURE 1: BOOT SEQUENCE ---
@@ -713,70 +593,6 @@
 
     setInterval(updateClock, 1000);
     updateClock(); 
-
-    // --- FEATURE 4: LIVE MQTT SENSOR DASHBOARD ---
-
-    const dataTopic = "esp32/bmp280/data";
-    const commandTopic = "esp32/bmp280/command";
-
-   
-    const mqttClient = mqtt.connect("wss://broker.hivemq.com:8884/mqtt", {
-  clientId: "joshva_portfolio_" + Math.random().toString(16).substring(2, 10),
-  protocolVersion: 4,
-  reconnectPeriod: 2000,
-  connectTimeout: 8000
-});
-
-    mqttClient.on("connect", function () {
-      console.log("Portfolio connected to HiveMQ WebSocket");
-
-      document.getElementById("mqtt-status").textContent = "MQTT Status: Connected";
-
-      mqttClient.subscribe(dataTopic, function (err) {
-        if (!err) {
-          console.log("Subscribed to " + dataTopic);
-        } else {
-          console.log("Subscribe error:", err);
-          document.getElementById("mqtt-status").textContent = "MQTT Status: Subscribe Error";
-        }
-      });
-    });
-
-    mqttClient.on("message", function (topic, message) {
-      console.log("Received:", topic, message.toString());
-
-      if (topic === dataTopic) {
-        try {
-          const data = JSON.parse(message.toString());
-
-          document.getElementById("sensor-temp").textContent = data.temperature ?? "--";
-          document.getElementById("sensor-pressure").textContent = data.pressure ?? "--";
-          document.getElementById("fan-status").textContent = data.fan ?? "--";
-          document.getElementById("last-update").textContent = new Date().toLocaleTimeString();
-
-        } catch (error) {
-          console.log("JSON error:", error);
-        }
-      }
-    });
-
-    mqttClient.on("error", function (error) {
-      console.log("MQTT error:", error);
-      document.getElementById("mqtt-status").textContent = "MQTT Status: Error";
-    });
-
-    mqttClient.on("close", function () {
-      document.getElementById("mqtt-status").textContent = "MQTT Status: Disconnected";
-    });
-
-    function sendFanCommand(state) {
-      const command = {
-        fan: state
-      };
-
-      mqttClient.publish(commandTopic, JSON.stringify(command));
-      console.log("Command sent:", command);
-    }
   </script>
 </body>
 </html>
