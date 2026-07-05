@@ -3,23 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Embedded Linux environmental monitoring system with MQTT telemetry, fan control, service logs, and system architecture." />
-  <title>Home Monitor System | Joshva Jonathan Joseph</title>
+  <meta name="description" content="Portfolio showcase for an end-to-end IoT environmental monitoring system using ESP32, BMP280, Raspberry Pi embedded Linux, MQTT, Mosquitto, HiveMQ, Python bridge and web dashboard." />
+  <meta name="author" content="Joshva Jonathan Joseph" />
+  <title>IoT Environmental Monitoring System | Joshva Jonathan Joseph</title>
 
   <style>
     :root {
       --bg: #020617;
-      --panel: rgba(15, 23, 42, 0.80);
-      --panel-strong: rgba(2, 6, 23, 0.88);
-      --line: rgba(148, 163, 184, 0.18);
-      --cyan: #38bdf8;
-      --cyan-soft: rgba(56, 189, 248, 0.14);
-      --amber: #fbbf24;
-      --green: #22c55e;
-      --red: #fb7185;
+      --bg2: #0f172a;
+      --panel: rgba(15, 23, 42, 0.78);
+      --panel-strong: rgba(2, 6, 23, 0.90);
+      --glass: rgba(15, 23, 42, 0.58);
+      --line: rgba(148, 163, 184, 0.19);
+      --line-strong: rgba(56, 189, 248, 0.36);
       --text: #f8fafc;
       --muted: #cbd5e1;
       --dim: #94a3b8;
+      --cyan: #38bdf8;
+      --blue: #60a5fa;
+      --green: #22c55e;
+      --amber: #fbbf24;
+      --red: #fb7185;
+      --purple: #a78bfa;
+      --cyan-soft: rgba(56, 189, 248, 0.13);
+      --green-soft: rgba(34, 197, 94, 0.13);
+      --amber-soft: rgba(251, 191, 36, 0.14);
+      --red-soft: rgba(251, 113, 133, 0.14);
+      --radius: 26px;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
     }
 
     * {
@@ -33,12 +44,12 @@
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 18% 20%, rgba(56, 189, 248, 0.22), transparent 32%),
-        radial-gradient(circle at 82% 8%, rgba(251, 191, 36, 0.16), transparent 28%),
-        radial-gradient(circle at 65% 80%, rgba(34, 197, 94, 0.13), transparent 30%),
+        radial-gradient(circle at 15% 18%, rgba(56, 189, 248, 0.23), transparent 32%),
+        radial-gradient(circle at 80% 6%, rgba(167, 139, 250, 0.18), transparent 27%),
+        radial-gradient(circle at 78% 78%, rgba(34, 197, 94, 0.14), transparent 32%),
         linear-gradient(135deg, #020617 0%, #0f172a 48%, #111827 100%);
       overflow-x: hidden;
     }
@@ -51,59 +62,67 @@
       background-image:
         linear-gradient(rgba(56, 189, 248, 0.055) 1px, transparent 1px),
         linear-gradient(90deg, rgba(56, 189, 248, 0.055) 1px, transparent 1px);
-      background-size: 52px 52px;
-      mask-image: radial-gradient(circle at center, black, transparent 78%);
-      animation: driftGrid 18s linear infinite;
+      background-size: 56px 56px;
+      mask-image: radial-gradient(circle at center, black, transparent 80%);
+      animation: driftGrid 20s linear infinite;
+      z-index: 0;
     }
 
     @keyframes driftGrid {
-      from {
-        transform: translate3d(0, 0, 0);
-      }
-
-      to {
-        transform: translate3d(52px, 52px, 0);
-      }
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(56px, 56px, 0); }
     }
 
     .orb {
       position: fixed;
-      width: 260px;
-      height: 260px;
+      width: 280px;
+      height: 280px;
       border-radius: 999px;
-      filter: blur(55px);
-      opacity: 0.34;
+      filter: blur(62px);
+      opacity: 0.32;
       pointer-events: none;
       animation: floatOrb 10s ease-in-out infinite alternate;
+      z-index: 0;
     }
 
     .orb.one {
-      left: -70px;
-      top: 140px;
+      left: -95px;
+      top: 130px;
       background: var(--cyan);
     }
 
     .orb.two {
-      right: -80px;
-      bottom: 80px;
+      right: -95px;
+      bottom: 100px;
       background: var(--amber);
-      animation-delay: 1.8s;
+      animation-delay: 1.7s;
+    }
+
+    .orb.three {
+      left: 40%;
+      bottom: -155px;
+      background: var(--purple);
+      animation-delay: 2.6s;
     }
 
     @keyframes floatOrb {
-      from {
-        transform: translateY(-18px) scale(0.96);
-      }
+      from { transform: translateY(-18px) scale(0.96); }
+      to { transform: translateY(24px) scale(1.06); }
+    }
 
-      to {
-        transform: translateY(24px) scale(1.05);
-      }
+    a {
+      color: inherit;
+    }
+
+    button,
+    input {
+      font: inherit;
     }
 
     .wrap {
-      width: min(1180px, 92%);
+      width: min(1200px, 92%);
       margin: 0 auto;
-      padding: 28px 0 64px;
+      padding: 26px 0 64px;
       position: relative;
       z-index: 1;
     }
@@ -112,65 +131,67 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
+      gap: 16px;
       margin-bottom: 24px;
+      position: sticky;
+      top: 12px;
+      z-index: 20;
+      padding: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.13);
+      border-radius: 999px;
+      background: rgba(2, 6, 23, 0.58);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
     }
 
     .brand {
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      color: var(--text);
       text-decoration: none;
-      font-weight: 850;
-      letter-spacing: 0.3px;
-    }
-
-    .brand-logo {
-      width: 52px;
-      height: 52px;
-      object-fit: contain;
-      border-radius: 14px;
-      background: white;
-      padding: 5px;
-      box-shadow: 0 0 28px rgba(56, 189, 248, 0.35);
-    }
-
-    .brand span {
+      font-weight: 900;
+      letter-spacing: 0.2px;
       white-space: nowrap;
+      padding-left: 5px;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      color: #031525;
+      background: linear-gradient(135deg, #38bdf8, #fbbf24);
+      box-shadow: 0 0 28px rgba(56, 189, 248, 0.34);
+      font-weight: 1000;
+      letter-spacing: -1px;
     }
 
     .nav-links {
       display: flex;
+      align-items: center;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
     }
 
-    .nav a:not(.brand) {
+    .nav-links a {
       color: var(--muted);
       text-decoration: none;
-      padding: 9px 14px;
+      padding: 9px 13px;
       border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(15, 23, 42, 0.55);
-      transition: 0.25s ease;
-      font-weight: 650;
+      border: 1px solid transparent;
+      transition: 0.23s ease;
+      font-size: 14px;
+      font-weight: 750;
     }
 
-    .nav a:not(.brand):hover,
-    .nav a:not(.brand):focus-visible {
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
       color: white;
       border-color: rgba(56, 189, 248, 0.45);
       background: rgba(56, 189, 248, 0.11);
-      transform: translateY(-1px);
       outline: none;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
-      gap: 24px;
-      align-items: stretch;
     }
 
     .glass,
@@ -179,15 +200,22 @@
       background: var(--panel);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.38);
+      box-shadow: var(--shadow);
     }
 
     .glass {
-      border-radius: 28px;
+      border-radius: 32px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+      align-items: stretch;
     }
 
     .hero-copy {
-      padding: 34px;
+      padding: clamp(24px, 4vw, 42px);
       position: relative;
       overflow: hidden;
     }
@@ -195,27 +223,27 @@
     .hero-copy::after {
       content: "";
       position: absolute;
-      right: -70px;
-      top: -70px;
-      width: 210px;
-      height: 210px;
-      border: 1px solid rgba(56, 189, 248, 0.23);
+      right: -90px;
+      top: -90px;
+      width: 240px;
+      height: 240px;
+      border: 1px solid rgba(56, 189, 248, 0.24);
       border-radius: 50%;
-      box-shadow: inset 0 0 45px rgba(56, 189, 248, 0.12);
+      box-shadow: inset 0 0 55px rgba(56, 189, 248, 0.14);
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      gap: 9px;
+      padding: 8px 13px;
+      border: 1px solid rgba(56, 189, 248, 0.31);
       background: var(--cyan-soft);
       border-radius: 999px;
       color: #bae6fd;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.8px;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.9px;
       text-transform: uppercase;
     }
 
@@ -224,60 +252,103 @@
       height: 9px;
       border-radius: 50%;
       background: var(--green);
-      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-      animation: pulse 1.4s infinite;
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.70);
+      animation: pulse 1.45s infinite;
     }
 
     @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-      }
-
-      70% {
-        box-shadow: 0 0 0 12px rgba(34, 197, 94, 0);
-      }
-
-      100% {
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
-      }
+      0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.70); }
+      70% { box-shadow: 0 0 0 13px rgba(34, 197, 94, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
     }
 
     h1 {
-      margin: 20px 0 12px;
-      font-size: clamp(38px, 6vw, 76px);
-      line-height: 0.95;
-      letter-spacing: -2.5px;
+      margin: 20px 0 14px;
+      font-size: clamp(42px, 7vw, 84px);
+      line-height: 0.94;
+      letter-spacing: -3px;
       background: linear-gradient(90deg, #ffffff, #bae6fd 48%, #fde68a);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .hero-text {
-      max-width: 680px;
+      max-width: 740px;
       color: var(--muted);
-      line-height: 1.75;
+      line-height: 1.78;
       font-size: 17px;
       margin: 0;
     }
 
-    .hero-panel {
-      padding: 22px;
+    .hero-actions {
+      margin-top: 24px;
       display: flex;
-      flex-direction: column;
-      gap: 16px;
-      position: relative;
-      overflow: hidden;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
-    .device-frame {
-      min-height: 355px;
-      border-radius: 24px;
+    .btn {
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 16px;
+      padding: 12px 16px;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.72);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 900;
+      transition: 0.24s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .btn.primary {
+      color: #031525;
+      background: linear-gradient(135deg, var(--cyan), #fde68a);
+      border-color: transparent;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-2px);
+      filter: brightness(1.06);
+      outline: none;
+    }
+
+    .hero-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 24px;
+    }
+
+    .chip {
+      color: #dbeafe;
+      border: 1px solid rgba(56, 189, 248, 0.24);
+      background: rgba(56, 189, 248, 0.08);
+      padding: 8px 11px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .hero-panel {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .device-shell {
+      border-radius: 28px;
+      padding: 16px;
+      min-height: 445px;
       border: 1px solid rgba(148, 163, 184, 0.22);
       background:
-        linear-gradient(180deg, rgba(15, 23, 42, 0.78), rgba(2, 6, 23, 0.95)),
-        repeating-linear-gradient(90deg, rgba(56, 189, 248, 0.04), rgba(56, 189, 248, 0.04) 1px, transparent 1px, transparent 18px);
-      padding: 18px;
-      box-shadow: inset 0 0 45px rgba(56, 189, 248, 0.08);
+        linear-gradient(180deg, rgba(15, 23, 42, 0.77), rgba(2, 6, 23, 0.95)),
+        repeating-linear-gradient(90deg, rgba(56, 189, 248, 0.045), rgba(56, 189, 248, 0.045) 1px, transparent 1px, transparent 18px);
+      box-shadow: inset 0 0 50px rgba(56, 189, 248, 0.10);
     }
 
     .screen-top {
@@ -288,26 +359,26 @@
       color: var(--dim);
       font-family: Consolas, "Courier New", monospace;
       font-size: 12px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .status-pill {
-      border: 1px solid rgba(34, 197, 94, 0.35);
-      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.36);
+      background: var(--green-soft);
       color: #bbf7d0;
       border-radius: 999px;
-      padding: 6px 10px;
-      font-weight: 850;
+      padding: 7px 10px;
+      font-weight: 950;
       white-space: nowrap;
     }
 
     .status-pill.offline {
       border-color: rgba(251, 113, 133, 0.38);
-      background: rgba(251, 113, 133, 0.12);
+      background: var(--red-soft);
       color: #fecdd3;
     }
 
-    .gauge-grid {
+    .metrics {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
@@ -316,7 +387,7 @@
     .metric {
       border: 1px solid rgba(148, 163, 184, 0.16);
       background: rgba(15, 23, 42, 0.68);
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 16px;
       min-height: 126px;
       position: relative;
@@ -326,35 +397,37 @@
     .metric::after {
       content: "";
       position: absolute;
-      inset: auto -30% -45% 28%;
-      height: 80px;
+      inset: auto -30% -45% 25%;
+      height: 85px;
       background: radial-gradient(circle, rgba(56, 189, 248, 0.22), transparent 70%);
+    }
+
+    .metric.full {
+      grid-column: 1 / -1;
+      min-height: auto;
     }
 
     .metric-label {
       color: var(--dim);
       font-size: 12px;
       text-transform: uppercase;
-      font-weight: 850;
+      font-weight: 900;
       letter-spacing: 0.9px;
     }
 
     .metric-value {
       margin-top: 10px;
-      font-size: 38px;
-      font-weight: 900;
-      letter-spacing: -1.5px;
+      font-size: clamp(30px, 4vw, 42px);
+      font-weight: 1000;
+      letter-spacing: -1.7px;
+      position: relative;
+      z-index: 1;
     }
 
     .metric-unit {
       color: var(--cyan);
       font-size: 15px;
-      font-weight: 800;
-    }
-
-    .metric.full {
-      grid-column: 1 / -1;
-      min-height: auto;
+      font-weight: 900;
     }
 
     .bar {
@@ -364,24 +437,56 @@
       border-radius: 99px;
       background: rgba(148, 163, 184, 0.14);
       overflow: hidden;
+      position: relative;
+      z-index: 1;
     }
 
     .bar span {
       display: block;
       height: 100%;
-      width: 50%;
+      width: 0%;
       border-radius: inherit;
       background: linear-gradient(90deg, var(--cyan), var(--amber));
       transition: width 0.45s ease;
     }
 
+    .mini-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .mini {
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      background: rgba(2, 6, 23, 0.58);
+      border-radius: 16px;
+      padding: 11px;
+    }
+
+    .mini small {
+      display: block;
+      color: var(--dim);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+    }
+
+    .mini strong {
+      display: block;
+      margin-top: 5px;
+      font-size: 15px;
+    }
+
     .section {
-      margin-top: 26px;
+      margin-top: 28px;
+      scroll-margin-top: 110px;
     }
 
     .section-title {
       display: flex;
-      align-items: center;
+      align-items: end;
       justify-content: space-between;
       gap: 12px;
       margin: 0 0 14px;
@@ -389,58 +494,72 @@
 
     .section-title h2 {
       margin: 0;
-      font-size: 24px;
-      letter-spacing: -0.5px;
+      font-size: clamp(23px, 3vw, 32px);
+      letter-spacing: -0.8px;
     }
 
+    .section-title p,
     .tiny {
+      margin: 0;
       color: var(--dim);
       font-size: 13px;
-    }
-
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 20px;
+      line-height: 1.55;
     }
 
     .card {
+      border-radius: var(--radius);
       padding: 22px;
-      border-radius: 24px;
     }
 
     .card h3 {
       margin: 0 0 8px;
       font-size: 18px;
+      letter-spacing: -0.2px;
     }
 
     .card p {
       margin: 0;
       color: var(--muted);
-      line-height: 1.65;
+      line-height: 1.67;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 0.88fr 1.12fr;
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
     }
 
     .controls {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 18px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 11px;
+      margin-top: 17px;
     }
 
     .control-btn {
       border: 0;
       border-radius: 18px;
-      padding: 16px;
+      padding: 15px;
       cursor: pointer;
-      font-weight: 900;
-      letter-spacing: 0.3px;
+      font-weight: 1000;
+      letter-spacing: 0.2px;
       transition: 0.22s ease;
-      color: #04111f;
+      color: #031525;
       background: var(--amber);
     }
 
     .control-btn.alt {
       background: var(--cyan);
+    }
+
+    .control-btn.safe {
+      background: var(--green);
     }
 
     .control-btn:hover,
@@ -452,7 +571,7 @@
 
     .status-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 12px;
       margin-top: 16px;
     }
@@ -467,16 +586,86 @@
     .status-card small {
       display: block;
       color: var(--dim);
-      font-weight: 800;
+      font-weight: 900;
       letter-spacing: 0.8px;
       text-transform: uppercase;
       font-size: 11px;
-      margin-bottom: 9px;
+      margin-bottom: 8px;
     }
 
     .status-card strong {
-      font-size: 22px;
+      font-size: 20px;
       letter-spacing: -0.4px;
+    }
+
+    .config-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 16px;
+    }
+
+    .field-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field label {
+      color: var(--dim);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .field input {
+      width: 100%;
+      border: 1px solid rgba(148, 163, 184, 0.20);
+      background: rgba(2, 6, 23, 0.70);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 12px 12px;
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: rgba(56, 189, 248, 0.48);
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.10);
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .small-btn {
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      background: rgba(15, 23, 42, 0.76);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-weight: 850;
+      transition: 0.22s ease;
+    }
+
+    .small-btn:hover,
+    .small-btn:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(56, 189, 248, 0.42);
+      outline: none;
+    }
+
+    .small-btn.danger {
+      border-color: rgba(251, 113, 133, 0.35);
+      background: rgba(251, 113, 133, 0.11);
     }
 
     .flow {
@@ -487,7 +676,7 @@
 
     .node {
       position: relative;
-      min-height: 140px;
+      min-height: 165px;
       padding: 18px;
       border-radius: 22px;
       border: 1px solid rgba(56, 189, 248, 0.20);
@@ -507,8 +696,16 @@
       box-shadow: 0 0 16px rgba(34, 197, 94, 0.65);
     }
 
+    .node::after {
+      content: "";
+      position: absolute;
+      inset: auto -40px -55px 35%;
+      height: 90px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.16), transparent 70%);
+    }
+
     .node-icon {
-      font-size: 26px;
+      font-size: 28px;
     }
 
     .node h3 {
@@ -521,11 +718,65 @@
       font-size: 13px;
       line-height: 1.5;
       margin: 0;
+      position: relative;
+      z-index: 1;
     }
 
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 14px;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      background: rgba(2, 6, 23, 0.58);
+    }
+
+    .step-index {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(56, 189, 248, 0.13);
+      border: 1px solid rgba(56, 189, 248, 0.24);
+      color: #bae6fd;
+      font-weight: 1000;
+    }
+
+    .step h3 {
+      margin: 0 0 4px;
+      font-size: 16px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .chart-wrap {
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      background: rgba(2, 6, 23, 0.60);
+      border-radius: 20px;
+      padding: 14px;
+      margin-top: 14px;
+    }
+
+    canvas {
+      width: 100%;
+      height: 250px;
+      display: block;
+    }
+
+    .code-box,
     .log-box {
-      height: 290px;
-      overflow-y: auto;
       border-radius: 18px;
       background: #020617;
       border: 1px solid rgba(148, 163, 184, 0.14);
@@ -534,10 +785,21 @@
       color: #d1fae5;
       font-size: 13px;
       line-height: 1.6;
+      overflow: auto;
+    }
+
+    .code-box {
+      min-height: 244px;
+      white-space: pre-wrap;
+    }
+
+    .log-box {
+      height: 310px;
     }
 
     .log-line {
       margin-bottom: 6px;
+      white-space: pre-wrap;
     }
 
     .log-time {
@@ -556,16 +818,118 @@
       color: #fda4af;
     }
 
+    .log-info {
+      color: #bae6fd;
+    }
+
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 14px;
+    }
+
+    .skill {
+      padding: 9px 11px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(148, 163, 184, 0.17);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .result {
+      border-radius: 18px;
+      padding: 15px;
+      background: rgba(2, 6, 23, 0.58);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+    }
+
+    .result strong {
+      display: block;
+      font-size: 24px;
+      letter-spacing: -0.5px;
+    }
+
+    .result small {
+      display: block;
+      margin-top: 5px;
+      color: var(--dim);
+      line-height: 1.4;
+      font-weight: 800;
+    }
+
+    .terminal-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      color: var(--dim);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--red);
+    }
+
+    .dot:nth-child(2) { background: var(--amber); }
+    .dot:nth-child(3) { background: var(--green); }
+
     .footer {
       margin-top: 30px;
       color: var(--dim);
       text-align: center;
       font-size: 13px;
+      line-height: 1.6;
     }
 
-    @media (max-width: 950px) {
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      max-width: min(420px, calc(100vw - 36px));
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      background: rgba(2, 6, 23, 0.90);
+      color: var(--text);
+      box-shadow: var(--shadow);
+      z-index: 100;
+      opacity: 0;
+      transform: translateY(14px);
+      pointer-events: none;
+      transition: 0.24s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1020px) {
       .hero,
-      .dashboard-grid {
+      .grid-2,
+      .config-grid {
         grid-template-columns: 1fr;
       }
 
@@ -573,44 +937,58 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
+      .grid-3,
+      .result-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
       .status-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 700px) {
       .wrap {
-        width: min(94%, 1180px);
-        padding-top: 18px;
+        width: min(94%, 1200px);
+        padding-top: 16px;
       }
 
       .nav {
+        position: relative;
+        top: auto;
         align-items: flex-start;
         flex-direction: column;
+        border-radius: 24px;
       }
 
-      .brand-logo {
-        width: 46px;
-        height: 46px;
+      .nav-links {
+        width: 100%;
       }
 
-      .hero-copy {
-        padding: 24px;
+      .nav-links a {
+        background: rgba(15, 23, 42, 0.55);
       }
 
-      .gauge-grid,
+      .metrics,
+      .mini-row,
       .controls,
       .flow,
+      .grid-3,
+      .result-grid,
       .status-grid {
         grid-template-columns: 1fr;
       }
 
-      .device-frame {
+      h1 {
+        letter-spacing: -1.6px;
+      }
+
+      .device-shell {
         min-height: auto;
       }
 
-      h1 {
-        letter-spacing: -1.4px;
+      canvas {
+        height: 220px;
       }
     }
 
@@ -630,58 +1008,99 @@
 <body>
   <div class="orb one"></div>
   <div class="orb two"></div>
+  <div class="orb three"></div>
 
   <main class="wrap">
-    <nav class="nav">
-      <a class="brand" href="index.html" aria-label="Back to homepage">
-        <img src="jes.jpg" alt="JES Logo" class="brand-logo">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="Go to top">
+        <span class="brand-mark">JES</span>
         <span>Joshva Embedded Systems</span>
       </a>
 
-      <div class="nav-links" aria-label="Page navigation">
-        <a href="index.html">Home</a>
-        <a href="projects.html">Projects</a>
-        <a href="#dashboard">Control</a>
+      <div class="nav-links">
+        <a href="#dashboard">Dashboard</a>
+        <a href="#mqtt">MQTT</a>
         <a href="#architecture">Architecture</a>
+        <a href="#testing">Testing</a>
         <a href="#logs">Logs</a>
       </div>
     </nav>
 
-    <section class="hero">
+    <section class="hero" id="top">
       <div class="glass hero-copy">
-        <span class="eyebrow"><span class="pulse-dot"></span></span>
-        <h1>Home Monitor System</h1>
+        <span class="eyebrow"><span class="pulse-dot"></span> End-to-End IoT Project</span>
+        <h1>IoT Environmental Monitoring System</h1>
+
         <p class="hero-text">
-          A compact embedded Linux monitoring system that reads environmental data over I²C,
-          publishes telemetry through MQTT, and controls a fan or relay from a browser interface.
+          A portfolio-ready IoT system where an ESP32 reads BMP280 environmental sensor data,
+          publishes telemetry through MQTT, and a Raspberry Pi embedded Linux gateway runs a
+          Python MQTT bridge to forward data to a HiveMQ cloud broker for browser-based monitoring
+          and remote command control.
         </p>
+
+        <div class="hero-actions">
+          <a class="btn primary" href="#dashboard">View Live Dashboard</a>
+          <a class="btn" href="#architecture">See Architecture</a>
+          <button class="btn" type="button" onclick="copyProjectSummary()">Copy Project Summary</button>
+        </div>
+
+        <div class="hero-stack" aria-label="Technology stack">
+          <span class="chip">ESP32</span>
+          <span class="chip">BMP280</span>
+          <span class="chip">Raspberry Pi</span>
+          <span class="chip">Embedded Linux</span>
+          <span class="chip">Python</span>
+          <span class="chip">MQTT</span>
+          <span class="chip">Mosquitto</span>
+          <span class="chip">HiveMQ</span>
+          <span class="chip">Web Dashboard</span>
+        </div>
       </div>
 
-      <aside class="glass hero-panel" aria-label="Device status preview">
-        <div class="device-frame">
+      <aside class="glass hero-panel" aria-label="Live device status">
+        <div class="device-shell">
           <div class="screen-top">
-            <span></span>
+            <span id="client-label">client: waiting</span>
             <span class="status-pill offline" id="hero-status">WAITING</span>
           </div>
 
-          <div class="gauge-grid">
+          <div class="metrics">
             <div class="metric">
               <div class="metric-label">Temperature</div>
-              <div class="metric-value"><span id="hero-temp">24.7</span><span class="metric-unit"> °C</span></div>
+              <div class="metric-value"><span id="hero-temp">--</span><span class="metric-unit"> °C</span></div>
               <div class="bar"><span id="hero-temp-bar"></span></div>
             </div>
 
             <div class="metric">
               <div class="metric-label">Pressure</div>
-              <div class="metric-value"><span id="hero-pressure">1012</span><span class="metric-unit"> hPa</span></div>
+              <div class="metric-value"><span id="hero-pressure">--</span><span class="metric-unit"> hPa</span></div>
               <div class="bar"><span id="hero-pressure-bar"></span></div>
             </div>
 
             <div class="metric full">
-              <div class="metric-label">Fan / Relay State</div>
-              <div class="metric-value"><span id="hero-fan">AUTO</span></div>
+              <div class="metric-label">Remote Output</div>
+              <div class="metric-value"><span id="hero-fan">--</span></div>
               <div class="bar"><span id="hero-health-bar"></span></div>
             </div>
+          </div>
+
+          <div class="mini-row">
+            <div class="mini">
+              <small>Gateway</small>
+              <strong id="mini-gateway">Raspberry Pi</strong>
+            </div>
+            <div class="mini">
+              <small>Broker</small>
+              <strong id="mini-broker">HiveMQ</strong>
+            </div>
+            <div class="mini">
+              <small>Last Seen</small>
+              <strong id="mini-last">--</strong>
+            </div>
+          </div>
+
+          <div class="chart-wrap" aria-label="Temperature chart">
+            <canvas id="tempChart" width="760" height="260"></canvas>
           </div>
         </div>
       </aside>
@@ -689,24 +1108,49 @@
 
     <section class="section" id="dashboard">
       <div class="section-title">
-        <h2>Control & Status</h2>
+        <div>
+          <h2>Control & Status Dashboard</h2>
+          <p>Sensor readings stay blank until a real MQTT telemetry payload is received.</p>
+        </div>
         <span class="tiny" id="last-seen">Last update: --</span>
       </div>
 
-      <div class="dashboard-grid">
+      <div class="grid-2">
         <div class="card">
-          <h3>Manual Control</h3>
-          <p>Send fan or relay commands through the MQTT command topic.</p>
+          <h3>Remote Command Control</h3>
+          <p>
+            These buttons publish command payloads to the MQTT command topic. They do not create fake sensor readings; temperature and pressure appear only after real telemetry arrives.
+          </p>
 
           <div class="controls">
-            <button class="control-btn" type="button" onclick="sendFanCommand('ON')">Fan ON</button>
-            <button class="control-btn alt" type="button" onclick="sendFanCommand('OFF')">Fan OFF</button>
+            <button class="control-btn safe" type="button" onclick="sendFanCommand('AUTO')">AUTO</button>
+            <button class="control-btn" type="button" onclick="sendFanCommand('ON')">ON</button>
+            <button class="control-btn alt" type="button" onclick="sendFanCommand('OFF')">OFF</button>
+          </div>
+
+          <div class="result-grid">
+            <div class="result">
+              <strong id="packet-count">0</strong>
+              <small>MQTT packets received</small>
+            </div>
+            <div class="result">
+              <strong id="cmd-count">0</strong>
+              <small>Commands sent</small>
+            </div>
+            <div class="result">
+              <strong id="uptime">00:00</strong>
+              <small>Dashboard runtime</small>
+            </div>
+            <div class="result">
+              <strong id="mode-label">Waiting</strong>
+              <small>Current mode</small>
+            </div>
           </div>
         </div>
 
         <div class="card">
-          <h3>Gateway Status</h3>
-          <p id="mqtt-status">Connecting to MQTT stream...</p>
+          <h3>Gateway Health</h3>
+          <p id="mqtt-status">Waiting for live MQTT data. No sensor readings are displayed yet.</p>
 
           <div class="status-grid">
             <div class="status-card">
@@ -715,81 +1159,240 @@
             </div>
 
             <div class="status-card">
-              <small>Fan State</small>
-              <strong id="fan-status">AUTO</strong>
+              <small>Output</small>
+              <strong id="fan-status">--</strong>
             </div>
 
             <div class="status-card">
-              <small>Service</small>
-              <strong id="service-status">Active</strong>
+              <small>Bridge</small>
+              <strong id="bridge-status">Waiting</strong>
+            </div>
+
+            <div class="status-card">
+              <small>Payload</small>
+              <strong id="payload-status">Waiting</strong>
             </div>
           </div>
+
+          <div class="chart-wrap" aria-label="Pressure chart">
+            <canvas id="pressureChart" width="760" height="220"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="mqtt">
+      <div class="section-title">
+        <div>
+          <h2>MQTT Broker Configuration</h2>
+          <p>Edit these fields if you change your HiveMQ broker, topics, or ESP32 publish topic.</p>
+        </div>
+      </div>
+
+      <div class="config-grid">
+        <div class="card">
+          <h3>Live MQTT Settings</h3>
+          <p>
+            Default broker uses HiveMQ public WebSocket. Keep project topics unique when publishing
+            real data because public brokers are shared environments.
+          </p>
+
+          <div class="field-grid">
+            <div class="field">
+              <label for="brokerUrl">Broker WebSocket URL</label>
+              <input id="brokerUrl" value="wss://broker.hivemq.com:8884/mqtt" />
+            </div>
+
+            <div class="field">
+              <label for="dataTopic">Telemetry Topic</label>
+              <input id="dataTopic" value="esp32/bmp280/data" />
+            </div>
+
+            <div class="field">
+              <label for="commandTopic">Command Topic</label>
+              <input id="commandTopic" value="esp32/bmp280/command" />
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="small-btn" type="button" onclick="connectMqtt()">Connect MQTT</button>
+            <button class="small-btn danger" type="button" onclick="disconnectMqtt()">Disconnect</button>
+            <button class="small-btn" type="button" onclick="copyTopics()">Copy Topics</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="terminal-title">
+            <span>Latest JSON Payload</span>
+            <span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+          </div>
+          <div class="code-box" id="payload-box">Waiting for first real MQTT telemetry payload...</div>
         </div>
       </div>
     </section>
 
     <section class="section" id="architecture">
       <div class="section-title">
-        <h2>System Architecture</h2>
-        <span class="tiny">Sensor → Gateway → MQTT → Dashboard → Control</span>
+        <div>
+          <h2>System Architecture</h2>
+          <p>Accurate flow based on the project: sensor node, Linux gateway, MQTT bridge, cloud broker and web dashboard.</p>
+        </div>
       </div>
 
       <div class="flow">
         <div class="node">
           <div class="node-icon">🌡️</div>
-          <h3>BMP/BME280</h3>
-          <p>Collects temperature and pressure data over I²C.</p>
+          <h3>BMP280 Sensor</h3>
+          <p>Measures temperature and pressure for environmental monitoring.</p>
+        </div>
+
+        <div class="node">
+          <div class="node-icon">📟</div>
+          <h3>ESP32 Device</h3>
+          <p>Reads BMP280 values and publishes telemetry to a local MQTT topic.</p>
         </div>
 
         <div class="node">
           <div class="node-icon">🐧</div>
-          <h3>Linux Gateway</h3>
-          <p>C application reads from /dev/i2c-1 and validates sensor values.</p>
+          <h3>Raspberry Pi Gateway</h3>
+          <p>Runs embedded Linux, Mosquitto and a Python MQTT bridge for cloud communication.</p>
         </div>
 
         <div class="node">
-          <div class="node-icon">📡</div>
-          <h3>MQTT Broker</h3>
-          <p>Telemetry and control commands move as JSON messages.</p>
+          <div class="node-icon">☁️</div>
+          <h3>HiveMQ Broker</h3>
+          <p>Cloud MQTT broker carries telemetry and command messages using JSON payloads.</p>
         </div>
 
         <div class="node">
           <div class="node-icon">🖥️</div>
           <h3>Web Dashboard</h3>
-          <p>Browser interface displays status and command controls.</p>
+          <p>Displays sensor values, connection status, logs and remote control buttons.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="testing">
+      <div class="section-title">
+        <div>
+          <h2>What Was Tested</h2>
+          <p>Useful interview talking points for explaining the engineering value of the project.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Integration Test Flow</h3>
+
+          <div class="timeline">
+            <div class="step">
+              <div class="step-index">1</div>
+              <div>
+                <h3>ESP32 Sensor Publish</h3>
+                <p>Verified that BMP280 readings are collected and published to the MQTT telemetry topic.</p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-index">2</div>
+              <div>
+                <h3>Local Broker & Gateway</h3>
+                <p>Checked Raspberry Pi network access, Mosquitto broker behaviour and topic debugging.</p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-index">3</div>
+              <div>
+                <h3>Python MQTT Bridge</h3>
+                <p>Validated telemetry forwarding from local messages to the cloud MQTT broker.</p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-index">4</div>
+              <div>
+                <h3>Dashboard & Commands</h3>
+                <p>Tested real-time dashboard updates and command messages sent back to the device side.</p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="node">
-          <div class="node-icon">🌀</div>
-          <h3>Fan / Relay</h3>
-          <p>Control output responds to ON and OFF commands.</p>
+        <div class="card">
+          <h3>Skills Demonstrated</h3>
+          <p>
+            This project is strong for junior embedded, IoT, application engineer, validation,
+            integration and embedded Linux support roles because it shows full-system thinking.
+          </p>
+
+          <div class="skill-list">
+            <span class="skill">Embedded Linux workflow</span>
+            <span class="skill">Raspberry Pi gateway setup</span>
+            <span class="skill">ESP32 sensor integration</span>
+            <span class="skill">MQTT telemetry</span>
+            <span class="skill">Mosquitto testing</span>
+            <span class="skill">HiveMQ cloud broker</span>
+            <span class="skill">Python bridge logic</span>
+            <span class="skill">WebSocket MQTT</span>
+            <span class="skill">Dashboard UI</span>
+            <span class="skill">Topic debugging</span>
+            <span class="skill">Network troubleshooting</span>
+            <span class="skill">End-to-end validation</span>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="section" id="logs">
       <div class="section-title">
-        <h2>Gateway Logs</h2>
-        <span class="tiny">journalctl-style service output</span>
+        <div>
+          <h2>Gateway Logs</h2>
+          <p>Browser-side log viewer showing MQTT connection events, real payloads and commands.</p>
+        </div>
+
+        <div class="action-row">
+          <button class="small-btn" type="button" onclick="exportLogs()">Export Logs</button>
+          <button class="small-btn danger" type="button" onclick="clearLogs()">Clear</button>
+        </div>
       </div>
 
       <div class="card">
+        <div class="terminal-title">
+          <span>journalctl-style output</span>
+          <span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+        </div>
         <div class="log-box" id="log-box" aria-live="polite"></div>
       </div>
     </section>
 
-    <p class="footer">Joshva Jonathan Joseph · Embedded Linux · MQTT · I²C Sensor Monitoring · Fan Control</p>
+    <p class="footer">
+      Joshva Jonathan Joseph · IoT Environmental Monitoring · ESP32 · BMP280 · Raspberry Pi · Embedded Linux · Python MQTT Bridge · Mosquitto · HiveMQ · Web Dashboard
+    </p>
   </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <noscript>
+    <div style="position: fixed; left: 16px; bottom: 16px; right: 16px; padding: 14px; border-radius: 14px; background: #020617; color: white; border: 1px solid #38bdf8; z-index: 999;">
+      JavaScript is required for live MQTT, charts, commands and dashboard updates.
+    </div>
+  </noscript>
 
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 
   <script>
-    const dataTopic = "esp32/bmp280/data";
-    const commandTopic = "esp32/bmp280/command";
-
-    let fanState = "AUTO";
+    let fanState = "--";
     let mqttClient = null;
     let liveConnected = false;
+    let packetCount = 0;
+    let commandCount = 0;
+    let logStore = [];
+    let bootTime = Date.now();
+
+    const tempHistory = [];
+    const pressureHistory = [];
+    const maxHistory = 34;
 
     const el = (id) => document.getElementById(id);
 
@@ -819,8 +1422,26 @@
       });
     }
 
+    function showToast(message) {
+      const toast = el("toast");
+      if (!toast) {
+        return;
+      }
+
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2200);
+    }
+
     function addLog(message, type = "ok") {
       const box = el("log-box");
+      const entry = "[" + formatTime() + "] " + message;
+      logStore.push(entry);
+
       if (!box) {
         return;
       }
@@ -841,7 +1462,7 @@
       box.appendChild(line);
       box.scrollTop = box.scrollHeight;
 
-      while (box.children.length > 32) {
+      while (box.children.length > 70) {
         box.removeChild(box.firstChild);
       }
     }
@@ -850,125 +1471,394 @@
       liveConnected = isLive;
 
       const heroStatus = el("hero-status");
-
       if (heroStatus) {
-        heroStatus.textContent = isLive ? "LIVE MQTT" : status;
+        heroStatus.textContent = isLive ? "LIVE MQTT" : status.toUpperCase();
         heroStatus.classList.toggle("offline", !isLive);
       }
 
       setText("connection-status", isLive ? "Live" : status);
-      setBarWidth("hero-health-bar", isLive ? "92%" : "72%");
+      setText("mode-label", isLive ? "Live" : "Waiting");
+      setText("bridge-status", isLive ? "Online" : "Waiting");
+      setText("client-label", isLive ? "client: mqtt-web" : "client: waiting");
+      setBarWidth("hero-health-bar", isLive ? "94%" : "0%");
     }
 
-    function updateDashboard(data, source = "preview") {
-      const temp = Number(data.temperature ?? data.temp ?? 24.5);
-      const pressure = Number(data.pressure ?? 1012);
-      fanState = data.fan ?? fanState;
+    function updatePayloadBox(data) {
+      const box = el("payload-box");
+      if (!box) {
+        return;
+      }
+
+      box.textContent = typeof data === "string" ? data : JSON.stringify(data, null, 2);
+    }
+
+    function pushHistory(temp, pressure) {
+      tempHistory.push(temp);
+      pressureHistory.push(pressure);
+
+      while (tempHistory.length > maxHistory) {
+        tempHistory.shift();
+      }
+
+      while (pressureHistory.length > maxHistory) {
+        pressureHistory.shift();
+      }
+
+      drawChart("tempChart", tempHistory, "Temperature °C", 15, 45);
+      drawChart("pressureChart", pressureHistory, "Pressure hPa", 950, 1050);
+    }
+
+    function drawChart(canvasId, data, label, minY, maxY) {
+      const canvas = el(canvasId);
+      if (!canvas) {
+        return;
+      }
+
+      const ctx = canvas.getContext("2d");
+      const width = canvas.width;
+      const height = canvas.height;
+      const pad = 32;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, "rgba(56, 189, 248, 0.22)");
+      gradient.addColorStop(1, "rgba(251, 191, 36, 0.06)");
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.strokeStyle = "rgba(148, 163, 184, 0.18)";
+      ctx.lineWidth = 1;
+
+      for (let i = 0; i < 5; i++) {
+        const y = pad + ((height - pad * 2) / 4) * i;
+        ctx.beginPath();
+        ctx.moveTo(pad, y);
+        ctx.lineTo(width - pad, y);
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = "rgba(203, 213, 225, 0.86)";
+      ctx.font = "14px Consolas, monospace";
+      ctx.fillText(label, pad, 22);
+
+      if (data.length < 2) {
+        return;
+      }
+
+      ctx.beginPath();
+
+      data.forEach((value, index) => {
+        const x = pad + ((width - pad * 2) / (maxHistory - 1)) * index;
+        const yRange = maxY - minY;
+        const y = height - pad - clamp(((value - minY) / yRange) * (height - pad * 2), 0, height - pad * 2);
+
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+
+      ctx.strokeStyle = "rgba(56, 189, 248, 0.96)";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      const lastValue = data[data.length - 1];
+      const lastX = pad + ((width - pad * 2) / (maxHistory - 1)) * (data.length - 1);
+      const lastY = height - pad - clamp(((lastValue - minY) / (maxY - minY)) * (height - pad * 2), 0, height - pad * 2);
+
+      ctx.fillStyle = "rgba(251, 191, 36, 0.96)";
+      ctx.beginPath();
+      ctx.arc(lastX, lastY, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "rgba(248, 250, 252, 0.92)";
+      ctx.font = "13px Consolas, monospace";
+      ctx.fillText(String(lastValue.toFixed(1)), Math.min(lastX + 10, width - 80), Math.max(lastY - 10, 24));
+    }
+
+    function toNumberOrNull(value) {
+      if (value === undefined || value === null || value === "") {
+        return null;
+      }
+
+      const numberValue = Number(value);
+      return Number.isFinite(numberValue) ? numberValue : null;
+    }
+
+    function normaliseData(data, source) {
+      const temperature = toNumberOrNull(data.temperature ?? data.temp ?? data.temperature_c);
+      const pressure = toNumberOrNull(data.pressure ?? data.pressure_hpa ?? data.pressure_hPa);
+      const output = data.fan ?? data.relay ?? data.output ?? fanState;
+
+      return {
+        temperature: temperature,
+        pressure: pressure,
+        fan: output ? String(output) : "--",
+        source: source,
+        timestamp: new Date().toISOString()
+      };
+    }
+
+    function updateEmptyCharts() {
+      drawChart("tempChart", tempHistory, "Temperature °C - waiting for real data", 15, 45);
+      drawChart("pressureChart", pressureHistory, "Pressure hPa - waiting for real data", 950, 1050);
+    }
+
+    function updateOutputOnly(state, source = "command") {
+      fanState = state;
+      setText("fan-status", fanState);
+      setText("hero-fan", fanState);
+      setText("cmd-count", String(commandCount));
+      setText("payload-status", liveConnected ? "Command" : "Waiting");
+      updatePayloadBox({
+        fan: state,
+        command: state,
+        source: source,
+        note: "Command sent. Sensor readings will appear only after real MQTT telemetry arrives.",
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    function updateDashboard(rawData, source = "mqtt") {
+      const data = normaliseData(rawData, source);
+      const hasTemp = Number.isFinite(data.temperature);
+      const hasPressure = Number.isFinite(data.pressure);
+
+      if (!hasTemp && !hasPressure) {
+        updatePayloadBox({
+          ...data,
+          note: "Payload received, but no valid temperature or pressure field was found."
+        });
+        setText("payload-status", "Check JSON");
+        addLog("payload ignored: no valid temperature/pressure fields", "warn");
+        return;
+      }
+
+      fanState = data.fan;
 
       setText("last-seen", "Last update: " + formatTime());
+      setText("mini-last", formatTime());
       setText("fan-status", fanState);
-      setText("hero-temp", temp.toFixed(1));
-      setText("hero-pressure", pressure.toFixed(0));
       setText("hero-fan", fanState);
+      setText("packet-count", String(packetCount));
+      setText("payload-status", source === "mqtt" ? "Live JSON" : "Received");
 
-      setBarWidth("hero-temp-bar", clamp((temp / 45) * 100, 10, 100) + "%");
-      setBarWidth("hero-pressure-bar", clamp(((pressure - 950) / 120) * 100, 10, 100) + "%");
+      if (hasTemp) {
+        setText("hero-temp", data.temperature.toFixed(1));
+        setBarWidth("hero-temp-bar", clamp((data.temperature / 45) * 100, 10, 100) + "%");
+      }
+
+      if (hasPressure) {
+        setText("hero-pressure", data.pressure.toFixed(0));
+        setBarWidth("hero-pressure-bar", clamp(((data.pressure - 950) / 120) * 100, 10, 100) + "%");
+      }
+
+      if (hasTemp && hasPressure) {
+        pushHistory(data.temperature, data.pressure);
+      }
+
+      updatePayloadBox(data);
 
       addLog(
-        source + ": temp=" + temp.toFixed(1) + "C pressure=" + pressure.toFixed(0) + "hPa fan=" + fanState,
-        source === "mqtt" ? "ok" : "warn"
+        source + ": " +
+        (hasTemp ? "temp=" + data.temperature.toFixed(1) + "C " : "") +
+        (hasPressure ? "pressure=" + data.pressure.toFixed(0) + "hPa " : "") +
+        "output=" + fanState,
+        source === "mqtt" ? "ok" : "info"
       );
     }
 
-    function simulateTelemetry() {
-      if (liveConnected) {
-        return;
-      }
-
-      const base = 24 + Math.sin(Date.now() / 9000) * 2.2;
-
-      updateDashboard({
-        temperature: base + (Math.random() - 0.5) * 0.7,
-        pressure: 1012 + Math.sin(Date.now() / 11000) * 5 + (Math.random() - 0.5) * 2,
-        fan: fanState === "AUTO" ? (base > 25.4 ? "ON" : "OFF") : fanState
-      }, "preview");
+    function getSettings() {
+      return {
+        brokerUrl: el("brokerUrl")?.value.trim() || "wss://broker.hivemq.com:8884/mqtt",
+        dataTopic: el("dataTopic")?.value.trim() || "esp32/bmp280/data",
+        commandTopic: el("commandTopic")?.value.trim() || "esp32/bmp280/command"
+      };
     }
 
-    function sendFanCommand(state) {
-      fanState = state;
+    function connectMqtt() {
+      const settings = getSettings();
 
-      updateDashboard({
-        temperature: Number(el("hero-temp")?.textContent) || 24.5,
-        pressure: Number(el("hero-pressure")?.textContent) || 1012,
-        fan: state
-      }, liveConnected ? "mqtt-cmd" : "local-cmd");
-
-      addLog("command request: fan=" + state, "ok");
-
-      if (mqttClient && liveConnected) {
-        mqttClient.publish(commandTopic, JSON.stringify({ fan: state }));
-      }
-    }
-
-    function startMqtt() {
       if (typeof mqtt === "undefined") {
-        setText("mqtt-status", "MQTT library unavailable. Local preview is active.");
-        updateConnectionStatus("Preview", false);
-        addLog("mqtt.js not loaded; local preview active", "warn");
+        setText("mqtt-status", "MQTT library unavailable. Waiting for real sensor data.");
+        updateConnectionStatus("Waiting", false);
+        addLog("mqtt.js not loaded; readings remain blank", "warn");
         return;
+      }
+
+      if (mqttClient) {
+        try {
+          mqttClient.end(true);
+        } catch (error) {
+          addLog("previous mqtt disconnect issue: " + error.message, "warn");
+        }
       }
 
       try {
-        mqttClient = mqtt.connect("wss://broker.hivemq.com:8884/mqtt", {
-          clientId: "joshva_monitor_showcase_" + Math.random().toString(16).slice(2, 10),
+        const clientId = "joshva_iot_dashboard_" + Math.random().toString(16).slice(2, 10);
+        setText("client-label", "client: " + clientId.slice(0, 23) + "...");
+
+        mqttClient = mqtt.connect(settings.brokerUrl, {
+          clientId: clientId,
           protocolVersion: 4,
           reconnectPeriod: 2500,
-          connectTimeout: 8000
+          connectTimeout: 9000,
+          clean: true
         });
+
+        setText("mqtt-status", "Connecting to " + settings.brokerUrl + " ...");
+        addLog("mqtt connect requested: " + settings.brokerUrl, "info");
 
         mqttClient.on("connect", () => {
           updateConnectionStatus("Live", true);
-          setText("mqtt-status", "Connected to HiveMQ WebSocket. Waiting for sensor data.");
-          addLog("mqtt connected; subscribed to " + dataTopic, "ok");
-          mqttClient.subscribe(dataTopic);
+          setText("mqtt-status", "Connected. Subscribed to telemetry topic: " + settings.dataTopic);
+          addLog("mqtt connected; subscribed to " + settings.dataTopic, "ok");
+          mqttClient.subscribe(settings.dataTopic);
         });
 
         mqttClient.on("message", (topic, message) => {
-          if (topic !== dataTopic) {
+          if (topic !== settings.dataTopic) {
             return;
           }
 
           try {
-            updateDashboard(JSON.parse(message.toString()), "mqtt");
+            packetCount += 1;
+            const parsed = JSON.parse(message.toString());
+            updateDashboard(parsed, "mqtt");
           } catch (error) {
-            addLog("json parse error: " + error.message, "err");
+            addLog("json parse error: " + error.message + " | payload=" + message.toString(), "err");
           }
         });
 
         mqttClient.on("error", (error) => {
-          updateConnectionStatus("Preview", false);
-          setText("mqtt-status", "MQTT connection issue. Local preview remains active.");
+          updateConnectionStatus("Waiting", false);
+          setText("mqtt-status", "MQTT connection issue. Readings remain blank until real telemetry arrives.");
           addLog("mqtt error: " + error.message, "err");
         });
 
         mqttClient.on("close", () => {
-          updateConnectionStatus("Preview", false);
-          setText("mqtt-status", "MQTT disconnected. Local preview remains active.");
+          updateConnectionStatus("Waiting", false);
+          setText("mqtt-status", "MQTT disconnected. Existing readings stay visible; no new readings will be created.");
           addLog("mqtt disconnected", "warn");
         });
+
+        mqttClient.on("reconnect", () => {
+          setText("mqtt-status", "Reconnecting to MQTT broker...");
+          addLog("mqtt reconnecting", "warn");
+        });
       } catch (error) {
-        updateConnectionStatus("Preview", false);
-        setText("mqtt-status", "MQTT connection blocked by browser or network. Local preview remains active.");
+        updateConnectionStatus("Waiting", false);
+        setText("mqtt-status", "MQTT connection blocked by browser or network. No fake readings will be displayed.");
         addLog("mqtt init failed: " + error.message, "err");
       }
     }
 
-    addLog("system boot: monitoring page loaded", "ok");
-    addLog("sensor service: waiting for telemetry", "warn");
-    updateConnectionStatus("Waiting", false);
-    updateDashboard({ temperature: 24.7, pressure: 1012, fan: "AUTO" }, "boot");
-    startMqtt();
-    setInterval(simulateTelemetry, 2200);
+    function disconnectMqtt() {
+      if (!mqttClient) {
+        showToast("No MQTT client is currently connected.");
+        return;
+      }
+
+      mqttClient.end(true);
+      mqttClient = null;
+      updateConnectionStatus("Waiting", false);
+      setText("mqtt-status", "MQTT disconnected manually. Existing readings stay visible; no new readings will be created.");
+      addLog("mqtt disconnected manually", "warn");
+    }
+
+    function sendFanCommand(state) {
+      const settings = getSettings();
+
+      commandCount += 1;
+      setText("cmd-count", String(commandCount));
+
+      const payload = {
+        fan: state,
+        command: state,
+        requested_by: "web_dashboard",
+        timestamp: new Date().toISOString()
+      };
+
+      updateOutputOnly(state, liveConnected ? "mqtt-cmd" : "local-cmd");
+      addLog("command request: " + JSON.stringify(payload), "ok");
+
+      if (mqttClient && liveConnected) {
+        mqttClient.publish(settings.commandTopic, JSON.stringify(payload));
+        showToast("Command published: " + state);
+      } else {
+        showToast("Command stored on dashboard only. Connect MQTT to publish it.");
+      }
+    }
+
+    function copyTopics() {
+      const settings = getSettings();
+      const text = "Telemetry topic: " + settings.dataTopic + "\nCommand topic: " + settings.commandTopic;
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("MQTT topics copied.");
+      }).catch(() => {
+        showToast("Could not copy topics.");
+      });
+    }
+
+    function copyProjectSummary() {
+      const text =
+        "Designed and implemented an end-to-end IoT environmental monitoring system using ESP32, BMP280, Raspberry Pi embedded Linux, Python, MQTT, Mosquitto, HiveMQ and a web dashboard. The ESP32 publishes sensor telemetry, the Raspberry Pi acts as a Linux gateway with a Python MQTT bridge, and the browser dashboard visualises live temperature/pressure data with basic remote command control.";
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("Project summary copied.");
+      }).catch(() => {
+        showToast("Could not copy summary.");
+      });
+    }
+
+    function exportLogs() {
+      const blob = new Blob([logStore.join("\n")], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = "iot_gateway_dashboard_logs.txt";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+
+      showToast("Logs exported.");
+    }
+
+    function clearLogs() {
+      logStore = [];
+      const box = el("log-box");
+      if (box) {
+        box.innerHTML = "";
+      }
+      addLog("logs cleared", "warn");
+    }
+
+    function updateUptime() {
+      const elapsed = Math.floor((Date.now() - bootTime) / 1000);
+      const minutes = Math.floor(elapsed / 60).toString().padStart(2, "0");
+      const seconds = (elapsed % 60).toString().padStart(2, "0");
+      setText("uptime", minutes + ":" + seconds);
+    }
+
+    function initialiseDashboard() {
+      addLog("system boot: dashboard loaded", "ok");
+      addLog("gateway: Raspberry Pi embedded Linux project showcase", "info");
+      addLog("readings: waiting for first real MQTT telemetry payload", "warn");
+
+      updateConnectionStatus("Waiting", false);
+      updatePayloadBox("Waiting for first real MQTT telemetry payload...");
+      updateEmptyCharts();
+      setInterval(updateUptime, 1000);
+      updateUptime();
+    }
+
+    initialiseDashboard();
   </script>
 </body>
 </html>
