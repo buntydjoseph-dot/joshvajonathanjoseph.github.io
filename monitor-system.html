@@ -1650,7 +1650,6 @@
       setText("payload-status", "Waiting");
       setText("publish-status", "Waiting");
       updatePayloadBox("Waiting for first real MQTT telemetry payload...");
-      addLog("dashboard loaded; waiting for real MQTT telemetry only", "ok");
       addLog("auto connection uses dashboard MQTT_CONFIG data topic: " + getSettings().dataTopic, "info");
       drawChart();
       updateUptime();
