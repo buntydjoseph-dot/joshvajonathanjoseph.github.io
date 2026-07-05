@@ -1002,9 +1002,9 @@
         </div>
 
         <div class="dashboard-right">
-          <div class="card">
+          <div class="card command-card">
             <h3>Remote Command Control</h3>
-            <p>These buttons publish command payloads only. They do not change sensor readings on the screen.</p>
+            <p>Commands are published through MQTT when the dashboard is connected. Buttons do not change sensor readings on the screen.</p>
 
             <div class="controls">
               <button class="control-btn safe" type="button" onclick="sendFanCommand('AUTO')">AUTO</button>
@@ -1030,42 +1030,6 @@
                 <strong id="uptime">00:00</strong>
               </div>
             </div>
-          </div>
-
-          <div class="card settings-card">
-            <h3>MQTT Connection</h3>
-            <p>Settings are kept inside the dashboard so there is no separate broker configuration section.</p>
-
-            <div class="field-grid">
-              <div class="field">
-                <label for="brokerUrl">Broker WebSocket URL</label>
-                <input id="brokerUrl" value="wss://broker.hivemq.com:8884/mqtt" autocomplete="off" />
-              </div>
-
-              <div class="field">
-                <label for="dataTopic">Telemetry Topic</label>
-                <input id="dataTopic" value="joshva/home-monitor/bmp280/data" autocomplete="off" />
-              </div>
-
-              <div class="field">
-                <label for="commandTopic">Command Topic</label>
-                <input id="commandTopic" value="joshva/home-monitor/bmp280/command" autocomplete="off" />
-              </div>
-
-              <div class="field">
-                <label for="deviceFilter">Device ID Filter optional</label>
-                <input id="deviceFilter" value="" placeholder="Example: esp32-bmp280-01" autocomplete="off" />
-              </div>
-            </div>
-
-            <div class="action-row">
-              <button class="small-btn primary" type="button" onclick="connectMqtt()">Connect MQTT</button>
-              <button class="small-btn danger" type="button" onclick="disconnectMqtt()">Disconnect</button>
-            </div>
-
-            <p class="settings-note">
-              Use a unique public broker topic to avoid reading someone else’s test data. If you keep your ESP32 topic as <strong>esp32/bmp280/data</strong>, enter that topic here.
-            </p>
           </div>
 
           <div class="card">
@@ -1222,6 +1186,13 @@
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 
   <script>
+    const MQTT_CONFIG = {
+      brokerUrl: "wss://broker.hivemq.com:8884/mqtt",
+      dataTopic: "joshva/home-monitor/bmp280/data",
+      commandTopic: "joshva/home-monitor/bmp280/command",
+      deviceFilter: ""
+    };
+
     let mqttClient = null;
     let liveConnected = false;
     let packetCount = 0;
@@ -1313,12 +1284,7 @@
     }
 
     function getSettings() {
-      return {
-        brokerUrl: el("brokerUrl")?.value.trim() || "wss://broker.hivemq.com:8884/mqtt",
-        dataTopic: el("dataTopic")?.value.trim() || "joshva/home-monitor/bmp280/data",
-        commandTopic: el("commandTopic")?.value.trim() || "joshva/home-monitor/bmp280/command",
-        deviceFilter: el("deviceFilter")?.value.trim() || ""
-      };
+      return MQTT_CONFIG;
     }
 
     function toNumber(value) {
@@ -1533,6 +1499,92 @@
       ctx.fillText("Latest: " + timeHistory[timeHistory.length - 1], padding, height - 10);
     }
 
+    function connectMqtt() {
+      const settings = getSettings();
+
+      if (typeof mqtt === "undefined") {
+        setText("mqtt-status", "MQTT library unavailable. Readings remain blank.");
+        setConnectionStatus("Waiting", false);
+        addLog("mqtt.js not loaded; readings remain blank", "warn");
+        return;
+      }
+
+      if (mqttClient) {
+        try { mqttClient.end(true); } catch (error) { addLog("previous mqtt disconnect issue: " + error.message, "warn"); }
+        mqttClient = null;
+      }
+
+      setConnectionStatus("Connecting", false);
+      setText("mqtt-status", "Connecting to " + settings.brokerUrl + " ...");
+      setText("payload-status", "Waiting");
+      updatePayloadBox("Waiting for first real MQTT telemetry payload...");
+      addLog("connecting to broker: " + settings.brokerUrl, "info");
+
+      try {
+        mqttClient = mqtt.connect(settings.brokerUrl, {
+          clientId: "joshva_dashboard_" + Math.random().toString(16).slice(2, 10),
+          protocolVersion: 4,
+          reconnectPeriod: 2500,
+          connectTimeout: 9000,
+          clean: true
+        });
+
+        mqttClient.on("connect", () => {
+          setConnectionStatus("Live", true);
+          setText("mqtt-status", "Connected. Waiting for real telemetry on: " + settings.dataTopic);
+          addLog("mqtt connected; subscribing to " + settings.dataTopic, "ok");
+          mqttClient.subscribe(settings.dataTopic, (error) => {
+            if (error) {
+              addLog("subscribe failed: " + error.message, "err");
+              setText("payload-status", "Subscribe error");
+            } else {
+              addLog("subscribed to telemetry topic", "ok");
+            }
+          });
+        });
+
+        mqttClient.on("message", (topic, message) => {
+          try {
+            const rawText = message.toString();
+            const parsed = JSON.parse(rawText);
+            handleTelemetry(parsed, topic);
+          } catch (error) {
+            ignoredCount += 1;
+            setText("ignored-count", String(ignoredCount));
+            setText("payload-status", "Invalid JSON");
+            updatePayloadBox("Invalid JSON received:\n" + message.toString());
+            addLog("ignored payload: json parse error - " + error.message, "err");
+          }
+        });
+
+        mqttClient.on("error", (error) => {
+          setConnectionStatus("Issue", false);
+          setText("mqtt-status", "MQTT connection issue. Readings stay blank until real data is received.");
+          addLog("mqtt error: " + error.message, "err");
+        });
+
+        mqttClient.on("close", () => {
+          setConnectionStatus("Closed", false);
+          setText("mqtt-status", "MQTT disconnected. Existing real readings are kept, but no new data is arriving.");
+          addLog("mqtt disconnected", "warn");
+        });
+      } catch (error) {
+        setConnectionStatus("Issue", false);
+        setText("mqtt-status", "MQTT init failed. Check broker URL or browser/network support.");
+        addLog("mqtt init failed: " + error.message, "err");
+      }
+    }
+
+    function disconnectMqtt() {
+      if (mqttClient) {
+        mqttClient.end(true);
+        mqttClient = null;
+      }
+      setConnectionStatus("Closed", false);
+      setText("mqtt-status", "MQTT disconnected manually. Readings will not update until you reconnect.");
+      addLog("mqtt disconnected manually", "warn");
+      showToast("MQTT disconnected.");
+    }
 
     function sendFanCommand(state) {
       const settings = getSettings();
@@ -1598,7 +1650,8 @@
       setText("payload-status", "Waiting");
       setText("publish-status", "Waiting");
       updatePayloadBox("Waiting for first real MQTT telemetry payload...");
-      addLog("dashboard loaded; no fake sensor values will be displayed", "ok");
+      addLog("dashboard loaded; waiting for real MQTT telemetry only", "ok");
+      addLog("auto connection uses dashboard MQTT_CONFIG data topic: " + getSettings().dataTopic, "info");
       drawChart();
       updateUptime();
       setInterval(updateUptime, 1000);
