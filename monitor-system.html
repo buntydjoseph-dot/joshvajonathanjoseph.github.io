@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="End-to-end IoT environmental monitoring system using ESP32, BMP280, Raspberry Pi, embedded Linux, Mosquitto, HiveMQ, MQTT, Python bridge and a web dashboard." />
-  <title>IoT Environmental Monitoring System | Joshva Jonathan Joseph</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="Green AI Engineering develops embedded, connected and intelligent monitoring and automation systems."
+  >
+
+  <meta name="theme-color" content="#31572c">
+
+  <title>Green AI Engineering</title>
 
   <style>
     :root {
-      --bg: #020617;
-      --panel: rgba(15, 23, 42, 0.84);
-      --panel-dark: rgba(2, 6, 23, 0.82);
-      --panel-strong: rgba(2, 6, 23, 0.94);
-      --line: rgba(148, 163, 184, 0.18);
-      --line-bright: rgba(56, 189, 248, 0.34);
-      --cyan: #38bdf8;
-      --cyan-soft: rgba(56, 189, 248, 0.13);
-      --amber: #fbbf24;
-      --amber-soft: rgba(251, 191, 36, 0.14);
-      --green: #22c55e;
-      --green-soft: rgba(34, 197, 94, 0.13);
-      --red: #fb7185;
-      --red-soft: rgba(251, 113, 133, 0.13);
-      --text: #f8fafc;
-      --muted: #cbd5e1;
-      --dim: #94a3b8;
+      --forest: #31572c;
+      --forest-dark: #203c24;
+      --leaf: #5f7f35;
+      --leaf-light: #8eaa58;
+      --sky: #9ecfe5;
+      --sky-light: #d9edf3;
+      --cream: #f5f2e9;
+      --paper: #fffdf7;
+      --earth: #75644d;
+      --text: #263126;
+      --muted: #647064;
+      --line: rgba(49, 87, 44, 0.16);
+      --shadow: 0 20px 50px rgba(40, 59, 40, 0.12);
+      --content-width: 1180px;
     }
 
     * {
@@ -37,649 +41,549 @@
 
     body {
       margin: 0;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       color: var(--text);
-      background:
-        radial-gradient(circle at 16% 12%, rgba(56, 189, 248, 0.22), transparent 30%),
-        radial-gradient(circle at 88% 18%, rgba(251, 191, 36, 0.14), transparent 30%),
-        radial-gradient(circle at 72% 84%, rgba(34, 197, 94, 0.11), transparent 32%),
-        linear-gradient(135deg, #020617 0%, #0f172a 46%, #111827 100%);
-      overflow-x: hidden;
+      background: var(--cream);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(56, 189, 248, 0.055) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(56, 189, 248, 0.055) 1px, transparent 1px);
-      background-size: 54px 54px;
-      mask-image: radial-gradient(circle at center, black, transparent 76%);
-      animation: driftGrid 20s linear infinite;
+    img {
+      max-width: 100%;
+      display: block;
     }
 
-    @keyframes driftGrid {
-      from {
-        transform: translate3d(0, 0, 0);
-      }
-
-      to {
-        transform: translate3d(54px, 54px, 0);
-      }
+    a {
+      color: inherit;
     }
 
-    .orb {
-      position: fixed;
-      width: 260px;
-      height: 260px;
-      border-radius: 999px;
-      filter: blur(55px);
-      opacity: 0.32;
-      pointer-events: none;
-      animation: floatOrb 10s ease-in-out infinite alternate;
+    h1,
+    h2,
+    h3 {
+      margin-top: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 500;
+      line-height: 1.08;
     }
 
-    .orb.one {
-      left: -80px;
-      top: 150px;
-      background: var(--cyan);
-    }
-
-    .orb.two {
-      right: -90px;
-      bottom: 90px;
-      background: var(--amber);
-      animation-delay: 1.6s;
-    }
-
-    @keyframes floatOrb {
-      from {
-        transform: translateY(-18px) scale(0.96);
-      }
-
-      to {
-        transform: translateY(24px) scale(1.05);
-      }
-    }
-
-    .wrap {
-      width: min(1240px, 94%);
+    .container {
+      width: min(var(--content-width), 92%);
       margin: 0 auto;
-      padding: 28px 0 64px;
-      position: relative;
-      z-index: 1;
     }
 
-    .nav {
+    .site-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      padding: 22px 0;
+    }
+
+    .header-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 18px;
-      margin-bottom: 28px;
+      gap: 24px;
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 16px;
+      background: rgba(24, 50, 30, 0.34);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .brand {
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 850;
-      letter-spacing: 0.3px;
-      min-width: 0;
-    }
-
-    .brand-logo {
-      width: 52px;
-      height: 52px;
-      object-fit: contain;
-      border-radius: 14px;
-      background: white;
-      padding: 5px;
-      box-shadow: 0 0 28px rgba(56, 189, 248, 0.35);
-      flex: 0 0 auto;
-    }
-
-    .brand span {
-      white-space: nowrap;
-    }
-
-    .nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 10px;
-    }
-
-    .nav a:not(.brand) {
-      color: var(--muted);
-      text-decoration: none;
-      padding: 9px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(15, 23, 42, 0.55);
-      transition: 0.25s ease;
-      font-weight: 650;
-    }
-
-    .nav a:not(.brand):hover,
-    .nav a:not(.brand):focus-visible {
       color: white;
-      border-color: rgba(56, 189, 248, 0.45);
-      background: rgba(56, 189, 248, 0.11);
-      transform: translateY(-1px);
+      text-decoration: none;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.1px;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--forest);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .nav-toggle {
+      display: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 10px;
+      padding: 9px 12px;
+      color: white;
+      background: rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .main-nav a {
+      padding: 9px 12px;
+      color: rgba(255, 255, 255, 0.88);
+      text-decoration: none;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .main-nav a:hover,
+    .main-nav a:focus-visible {
+      color: white;
+      background: rgba(255, 255, 255, 0.13);
       outline: none;
     }
 
-    .glass,
-    .card {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.36);
-    }
-
     .hero {
-      border-radius: 30px;
-      padding: clamp(28px, 5vw, 52px);
       position: relative;
-      overflow: hidden;
-      min-height: 390px;
-      display: flex;
+      min-height: 760px;
+      display: grid;
       align-items: center;
+      overflow: hidden;
+      color: white;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(24, 48, 26, 0.82) 0%,
+          rgba(31, 58, 33, 0.62) 44%,
+          rgba(31, 58, 33, 0.18) 100%
+        ),
+        url("assets/greenhouse-background.png") center center / cover no-repeat;
     }
 
     .hero::after {
       content: "";
       position: absolute;
-      right: -90px;
-      top: -100px;
-      width: 310px;
-      height: 310px;
-      border: 1px solid rgba(56, 189, 248, 0.23);
-      border-radius: 50%;
-      box-shadow: inset 0 0 45px rgba(56, 189, 248, 0.12);
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 150px;
+      background: linear-gradient(transparent, rgba(245, 242, 233, 0.96));
+      pointer-events: none;
     }
 
     .hero-content {
       position: relative;
-      z-index: 1;
-      width: min(820px, 100%);
+      z-index: 2;
+      max-width: 720px;
+      padding: 150px 0 120px;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 9px;
+      margin-bottom: 22px;
       padding: 8px 12px;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      background: var(--cyan-soft);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       border-radius: 999px;
-      color: #bae6fd;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-    }
-
-    .pulse-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--amber);
-      box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7);
-      animation: pulse 1.4s infinite;
-    }
-
-    @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7);
-      }
-
-      70% {
-        box-shadow: 0 0 0 12px rgba(251, 191, 36, 0);
-      }
-
-      100% {
-        box-shadow: 0 0 0 0 rgba(251, 191, 36, 0);
-      }
-    }
-
-    h1 {
-      margin: 20px 0 14px;
-      font-size: clamp(42px, 7vw, 86px);
-      line-height: 0.95;
-      letter-spacing: -3px;
-      background: linear-gradient(90deg, #ffffff, #bae6fd 50%, #fde68a);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero-text {
-      max-width: 790px;
-      color: var(--muted);
-      line-height: 1.75;
-      font-size: clamp(16px, 1.5vw, 19px);
-      margin: 0;
-    }
-
-    .section {
-      margin-top: 28px;
-    }
-
-    .section-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin: 0 0 14px;
-    }
-
-    .section-title h2 {
-      margin: 0;
-      font-size: 25px;
-      letter-spacing: -0.5px;
-    }
-
-    .tiny {
-      color: var(--dim);
-      font-size: 13px;
-      white-space: nowrap;
-    }
-
-    .dashboard {
-      border-radius: 30px;
-      padding: clamp(18px, 3vw, 28px);
-      overflow: hidden;
-    }
-
-    .alert {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 16px 18px;
-      border: 1px solid rgba(251, 191, 36, 0.28);
-      background: var(--amber-soft);
-      border-radius: 18px;
-      color: #fde68a;
-      margin-bottom: 18px;
-      line-height: 1.45;
-    }
-
-    .alert.live {
-      border-color: rgba(34, 197, 94, 0.3);
-      background: var(--green-soft);
-      color: #bbf7d0;
-    }
-
-    .alert.stale,
-    .alert.offline {
-      border-color: rgba(251, 113, 133, 0.32);
-      background: var(--red-soft);
-      color: #fecdd3;
-    }
-
-    .alert strong {
-      flex: 0 0 auto;
-    }
-
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
-      gap: 18px;
-      align-items: stretch;
-    }
-
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      min-width: 0;
-    }
-
-    .metric-card,
-    .control-panel,
-    .status-panel {
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      background: var(--panel-dark);
-      border-radius: 22px;
-      padding: 18px;
-      min-width: 0;
-    }
-
-    .metric-card {
-      min-height: 172px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .metric-card::after {
-      content: "";
-      position: absolute;
-      inset: auto -25% -45% 25%;
-      height: 86px;
-      background: radial-gradient(circle, rgba(56, 189, 248, 0.22), transparent 70%);
-    }
-
-    .metric-label {
-      color: var(--dim);
+      background: rgba(255, 255, 255, 0.11);
       font-size: 12px;
-      text-transform: uppercase;
-      font-weight: 850;
+      font-weight: 700;
       letter-spacing: 0.9px;
+      text-transform: uppercase;
     }
 
-    .metric-value {
-      margin-top: 12px;
-      font-size: clamp(34px, 5vw, 58px);
-      font-weight: 950;
-      letter-spacing: -2px;
-      line-height: 1;
-      white-space: nowrap;
-      min-width: 0;
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #c9e265;
+      box-shadow: 0 0 14px rgba(201, 226, 101, 0.72);
     }
 
-    .metric-value.status-text {
-      font-size: clamp(32px, 4vw, 48px);
+    .hero h1 {
+      max-width: 690px;
+      margin-bottom: 22px;
+      font-size: clamp(48px, 7vw, 86px);
+      letter-spacing: -2.6px;
+      text-wrap: balance;
     }
 
-    .metric-unit {
-      color: var(--cyan);
-      font-size: 16px;
-      font-weight: 850;
-      margin-left: 4px;
-    }
-
-    .mini-line {
-      margin-top: 12px;
-      color: var(--dim);
-      font-size: 13px;
-      line-height: 1.35;
-      position: relative;
-      z-index: 1;
-    }
-
-    .bar {
-      margin-top: 14px;
-      width: 100%;
-      height: 10px;
-      border-radius: 99px;
-      background: rgba(148, 163, 184, 0.14);
-      overflow: hidden;
-      position: relative;
-      z-index: 1;
-    }
-
-    .bar span {
-      display: block;
-      height: 100%;
-      width: 0%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--cyan), var(--amber));
-      transition: width 0.45s ease;
-    }
-
-    .right-column {
-      display: grid;
-      gap: 14px;
-      min-width: 0;
-    }
-
-    .control-panel h3,
-    .status-panel h3 {
-      margin: 0 0 8px;
-      font-size: 20px;
-    }
-
-    .control-panel p,
-    .status-panel p {
+    .hero p {
+      max-width: 650px;
       margin: 0;
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: 15px;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: clamp(17px, 1.8vw, 20px);
+      line-height: 1.7;
     }
 
-    .controls {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
       gap: 12px;
-      margin-top: 18px;
+      margin-top: 30px;
     }
 
-    .control-btn {
-      border: 0;
-      border-radius: 18px;
-      padding: 16px;
-      cursor: pointer;
-      font-weight: 950;
-      letter-spacing: 0.3px;
-      transition: 0.22s ease;
-      color: #04111f;
-      background: var(--amber);
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: transform 0.2s ease, background 0.2s ease;
     }
 
-    .control-btn.alt {
-      background: var(--cyan);
-    }
-
-    .control-btn:hover,
-    .control-btn:focus-visible {
+    .button:hover,
+    .button:focus-visible {
       transform: translateY(-2px);
-      filter: brightness(1.08);
       outline: none;
     }
 
-    .control-btn:disabled {
-      cursor: not-allowed;
-      opacity: 0.6;
-      transform: none;
+    .button-primary {
+      color: var(--forest-dark);
+      background: #f1f4d7;
     }
 
-    .status-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 16px;
+    .button-secondary {
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      background: rgba(255, 255, 255, 0.08);
     }
 
-    .status-card {
-      border: 1px solid rgba(148, 163, 184, 0.15);
-      background: var(--panel-strong);
-      border-radius: 18px;
-      padding: 15px;
-      min-width: 0;
+    .section {
+      padding: 94px 0;
     }
 
-    .status-card small {
-      display: block;
-      color: var(--dim);
-      font-weight: 850;
-      letter-spacing: 0.8px;
+    .section-header {
+      max-width: 760px;
+      margin-bottom: 40px;
+    }
+
+    .section-label {
+      margin: 0 0 12px;
+      color: var(--leaf);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.1px;
       text-transform: uppercase;
-      font-size: 11px;
-      margin-bottom: 9px;
     }
 
-    .status-card strong {
-      display: block;
-      font-size: 19px;
-      letter-spacing: -0.4px;
-      word-break: break-word;
+    .section h2 {
+      margin-bottom: 18px;
+      color: var(--forest-dark);
+      font-size: clamp(36px, 5vw, 60px);
+      letter-spacing: -1.8px;
     }
 
-    .flow {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 12px;
+    .section-intro {
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.75;
     }
 
-    .node {
+    .featured-development {
       position: relative;
-      min-height: 150px;
-      padding: 18px;
-      border-radius: 22px;
-      border: 1px solid rgba(56, 189, 248, 0.20);
-      background: rgba(2, 6, 23, 0.68);
-      overflow: hidden;
+      margin-top: -36px;
+      padding-top: 120px;
+      background:
+        radial-gradient(circle at 85% 18%, rgba(158, 207, 229, 0.34), transparent 30%),
+        var(--cream);
     }
 
-    .node::before {
+    .development-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(340px, 0.92fr);
+      gap: 34px;
+      align-items: stretch;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .development-copy {
+      padding: clamp(28px, 5vw, 54px);
+    }
+
+    .development-copy h3 {
+      margin-bottom: 18px;
+      color: var(--forest-dark);
+      font-size: clamp(32px, 4.4vw, 54px);
+      letter-spacing: -1.5px;
+    }
+
+    .development-copy p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    .development-list {
+      display: grid;
+      gap: 13px;
+      margin: 27px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .development-list li {
+      position: relative;
+      padding-left: 28px;
+      color: var(--text);
+    }
+
+    .development-list li::before {
       content: "";
       position: absolute;
-      right: 14px;
-      top: 14px;
+      left: 0;
+      top: 9px;
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 16px rgba(34, 197, 94, 0.65);
+      background: var(--leaf-light);
+      box-shadow: 0 0 0 5px rgba(142, 170, 88, 0.13);
     }
 
-    .node-icon {
-      font-size: 26px;
-    }
-
-    .node h3 {
-      margin: 12px 0 8px;
-      font-size: 16px;
-    }
-
-    .node p {
-      color: var(--dim);
-      font-size: 13px;
-      line-height: 1.5;
-      margin: 0;
-    }
-
-    .build-grid {
+    .architecture {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-content: center;
+      gap: 12px;
+      min-height: 500px;
+      padding: clamp(25px, 4vw, 42px);
+      border-radius: 20px;
+      background:
+        linear-gradient(145deg, rgba(40, 76, 44, 0.98), rgba(27, 52, 31, 0.98));
+      color: white;
+    }
+
+    .architecture-step {
+      display: grid;
+      grid-template-columns: auto 1fr;
       gap: 14px;
+      align-items: center;
+      padding: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
     }
 
-    .build-card {
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      background: rgba(2, 6, 23, 0.62);
-      border-radius: 22px;
-      padding: 18px;
-      min-width: 0;
+    .step-number {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--forest-dark);
+      background: #dce8b5;
+      font-size: 12px;
+      font-weight: 800;
     }
 
-    .build-card h3 {
-      margin: 0 0 8px;
-      font-size: 17px;
+    .architecture-step strong {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 18px;
+      font-weight: 500;
     }
 
-    .build-card p {
+    .architecture-step span {
+      display: block;
+      margin-top: 3px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 12px;
+    }
+
+    .architecture-line {
+      width: 1px;
+      height: 17px;
+      margin: 0 0 0 34px;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .how-we-work {
+      background:
+        linear-gradient(rgba(217, 237, 243, 0.62), rgba(245, 242, 233, 0.45)),
+        var(--sky-light);
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .work-card {
+      min-height: 260px;
+      padding: 28px;
+      border: 1px solid rgba(49, 87, 44, 0.14);
+      border-radius: 18px;
+      background: rgba(255, 253, 247, 0.82);
+      box-shadow: 0 12px 30px rgba(40, 59, 40, 0.08);
+    }
+
+    .work-number {
+      display: inline-flex;
+      margin-bottom: 34px;
+      color: var(--leaf);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .work-card h3 {
+      margin-bottom: 12px;
+      color: var(--forest-dark);
+      font-size: 25px;
+    }
+
+    .work-card p {
       margin: 0;
       color: var(--muted);
-      line-height: 1.6;
       font-size: 14px;
+      line-height: 1.7;
     }
 
-    .footer {
-      margin-top: 30px;
-      color: var(--dim);
-      text-align: center;
+    .site-footer {
+      padding: 32px 0;
+      color: rgba(255, 255, 255, 0.76);
+      background: var(--forest-dark);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
       font-size: 13px;
     }
 
-    .toast-stack {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 20;
-      display: grid;
-      gap: 10px;
-      width: min(360px, calc(100vw - 36px));
+    .footer-inner strong {
+      color: white;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 16px;
+      font-weight: 500;
     }
 
-    .toast {
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      background: rgba(2, 6, 23, 0.92);
-      color: var(--text);
-      border-radius: 16px;
-      padding: 13px 14px;
-      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.38);
-      font-size: 14px;
-      line-height: 1.4;
-      animation: toastIn 0.25s ease;
-    }
-
-    @keyframes toastIn {
-      from {
-        transform: translateY(8px);
-        opacity: 0;
-      }
-
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-    @media (max-width: 1080px) {
-      .dashboard-grid {
+    @media (max-width: 980px) {
+      .development-card {
         grid-template-columns: 1fr;
       }
 
-      .flow {
+      .work-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .architecture {
+        min-height: auto;
       }
     }
 
     @media (max-width: 760px) {
-      .wrap {
-        width: min(94%, 1240px);
-        padding-top: 18px;
+      .site-header {
+        padding-top: 12px;
       }
 
-      .nav {
-        align-items: flex-start;
+      .header-inner {
+        position: relative;
+      }
+
+      .nav-toggle {
+        display: inline-flex;
+      }
+
+      .main-nav {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        right: 0;
+        display: none;
+        align-items: stretch;
         flex-direction: column;
+        padding: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 14px;
+        background: rgba(25, 51, 30, 0.97);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.24);
       }
 
-      .nav-links {
-        justify-content: flex-start;
-      }
-
-      .brand-logo {
-        width: 46px;
-        height: 46px;
+      .main-nav.open {
+        display: flex;
       }
 
       .hero {
-        min-height: auto;
+        min-height: 700px;
+        background-position: 58% center;
       }
 
-      .section-title {
-        align-items: flex-start;
-        flex-direction: column;
+      .hero-content {
+        padding-top: 135px;
       }
 
-      .tiny {
-        white-space: normal;
+      .hero h1 {
+        letter-spacing: -1.8px;
       }
 
-      .metric-grid,
-      .controls,
-      .status-grid,
-      .flow,
-      .build-grid {
+      .section {
+        padding: 72px 0;
+      }
+
+      .work-grid {
         grid-template-columns: 1fr;
       }
 
-      h1 {
-        letter-spacing: -1.4px;
+      .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .brand {
+        font-size: 16px;
       }
 
-      .metric-value {
-        font-size: clamp(38px, 12vw, 58px);
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+      }
+
+      .hero {
+        min-height: 680px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .development-card {
+        padding: 9px;
+      }
+
+      .development-copy {
+        padding: 26px 18px;
+      }
+
+      .architecture {
+        padding: 22px 15px;
       }
     }
 
@@ -687,8 +591,6 @@
       *,
       *::before,
       *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
         scroll-behavior: auto !important;
         transition-duration: 0.01ms !important;
       }
@@ -697,466 +599,230 @@
 </head>
 
 <body>
-  <div class="orb one"></div>
-  <div class="orb two"></div>
-
-  <main class="wrap">
-    <nav class="nav">
-      <a class="brand" href="index.html" aria-label="Back to homepage">
-        <img src="jes.jpg" alt="JES Logo" class="brand-logo" onerror="this.style.display='none'">
-        <span>Joshva Embedded Systems</span>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#home" aria-label="Green AI Engineering homepage">
+        <span class="brand-mark" aria-hidden="true">GAI</span>
+        <span>Green AI Engineering</span>
       </a>
 
-      <div class="nav-links" aria-label="Page navigation">
-        <a href="index.html">Home</a>
-        <a href="projects.html">Projects</a>
-        <a href="#dashboard">Dashboard</a>
-        <a href="#architecture">Architecture</a>
-        <a href="#build">What I Built</a>
-      </div>
-    </nav>
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="main-navigation"
+      >
+        Menu
+      </button>
 
-    <section class="glass hero">
-      <div class="hero-content">
-        <span class="eyebrow"><span class="pulse-dot"></span></span>
-        <h1>IoT Environmental Monitoring System</h1>
-        <p class="hero-text">
-          An end-to-end IoT monitoring project using an ESP32 with a BMP280 sensor, a Raspberry Pi embedded Linux gateway,
-          Mosquitto, a Python MQTT bridge, HiveMQ cloud MQTT, and a browser dashboard for real-time temperature, pressure,
-          system status visualisation, and remote command control.
-        </p>
-      </div>
-    </section>
+      <nav class="main-nav" id="main-navigation" aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#featured-development">Featured Development</a>
+        <a href="#how-we-work">How We Work</a>
+      </nav>
+    </div>
+  </header>
 
-    <section class="section" id="dashboard">
-      <div class="section-title">
-        <h2>Control & Status Dashboard</h2>
-        <span class="tiny" id="last-seen">Last update: --</span>
-      </div>
+  <main>
+    <section class="hero" id="home">
+      <div class="container">
+        <div class="hero-content">
+          <span class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            Engineering initiative in development
+          </span>
 
-      <div class="glass dashboard">
-        <div class="alert" id="telemetry-alert">
-          <span id="telemetry-alert-text">Waiting for ESP32 telemetry. Readings will appear when the sensor publishes data.</span>
-          <strong id="telemetry-pill">WAITING</strong>
-        </div>
+          <h1>Intelligent engineering rooted in the real world.</h1>
 
-        <div class="dashboard-grid">
-          <div class="metric-grid" aria-label="Live sensor readings">
-            <div class="metric-card">
-              <div class="metric-label">Temperature</div>
-              <div class="metric-value"><span id="temperature-value">--</span><span class="metric-unit">°C</span></div>
-              <div class="bar"><span id="temperature-bar"></span></div>
-              <div class="mini-line" id="temperature-note">No reading received yet</div>
-            </div>
+          <p>
+            Green AI Engineering combines embedded systems, connected sensing,
+            local intelligence and automation to develop practical monitoring
+            and control technologies.
+          </p>
 
-            <div class="metric-card">
-              <div class="metric-label">Pressure </div>
-              <div class="metric-value"><span id="pressure-value">--</span><span class="metric-unit">hPa</span></div>
-              <div class="bar"><span id="pressure-bar"></span></div>
-              <div class="mini-line" id="pressure-note">No reading received yet</div>
-            </div>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#featured-development">
+              View featured development
+            </a>
 
-            <div class="metric-card">
-              <div class="metric-label">Fan / Relay State</div>
-              <div class="metric-value status-text"><span id="fan-value">--</span></div>
-              <div class="bar"><span id="fan-bar"></span></div>
-              <div class="mini-line" id="fan-note">Waiting for  device state</div>
-            </div>
-
-            <div class="metric-card">
-              <div class="metric-label">System Status</div>
-              <div class="metric-value status-text"><span id="system-value">--</span></div>
-              <div class="bar"><span id="system-bar"></span></div>
-              <div class="mini-line" id="system-note">MQTT and telemetry status</div>
-            </div>
-          </div>
-
-          <div class="right-column">
-            <div class="control-panel">
-              <h3>Remote Command</h3>
-              <p>Send fan or relay commands through the MQTT command topic.</p>
-
-              <div class="controls">
-                <button class="control-btn" id="fan-on-btn" type="button" onclick="sendFanCommand('ON')">Fan ON</button>
-                <button class="control-btn alt" id="fan-off-btn" type="button" onclick="sendFanCommand('OFF')">Fan OFF</button>
-              </div>
-            </div>
-
-            <div class="status-panel">
-              <h3>MQTT & Data Health</h3>
-              <p id="mqtt-status">Connecting to HiveMQ WebSocket broker...</p>
-
-              <div class="status-grid">
-                <div class="status-card">
-                  <small>Broker</small>
-                  <strong id="broker-status">Connecting</strong>
-                </div>
-                <div class="status-card">
-                  <small>Telemetry</small>
-                  <strong id="data-status">Waiting</strong>
-                </div>
-                <div class="status-card">
-                  <small>Packets</small>
-                  <strong id="packet-count">0</strong>
-                </div>
-                <div class="status-card">
-                  <small>Command</small>
-                  <strong id="command-status">Not sent</strong>
-                </div>
-              </div>
-            </div>
+            <a class="button button-secondary" href="#how-we-work">
+              See how we work
+            </a>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="architecture">
-      <div class="section-title">
-        <h2>System Architecture</h2>
-        <span class="tiny">Sensor → ESP32 → Local MQTT → Raspberry Pi Bridge → HiveMQ → Dashboard</span>
-      </div>
+    <section
+      class="section featured-development"
+      id="featured-development"
+    >
+      <div class="container">
+        <div class="section-header">
+          <p class="section-label">Featured development</p>
 
-      <div class="flow">
-        <div class="node">
-          <div class="node-icon">🌡️</div>
-          <h3>BMP280 Sensor</h3>
-          <p>Measures temperature and pressure for environmental monitoring.</p>
+          <h2>A connected monitoring and automation platform.</h2>
+
+          <p class="section-intro">
+            Our current collaborative development brings together distributed
+            sensors, reliable communication, embedded Linux, local control and
+            data-driven intelligence.
+          </p>
         </div>
 
-        <div class="node">
-          <div class="node-icon">📟</div>
-          <h3>ESP32 Device</h3>
-          <p>Reads BMP280 data and publishes telemetry through MQTT.</p>
-        </div>
+        <div class="development-card">
+          <div class="development-copy">
+            <p class="section-label">Current collaborative project</p>
 
-        <div class="node">
-          <div class="node-icon">🐧</div>
-          <h3>Raspberry Pi Gateway</h3>
-          <p>Runs embedded Linux, Mosquitto, network setup, topic debugging, and the Python MQTT bridge.</p>
-        </div>
+            <h3>AI-enabled monitoring and control system</h3>
 
-        <div class="node">
-          <div class="node-icon">☁️</div>
-          <h3>HiveMQ Cloud Broker</h3>
-          <p>Transfers telemetry and command messages between the gateway and dashboard.</p>
-        </div>
+            <p>
+              The concept uses sensor nodes placed around a monitored area and
+              connects them to a central concentrator. The concentrator gathers
+              data, coordinates local automation and supports analysis or
+              prediction without depending entirely on continuous internet
+              access.
+            </p>
 
-        <div class="node">
-          <div class="node-icon">🖥️</div>
-          <h3>Web Dashboard</h3>
-          <p>Shows live values, MQTT status, packet count, and fan or relay commands.</p>
+            <ul class="development-list">
+              <li>Distributed environmental and equipment sensor nodes</li>
+              <li>LoRa or wired communication to a central concentrator</li>
+              <li>Embedded Linux gateway for coordination and data handling</li>
+              <li>Local control of pumps, fans, motors, relays and alarms</li>
+              <li>Structured data collection and predictive analysis</li>
+            </ul>
+          </div>
+
+          <div class="architecture" aria-label="System architecture summary">
+            <div class="architecture-step">
+              <span class="step-number">01</span>
+              <div>
+                <strong>Sensor nodes</strong>
+                <span>Measure conditions across the monitored environment</span>
+              </div>
+            </div>
+
+            <span class="architecture-line" aria-hidden="true"></span>
+
+            <div class="architecture-step">
+              <span class="step-number">02</span>
+              <div>
+                <strong>Communication network</strong>
+                <span>Transfers data using LoRa or suitable wired interfaces</span>
+              </div>
+            </div>
+
+            <span class="architecture-line" aria-hidden="true"></span>
+
+            <div class="architecture-step">
+              <span class="step-number">03</span>
+              <div>
+                <strong>Central concentrator</strong>
+                <span>Runs gateway services, data handling and decision logic</span>
+              </div>
+            </div>
+
+            <span class="architecture-line" aria-hidden="true"></span>
+
+            <div class="architecture-step">
+              <span class="step-number">04</span>
+              <div>
+                <strong>Control and intelligence</strong>
+                <span>Operates equipment and supports analysis or prediction</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="build">
-      <div class="section-title">
-        <h2>What I Built</h2>
-        <span class="tiny">Project implementation</span>
-      </div>
+    <section class="section how-we-work" id="how-we-work">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-label">How we work</p>
 
-      <div class="build-grid">
-        <div class="build-card">
-          <h3>Python MQTT Bridge</h3>
-          <p>Bridged local sensor telemetry from the Raspberry Pi and Mosquitto side to HiveMQ cloud MQTT, and subscribed to command topics for device-side control.</p>
+          <h2>Collaborative engineering with practical validation.</h2>
+
+          <p class="section-intro">
+            We approach each project as a complete system, connecting hardware,
+            software, communication, data and physical operation.
+          </p>
         </div>
 
-        <div class="build-card">
-          <h3>Embedded Linux Workflow</h3>
-          <p>Worked with SSH access, network setup, broker testing, MQTT topic debugging, and service-level troubleshooting on Raspberry Pi.</p>
-        </div>
+        <div class="work-grid">
+          <article class="work-card">
+            <span class="work-number">01</span>
+            <h3>Understand</h3>
+            <p>
+              We define the real problem, operating environment, system
+              requirements and practical constraints before selecting a
+              solution.
+            </p>
+          </article>
 
-        <div class="build-card">
-          <h3>End-to-End Testing</h3>
-          <p>Validated data flow and command response across ESP32, Linux gateway, cloud MQTT broker, and the web dashboard.</p>
+          <article class="work-card">
+            <span class="work-number">02</span>
+            <h3>Design</h3>
+            <p>
+              We create a modular architecture covering sensors, embedded
+              devices, communication links, gateways, control and data flow.
+            </p>
+          </article>
+
+          <article class="work-card">
+            <span class="work-number">03</span>
+            <h3>Prototype</h3>
+            <p>
+              We build working prototypes to validate communication, sensor
+              behaviour, control logic, integration and failure handling.
+            </p>
+          </article>
+
+          <article class="work-card">
+            <span class="work-number">04</span>
+            <h3>Improve</h3>
+            <p>
+              We use test results and measured data to refine reliability,
+              maintainability, energy use and complete system performance.
+            </p>
+          </article>
         </div>
       </div>
     </section>
-
-    <p class="footer">Joshva Jonathan Joseph · IoT Environmental Monitoring · Raspberry Pi · ESP32 · BMP280 · Mosquitto · HiveMQ · MQTT · Python Bridge · Web Dashboard</p>
   </main>
 
-  <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
-
-  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <strong>Green AI Engineering</strong>
+      <span>
+        Embedded systems · Connected sensing · Edge intelligence · Automation
+      </span>
+      <span>© <span id="year"></span></span>
+    </div>
+  </footer>
 
   <script>
-    const dataTopic = "esp32/bmp280/data";
-    const commandTopic = "esp32/bmp280/command";
+    const navigation = document.querySelector(".main-nav");
+    const navToggle = document.querySelector(".nav-toggle");
+    const year = document.getElementById("year");
 
-    let mqttClient = null;
-    let brokerConnected = false;
-    let lastTelemetryTime = null;
-    let packetsReceived = 0;
-    let latestFanState = "--";
-    let latestTemperature = null;
-    let latestPressure = null;
-
-    const el = (id) => document.getElementById(id);
-
-    function setText(id, value) {
-      const target = el(id);
-      if (target) target.textContent = value;
+    if (year) {
+      year.textContent = new Date().getFullYear();
     }
 
-    function setBarWidth(id, value) {
-      const target = el(id);
-      if (target) target.style.width = value;
-    }
+    if (navigation && navToggle) {
+      navToggle.addEventListener("click", () => {
+        const isOpen = navigation.classList.toggle("open");
+        navToggle.setAttribute("aria-expanded", String(isOpen));
+      });
 
-    function clamp(value, min, max) {
-      return Math.max(min, Math.min(max, value));
-    }
-
-    function formatTime(date = new Date()) {
-      return date.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit"
+      navigation.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          navigation.classList.remove("open");
+          navToggle.setAttribute("aria-expanded", "false");
+        });
       });
     }
-
-    function showToast(message) {
-      const stack = el("toast-stack");
-      if (!stack) return;
-
-      const toast = document.createElement("div");
-      toast.className = "toast";
-      toast.textContent = message;
-      stack.appendChild(toast);
-
-      setTimeout(() => {
-        toast.style.opacity = "0";
-        toast.style.transform = "translateY(8px)";
-        toast.style.transition = "0.22s ease";
-        setTimeout(() => toast.remove(), 260);
-      }, 2800);
-    }
-
-    function readNumber(data, keys) {
-      for (const key of keys) {
-        if (data[key] !== undefined && data[key] !== null && data[key] !== "") {
-          const value = Number(data[key]);
-          if (!Number.isNaN(value)) return value;
-        }
-      }
-      return null;
-    }
-
-    function readText(data, keys) {
-      for (const key of keys) {
-        if (data[key] !== undefined && data[key] !== null && String(data[key]).trim() !== "") {
-          return String(data[key]).trim();
-        }
-      }
-      return null;
-    }
-
-    function parseTelemetryPayload(message) {
-      const raw = message.toString().trim();
-
-      try {
-        return JSON.parse(raw);
-      } catch (jsonError) {
-        const result = {};
-        raw.split(/[;,]/).forEach((part) => {
-          const pieces = part.split(/[:=]/);
-          if (pieces.length >= 2) {
-            const key = pieces[0].trim().toLowerCase();
-            const value = pieces.slice(1).join("=").trim();
-            result[key] = value;
-          }
-        });
-
-        if (Object.keys(result).length > 0) return result;
-        throw new Error("Unsupported telemetry format");
-      }
-    }
-
-    function setAlert(mode, text, pill) {
-      const alert = el("telemetry-alert");
-      if (!alert) return;
-
-      alert.classList.remove("live", "stale", "offline");
-      if (mode) alert.classList.add(mode);
-      setText("telemetry-alert-text", text);
-      setText("telemetry-pill", pill);
-    }
-
-    function updateBrokerUi() {
-      if (brokerConnected) {
-        setText("broker-status", "Connected");
-        setText("mqtt-status", "Connected to HiveMQ WebSocket. Listening on " + dataTopic + ".");
-      } else {
-        setText("broker-status", "Offline");
-        setText("mqtt-status", "MQTT disconnected. Check internet, broker access, and topic names.");
-      }
-    }
-
-    function updateTelemetryUi(data) {
-      packetsReceived += 1;
-      lastTelemetryTime = new Date();
-
-      const temp = readNumber(data, ["temperature", "temp", "t"]);
-      const pressure = readNumber(data, ["pressure", "press", "p"]);
-      const fan = readText(data, ["fan", "fan_state", "fanState", "relay", "relay_state", "output"]);
-      const systemStatus = readText(data, ["status", "system", "system_status", "gateway", "service"]);
-
-      if (temp !== null) latestTemperature = temp;
-      if (pressure !== null) latestPressure = pressure;
-      if (fan !== null) latestFanState = fan.toUpperCase();
-
-      if (latestTemperature !== null) {
-        setText("temperature-value", latestTemperature.toFixed(1));
-        setText("temperature-note", "Live BMP280 telemetry");
-        setBarWidth("temperature-bar", clamp((latestTemperature / 45) * 100, 8, 100) + "%");
-      }
-
-      if (latestPressure !== null) {
-        setText("pressure-value", latestPressure.toFixed(0));
-        setText("pressure-note", "Live BMP280 telemetry");
-        setBarWidth("pressure-bar", clamp(((latestPressure - 950) / 120) * 100, 8, 100) + "%");
-      }
-
-      setText("fan-value", latestFanState);
-      setText("fan-note", fan ? "State received from telemetry" : "No fan state in latest packet");
-      setBarWidth("fan-bar", latestFanState === "ON" ? "100%" : latestFanState === "OFF" ? "18%" : "45%");
-
-      setText("system-value", systemStatus ? systemStatus.toUpperCase() : "LIVE");
-      setText("system-note", "Last packet: " + formatTime(lastTelemetryTime));
-      setBarWidth("system-bar", "100%");
-
-      setText("packet-count", String(packetsReceived));
-      setText("data-status", "Live");
-      setText("last-seen", "Last update: " + formatTime(lastTelemetryTime));
-
-      setAlert("live", "Live ESP32 telemetry received. Dashboard is showing MQTT data.", "LIVE");
-      showToast("New telemetry received");
-    }
-
-    function checkFreshness() {
-      if (!lastTelemetryTime) {
-        setText("data-status", "Waiting");
-        setAlert("", "Waiting for ESP32 telemetry. Readings will appear when the sensor publishes data.", "WAITING");
-        return;
-      }
-
-      const ageMs = Date.now() - lastTelemetryTime.getTime();
-
-      if (ageMs > 30000) {
-        setText("data-status", "Stale");
-        setText("system-value", "STALE");
-        setText("system-note", "No new telemetry for " + Math.round(ageMs / 1000) + " seconds");
-        setBarWidth("system-bar", "42%");
-        setAlert("stale", "Telemetry is stale. Check ESP32 power, Wi-Fi, Mosquitto, HiveMQ, and topic names.", "STALE");
-      } else {
-        setText("data-status", "Live");
-      }
-    }
-
-    function sendFanCommand(state) {
-      if (!mqttClient || !brokerConnected) {
-        setText("command-status", "Not sent");
-        showToast("Command not sent. MQTT is not connected.");
-        return;
-      }
-
-      const payload = JSON.stringify({ fan: state });
-
-      mqttClient.publish(commandTopic, payload, { qos: 0 }, (error) => {
-        if (error) {
-          setText("command-status", "Failed");
-          showToast("Command failed: " + error.message);
-          return;
-        }
-
-        setText("command-status", state + " sent");
-        showToast("Command sent: fan=" + state);
-      });
-    }
-
-    function startMqtt() {
-      if (typeof mqtt === "undefined") {
-        brokerConnected = false;
-        updateBrokerUi();
-        setText("broker-status", "Library missing");
-        setAlert("offline", "MQTT library could not load. Check internet access.", "OFFLINE");
-        showToast("mqtt.js library not loaded");
-        return;
-      }
-
-      try {
-        mqttClient = mqtt.connect("wss://broker.hivemq.com:8884/mqtt", {
-          clientId: "joshva_monitor_dashboard_" + Math.random().toString(16).slice(2, 10),
-          protocolVersion: 4,
-          reconnectPeriod: 2500,
-          connectTimeout: 8000,
-          clean: true
-        });
-
-        mqttClient.on("connect", () => {
-          brokerConnected = true;
-          updateBrokerUi();
-          setText("command-status", "Ready");
-          showToast("MQTT connected");
-
-          mqttClient.subscribe(dataTopic, (error) => {
-            if (error) {
-              setText("data-status", "Subscribe failed");
-              showToast("Subscribe failed: " + error.message);
-              return;
-            }
-
-            setText("data-status", "Waiting");
-          });
-        });
-
-        mqttClient.on("message", (topic, message) => {
-          if (topic !== dataTopic) return;
-
-          try {
-            const data = parseTelemetryPayload(message);
-            updateTelemetryUi(data);
-          } catch (error) {
-            setText("data-status", "Parse error");
-            setAlert("stale", "A message arrived, but the payload format was not recognised.", "ERROR");
-            showToast("Telemetry parse error");
-          }
-        });
-
-        mqttClient.on("error", (error) => {
-          brokerConnected = false;
-          updateBrokerUi();
-          setAlert("offline", "MQTT error. Check broker address, network, and topic names.", "ERROR");
-          showToast("MQTT error: " + error.message);
-        });
-
-        mqttClient.on("close", () => {
-          brokerConnected = false;
-          updateBrokerUi();
-          if (!lastTelemetryTime) {
-            setAlert("offline", "MQTT disconnected before telemetry arrived.", "OFFLINE");
-          }
-        });
-      } catch (error) {
-        brokerConnected = false;
-        updateBrokerUi();
-        setAlert("offline", "MQTT could not start in this browser or network.", "OFFLINE");
-        showToast("MQTT init failed: " + error.message);
-      }
-    }
-
-    setText("temperature-value", "--");
-    setText("pressure-value", "--");
-    setText("fan-value", "--");
-    setText("system-value", "--");
-    setBarWidth("temperature-bar", "0%");
-    setBarWidth("pressure-bar", "0%");
-    setBarWidth("fan-bar", "0%");
-    setBarWidth("system-bar", "0%");
-
-    startMqtt();
-    setInterval(checkFreshness, 5000);
   </script>
 </body>
 </html>
