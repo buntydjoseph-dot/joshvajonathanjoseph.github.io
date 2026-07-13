@@ -165,7 +165,7 @@
           rgba(31, 58, 33, 0.62) 44%,
           rgba(31, 58, 33, 0.18) 100%
         ),
-        url("assets/greenhouse-background.png") center center / cover no-repeat;
+        url("gai.jpg") center center / cover no-repeat;
     }
 
     .hero::after {
@@ -175,7 +175,10 @@
       right: 0;
       bottom: 0;
       height: 150px;
-      background: linear-gradient(transparent, rgba(245, 242, 233, 0.96));
+      background: linear-gradient(
+        transparent,
+        rgba(245, 242, 233, 0.96)
+      );
       pointer-events: none;
     }
 
@@ -298,7 +301,11 @@
       margin-top: -36px;
       padding-top: 120px;
       background:
-        radial-gradient(circle at 85% 18%, rgba(158, 207, 229, 0.34), transparent 30%),
+        radial-gradient(
+          circle at 85% 18%,
+          rgba(158, 207, 229, 0.34),
+          transparent 30%
+        ),
         var(--cream);
     }
 
@@ -366,7 +373,11 @@
       padding: clamp(25px, 4vw, 42px);
       border-radius: 20px;
       background:
-        linear-gradient(145deg, rgba(40, 76, 44, 0.98), rgba(27, 52, 31, 0.98));
+        linear-gradient(
+          145deg,
+          rgba(40, 76, 44, 0.98),
+          rgba(27, 52, 31, 0.98)
+        );
       color: white;
     }
 
@@ -416,7 +427,10 @@
 
     .how-we-work {
       background:
-        linear-gradient(rgba(217, 237, 243, 0.62), rgba(245, 242, 233, 0.45)),
+        linear-gradient(
+          rgba(217, 237, 243, 0.62),
+          rgba(245, 242, 233, 0.45)
+        ),
         var(--sky-light);
     }
 
@@ -601,7 +615,11 @@
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="#home" aria-label="Green AI Engineering homepage">
+      <a
+        class="brand"
+        href="#home"
+        aria-label="Green AI Engineering homepage"
+      >
         <span class="brand-mark" aria-hidden="true">GAI</span>
         <span>Green AI Engineering</span>
       </a>
@@ -615,7 +633,11 @@
         Menu
       </button>
 
-      <nav class="main-nav" id="main-navigation" aria-label="Main navigation">
+      <nav
+        class="main-nav"
+        id="main-navigation"
+        aria-label="Main navigation"
+      >
         <a href="#home">Home</a>
         <a href="#featured-development">Featured Development</a>
         <a href="#how-we-work">How We Work</a>
@@ -632,20 +654,28 @@
             Engineering initiative in development
           </span>
 
-          <h1>Intelligent engineering rooted in the real world.</h1>
+          <h1>
+            Intelligent engineering rooted in the real world.
+          </h1>
 
           <p>
-            Green AI Engineering combines embedded systems, connected sensing,
-            local intelligence and automation to develop practical monitoring
-            and control technologies.
+            Green AI Engineering combines embedded systems, connected
+            sensing, local intelligence and automation to develop practical
+            monitoring and control technologies.
           </p>
 
           <div class="hero-actions">
-            <a class="button button-primary" href="#featured-development">
+            <a
+              class="button button-primary"
+              href="#featured-development"
+            >
               View featured development
             </a>
 
-            <a class="button button-secondary" href="#how-we-work">
+            <a
+              class="button button-secondary"
+              href="#how-we-work"
+            >
               See how we work
             </a>
           </div>
@@ -659,76 +689,122 @@
     >
       <div class="container">
         <div class="section-header">
-          <p class="section-label">Featured development</p>
+          <p class="section-label">
+            Featured development
+          </p>
 
-          <h2>A connected monitoring and automation platform.</h2>
+          <h2>
+            A connected monitoring and automation platform.
+          </h2>
 
           <p class="section-intro">
-            Our current collaborative development brings together distributed
-            sensors, reliable communication, embedded Linux, local control and
-            data-driven intelligence.
+            Our current collaborative development brings together
+            distributed sensors, reliable communication, embedded Linux,
+            local control and data-driven intelligence.
           </p>
         </div>
 
         <div class="development-card">
           <div class="development-copy">
-            <p class="section-label">Current collaborative project</p>
+            <p class="section-label">
+              Current collaborative project
+            </p>
 
-            <h3>AI-enabled monitoring and control system</h3>
+            <h3>
+              AI-enabled monitoring and control system
+            </h3>
 
             <p>
-              The concept uses sensor nodes placed around a monitored area and
-              connects them to a central concentrator. The concentrator gathers
-              data, coordinates local automation and supports analysis or
-              prediction without depending entirely on continuous internet
-              access.
+              The concept uses sensor nodes placed around a monitored area
+              and connects them to a central concentrator. The concentrator
+              gathers data, coordinates local automation and supports
+              analysis or prediction without depending entirely on
+              continuous internet access.
             </p>
 
             <ul class="development-list">
-              <li>Distributed environmental and equipment sensor nodes</li>
-              <li>LoRa or wired communication to a central concentrator</li>
-              <li>Embedded Linux gateway for coordination and data handling</li>
-              <li>Local control of pumps, fans, motors, relays and alarms</li>
-              <li>Structured data collection and predictive analysis</li>
+              <li>
+                Distributed environmental and equipment sensor nodes
+              </li>
+
+              <li>
+                LoRa or wired communication to a central concentrator
+              </li>
+
+              <li>
+                Embedded Linux gateway for coordination and data handling
+              </li>
+
+              <li>
+                Local control of pumps, fans, motors, relays and alarms
+              </li>
+
+              <li>
+                Structured data collection and predictive analysis
+              </li>
             </ul>
           </div>
 
-          <div class="architecture" aria-label="System architecture summary">
+          <div
+            class="architecture"
+            aria-label="System architecture summary"
+          >
             <div class="architecture-step">
               <span class="step-number">01</span>
+
               <div>
                 <strong>Sensor nodes</strong>
-                <span>Measure conditions across the monitored environment</span>
+                <span>
+                  Measure conditions across the monitored environment
+                </span>
               </div>
             </div>
 
-            <span class="architecture-line" aria-hidden="true"></span>
+            <span
+              class="architecture-line"
+              aria-hidden="true"
+            ></span>
 
             <div class="architecture-step">
               <span class="step-number">02</span>
+
               <div>
                 <strong>Communication network</strong>
-                <span>Transfers data using LoRa or suitable wired interfaces</span>
+                <span>
+                  Transfers data using LoRa or suitable wired interfaces
+                </span>
               </div>
             </div>
 
-            <span class="architecture-line" aria-hidden="true"></span>
+            <span
+              class="architecture-line"
+              aria-hidden="true"
+            ></span>
 
             <div class="architecture-step">
               <span class="step-number">03</span>
+
               <div>
                 <strong>Central concentrator</strong>
-                <span>Runs gateway services, data handling and decision logic</span>
+                <span>
+                  Runs gateway services, data handling and decision logic
+                </span>
               </div>
             </div>
 
-            <span class="architecture-line" aria-hidden="true"></span>
+            <span
+              class="architecture-line"
+              aria-hidden="true"
+            ></span>
 
             <div class="architecture-step">
               <span class="step-number">04</span>
+
               <div>
                 <strong>Control and intelligence</strong>
-                <span>Operates equipment and supports analysis or prediction</span>
+                <span>
+                  Operates equipment and supports analysis or prediction
+                </span>
               </div>
             </div>
           </div>
@@ -736,23 +812,32 @@
       </div>
     </section>
 
-    <section class="section how-we-work" id="how-we-work">
+    <section
+      class="section how-we-work"
+      id="how-we-work"
+    >
       <div class="container">
         <div class="section-header">
-          <p class="section-label">How we work</p>
+          <p class="section-label">
+            How we work
+          </p>
 
-          <h2>Collaborative engineering with practical validation.</h2>
+          <h2>
+            Collaborative engineering with practical validation.
+          </h2>
 
           <p class="section-intro">
-            We approach each project as a complete system, connecting hardware,
-            software, communication, data and physical operation.
+            We approach each project as a complete system, connecting
+            hardware, software, communication, data and physical operation.
           </p>
         </div>
 
         <div class="work-grid">
           <article class="work-card">
             <span class="work-number">01</span>
+
             <h3>Understand</h3>
+
             <p>
               We define the real problem, operating environment, system
               requirements and practical constraints before selecting a
@@ -762,7 +847,9 @@
 
           <article class="work-card">
             <span class="work-number">02</span>
+
             <h3>Design</h3>
+
             <p>
               We create a modular architecture covering sensors, embedded
               devices, communication links, gateways, control and data flow.
@@ -771,7 +858,9 @@
 
           <article class="work-card">
             <span class="work-number">03</span>
+
             <h3>Prototype</h3>
+
             <p>
               We build working prototypes to validate communication, sensor
               behaviour, control logic, integration and failure handling.
@@ -780,7 +869,9 @@
 
           <article class="work-card">
             <span class="work-number">04</span>
+
             <h3>Improve</h3>
+
             <p>
               We use test results and measured data to refine reliability,
               maintainability, energy use and complete system performance.
@@ -794,10 +885,14 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <strong>Green AI Engineering</strong>
+
       <span>
         Embedded systems · Connected sensing · Edge intelligence · Automation
       </span>
-      <span>© <span id="year"></span></span>
+
+      <span>
+        © <span id="year"></span>
+      </span>
     </div>
   </footer>
 
@@ -813,13 +908,21 @@
     if (navigation && navToggle) {
       navToggle.addEventListener("click", () => {
         const isOpen = navigation.classList.toggle("open");
-        navToggle.setAttribute("aria-expanded", String(isOpen));
+
+        navToggle.setAttribute(
+          "aria-expanded",
+          String(isOpen)
+        );
       });
 
       navigation.querySelectorAll("a").forEach((link) => {
         link.addEventListener("click", () => {
           navigation.classList.remove("open");
-          navToggle.setAttribute("aria-expanded", "false");
+
+          navToggle.setAttribute(
+            "aria-expanded",
+            "false"
+          );
         });
       });
     }
