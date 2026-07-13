@@ -2,11 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <meta
     name="description"
@@ -17,11 +13,7 @@
 
   <title>Green AI Engineering</title>
 
-  <link
-    rel="icon"
-    type="image/png"
-    href="logo.png"
-  >
+  <link rel="icon" type="image/png" href="logo1.png">
 
   <style>
     :root {
@@ -29,9 +21,11 @@
       --forest-dark: #203c24;
       --leaf: #5f7f35;
       --leaf-light: #8eaa58;
+      --sky: #9ecfe5;
       --sky-light: #d9edf3;
       --cream: #f5f2e9;
       --paper: #fffdf7;
+      --earth: #75644d;
       --text: #263126;
       --muted: #647064;
       --line: rgba(49, 87, 44, 0.16);
@@ -55,13 +49,13 @@
       line-height: 1.6;
     }
 
-    a {
-      color: inherit;
+    img {
+      max-width: 100%;
+      display: block;
     }
 
-    img {
-      display: block;
-      max-width: 100%;
+    a {
+      color: inherit;
     }
 
     h1,
@@ -78,14 +72,12 @@
       margin: 0 auto;
     }
 
-    /* Header */
-
     .site-header {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      z-index: 20;
+      z-index: 10;
       padding: 22px 0;
     }
 
@@ -94,10 +86,10 @@
       align-items: center;
       justify-content: space-between;
       gap: 24px;
-      padding: 10px 16px;
+      padding: 12px 16px;
       border: 1px solid rgba(255, 255, 255, 0.28);
       border-radius: 16px;
-      background: rgba(24, 50, 30, 0.38);
+      background: rgba(24, 50, 30, 0.34);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
@@ -105,24 +97,36 @@
     .brand {
       display: inline-flex;
       align-items: center;
+      gap: 12px;
+      color: white;
       text-decoration: none;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.1px;
     }
 
     .brand-logo {
-      width: 110px;
-      height: 70px;
+      width: 88px;
+      height: 58px;
+      flex: 0 0 auto;
       object-fit: contain;
       border-radius: 10px;
-      background: white;
+      background: rgba(255, 255, 255, 0.96);
       padding: 4px 7px;
       box-shadow: 0 8px 24px rgba(14, 45, 25, 0.18);
     }
 
+    .brand-name {
+      color: white;
+      white-space: nowrap;
+    }
+
     .nav-toggle {
       display: none;
-      padding: 9px 12px;
       border: 1px solid rgba(255, 255, 255, 0.4);
       border-radius: 10px;
+      padding: 9px 12px;
       color: white;
       background: rgba(255, 255, 255, 0.08);
       cursor: pointer;
@@ -136,24 +140,20 @@
 
     .main-nav a {
       padding: 9px 12px;
-      border-radius: 9px;
-      color: rgba(255, 255, 255, 0.9);
+      color: rgba(255, 255, 255, 0.88);
       text-decoration: none;
+      border-radius: 9px;
       font-size: 14px;
       font-weight: 600;
-      transition:
-        background 0.2s ease,
-        color 0.2s ease;
+      transition: background 0.2s ease, color 0.2s ease;
     }
 
     .main-nav a:hover,
     .main-nav a:focus-visible {
       color: white;
-      background: rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.13);
       outline: none;
     }
-
-    /* Hero section */
 
     .hero {
       position: relative;
@@ -162,12 +162,11 @@
       align-items: center;
       overflow: hidden;
       color: white;
-
       background:
         linear-gradient(
           90deg,
-          rgba(24, 48, 26, 0.84) 0%,
-          rgba(31, 58, 33, 0.64) 44%,
+          rgba(24, 48, 26, 0.82) 0%,
+          rgba(31, 58, 33, 0.62) 44%,
           rgba(31, 58, 33, 0.18) 100%
         ),
         url("gai.jpg") center center / cover no-repeat;
@@ -180,20 +179,15 @@
       right: 0;
       bottom: 0;
       height: 150px;
+      background: linear-gradient(transparent, rgba(245, 242, 233, 0.96));
       pointer-events: none;
-
-      background:
-        linear-gradient(
-          transparent,
-          rgba(245, 242, 233, 0.97)
-        );
     }
 
     .hero-content {
       position: relative;
       z-index: 2;
       max-width: 720px;
-      padding: 165px 0 125px;
+      padding: 150px 0 120px;
     }
 
     .eyebrow {
@@ -230,7 +224,7 @@
     .hero p {
       max-width: 650px;
       margin: 0;
-      color: rgba(255, 255, 255, 0.9);
+      color: rgba(255, 255, 255, 0.88);
       font-size: clamp(17px, 1.8vw, 20px);
       line-height: 1.7;
     }
@@ -251,9 +245,7 @@
       border-radius: 10px;
       text-decoration: none;
       font-weight: 700;
-      transition:
-        transform 0.2s ease,
-        background 0.2s ease;
+      transition: transform 0.2s ease, background 0.2s ease;
     }
 
     .button:hover,
@@ -267,17 +259,11 @@
       background: #f1f4d7;
     }
 
-    .button-primary:hover {
-      background: white;
-    }
-
     .button-secondary {
       color: white;
       border: 1px solid rgba(255, 255, 255, 0.45);
       background: rgba(255, 255, 255, 0.08);
     }
-
-    /* General sections */
 
     .section {
       padding: 94px 0;
@@ -311,27 +297,18 @@
       line-height: 1.75;
     }
 
-    /* Featured development */
-
     .featured-development {
       position: relative;
       margin-top: -36px;
       padding-top: 120px;
-
       background:
-        radial-gradient(
-          circle at 85% 18%,
-          rgba(158, 207, 229, 0.34),
-          transparent 30%
-        ),
+        radial-gradient(circle at 85% 18%, rgba(158, 207, 229, 0.34), transparent 30%),
         var(--cream);
     }
 
     .development-card {
       display: grid;
-      grid-template-columns:
-        minmax(0, 1fr)
-        minmax(340px, 0.92fr);
+      grid-template-columns: minmax(0, 1fr) minmax(340px, 0.92fr);
       gap: 34px;
       align-items: stretch;
       padding: 18px;
@@ -382,11 +359,8 @@
       height: 10px;
       border-radius: 50%;
       background: var(--leaf-light);
-      box-shadow:
-        0 0 0 5px rgba(142, 170, 88, 0.13);
+      box-shadow: 0 0 0 5px rgba(142, 170, 88, 0.13);
     }
-
-    /* Architecture panel */
 
     .architecture {
       display: grid;
@@ -396,7 +370,6 @@
       padding: clamp(25px, 4vw, 42px);
       border-radius: 20px;
       color: white;
-
       background:
         linear-gradient(
           145deg,
@@ -423,7 +396,6 @@
       display: grid;
       place-items: center;
       margin: 0;
-      flex-shrink: 0;
       border-radius: 50%;
       color: var(--forest-dark);
       background: #dce8b5;
@@ -457,21 +429,122 @@
       background: rgba(255, 255, 255, 0.32);
     }
 
-    /* How we work */
+
+    /* Meet the team */
+
+    .meet-the-team {
+      background:
+        radial-gradient(
+          circle at 12% 12%,
+          rgba(142, 170, 88, 0.14),
+          transparent 28%
+        ),
+        var(--paper);
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .team-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--cream);
+      box-shadow: 0 14px 34px rgba(40, 59, 40, 0.09);
+      transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease;
+    }
+
+    .team-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(49, 87, 44, 0.28);
+      box-shadow: 0 20px 44px rgba(40, 59, 40, 0.13);
+    }
+
+    .team-card.lead {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.2fr);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(49, 87, 44, 0.07),
+          rgba(158, 207, 229, 0.16)
+        ),
+        var(--cream);
+    }
+
+    .team-photo {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      object-position: center;
+      background: #dde6d7;
+    }
+
+    .team-card.lead .team-photo {
+      height: 100%;
+      min-height: 330px;
+      aspect-ratio: auto;
+    }
+
+    .team-content {
+      padding: 24px;
+    }
+
+    .team-card.lead .team-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(28px, 4vw, 46px);
+    }
+
+    .team-role {
+      display: inline-block;
+      margin-bottom: 11px;
+      color: var(--leaf);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.9px;
+      text-transform: uppercase;
+    }
+
+    .team-card h3 {
+      margin-bottom: 10px;
+      color: var(--forest-dark);
+      font-size: 27px;
+      letter-spacing: -0.6px;
+    }
+
+    .team-card.lead h3 {
+      font-size: clamp(32px, 4vw, 46px);
+    }
+
+    .team-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .team-card.lead p {
+      font-size: 16px;
+    }
 
     .how-we-work {
       background:
-        linear-gradient(
-          rgba(217, 237, 243, 0.62),
-          rgba(245, 242, 233, 0.45)
-        ),
+        linear-gradient(rgba(217, 237, 243, 0.62), rgba(245, 242, 233, 0.45)),
         var(--sky-light);
     }
 
     .work-grid {
       display: grid;
-      grid-template-columns:
-        repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 16px;
     }
 
@@ -480,9 +553,8 @@
       padding: 28px;
       border: 1px solid rgba(49, 87, 44, 0.14);
       border-radius: 18px;
-      background: rgba(255, 253, 247, 0.84);
-      box-shadow:
-        0 12px 30px rgba(40, 59, 40, 0.08);
+      background: rgba(255, 253, 247, 0.82);
+      box-shadow: 0 12px 30px rgba(40, 59, 40, 0.08);
     }
 
     .work-number {
@@ -507,8 +579,6 @@
       line-height: 1.7;
     }
 
-    /* Footer */
-
     .site-footer {
       padding: 32px 0;
       color: rgba(255, 255, 255, 0.76);
@@ -530,24 +600,27 @@
       font-weight: 500;
     }
 
-    /* Tablet */
-
     @media (max-width: 980px) {
       .development-card {
         grid-template-columns: 1fr;
       }
 
       .work-grid {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .team-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .team-card.lead {
+        grid-column: 1 / -1;
       }
 
       .architecture {
         min-height: auto;
       }
     }
-
-    /* Mobile */
 
     @media (max-width: 760px) {
       .site-header {
@@ -556,11 +629,6 @@
 
       .header-inner {
         position: relative;
-      }
-
-      .brand-logo {
-        width: 92px;
-        height: 60px;
       }
 
       .nav-toggle {
@@ -579,8 +647,7 @@
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 14px;
         background: rgba(25, 51, 30, 0.97);
-        box-shadow:
-          0 20px 40px rgba(0, 0, 0, 0.24);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.24);
       }
 
       .main-nav.open {
@@ -593,7 +660,7 @@
       }
 
       .hero-content {
-        padding-top: 150px;
+        padding-top: 135px;
       }
 
       .hero h1 {
@@ -608,19 +675,18 @@
         grid-template-columns: 1fr;
       }
 
-      .architecture-step {
-        grid-template-columns: 40px minmax(0, 1fr);
-        gap: 16px;
-        padding: 18px;
+      .team-grid {
+        grid-template-columns: 1fr;
       }
 
-      .step-number {
-        width: 40px;
-        height: 40px;
+      .team-card.lead {
+        grid-column: auto;
+        grid-template-columns: 1fr;
       }
 
-      .architecture-line {
-        margin-left: 38px;
+      .team-card.lead .team-photo {
+        min-height: 0;
+        aspect-ratio: 1 / 1;
       }
 
       .footer-inner {
@@ -630,9 +696,17 @@
     }
 
     @media (max-width: 520px) {
+      .brand {
+        font-size: 16px;
+      }
+
       .brand-logo {
-        width: 78px;
-        height: 52px;
+        width: 72px;
+        height: 48px;
+      }
+
+      .brand-name {
+        font-size: 15px;
       }
 
       .hero {
@@ -659,10 +733,6 @@
       .architecture {
         padding: 22px 15px;
       }
-
-      .architecture-step strong {
-        font-size: 17px;
-      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -677,20 +747,15 @@
 </head>
 
 <body>
-
   <header class="site-header">
     <div class="container header-inner">
-
-      <a
-        class="brand"
-        href="#home"
-        aria-label="Green AI Engineering homepage"
-      >
+      <a class="brand" href="#home" aria-label="Green AI Engineering homepage">
         <img
+          class="brand-logo"
           src="logo1.png"
           alt="Green AI Engineering logo"
-          class="brand-logo"
         >
+        <span class="brand-name">Green AI Engineering</span>
       </a>
 
       <button
@@ -702,71 +767,42 @@
         Menu
       </button>
 
-      <nav
-        class="main-nav"
-        id="main-navigation"
-        aria-label="Main navigation"
-      >
+      <nav class="main-nav" id="main-navigation" aria-label="Main navigation">
         <a href="#home">Home</a>
-
-        <a href="#featured-development">
-          Featured Development
-        </a>
-
-        <a href="#how-we-work">
-          How We Work
-        </a>
+        <a href="#featured-development">Featured Development</a>
+        <a href="#meet-the-team">Meet the Team</a>
+        <a href="#how-we-work">How We Work</a>
       </nav>
-
     </div>
   </header>
 
   <main>
-
-    <section
-      class="hero"
-      id="home"
-    >
+    <section class="hero" id="home">
       <div class="container">
-
         <div class="hero-content">
-
           <span class="eyebrow">
             <span class="eyebrow-dot"></span>
             Engineering initiative in development
           </span>
 
-          <h1>
-            Intelligent engineering rooted in the real world.
-          </h1>
+          <h1>Intelligent engineering rooted in the real world.</h1>
 
           <p>
-            Green AI Engineering combines embedded systems,
-            connected sensing, local intelligence and automation
-            to develop practical monitoring and control
-            technologies.
+            Green AI Engineering combines embedded systems, connected sensing,
+            local intelligence and automation to develop practical monitoring
+            and control technologies.
           </p>
 
           <div class="hero-actions">
-
-            <a
-              class="button button-primary"
-              href="#featured-development"
-            >
+            <a class="button button-primary" href="#featured-development">
               View featured development
             </a>
 
-            <a
-              class="button button-secondary"
-              href="#how-we-work"
-            >
+            <a class="button button-secondary" href="#how-we-work">
               See how we work
             </a>
-
           </div>
-
         </div>
-
       </div>
     </section>
 
@@ -775,294 +811,269 @@
       id="featured-development"
     >
       <div class="container">
-
         <div class="section-header">
+          <p class="section-label">Featured development</p>
 
-          <p class="section-label">
-            Featured development
-          </p>
-
-          <h2>
-            A connected monitoring and automation platform.
-          </h2>
+          <h2>A connected monitoring and automation platform.</h2>
 
           <p class="section-intro">
-            Our current collaborative development brings together
-            distributed sensors, reliable communication, embedded
-            Linux, local control and data-driven intelligence.
+            Our current collaborative development brings together distributed
+            sensors, reliable communication, embedded Linux, local control and
+            data-driven intelligence.
           </p>
-
         </div>
 
         <div class="development-card">
-
           <div class="development-copy">
+            <p class="section-label">Current collaborative project</p>
 
-            <p class="section-label">
-              Current collaborative project
-            </p>
-
-            <h3>
-              AI-enabled monitoring and control system
-            </h3>
+            <h3>AI-enabled monitoring and control system</h3>
 
             <p>
-              The concept uses sensor nodes placed around a
-              monitored area and connects them to a central
-              concentrator. The concentrator gathers data,
-              coordinates local automation and supports analysis
-              or prediction without depending entirely on
-              continuous internet access.
+              The concept uses sensor nodes placed around a monitored area and
+              connects them to a central concentrator. The concentrator gathers
+              data, coordinates local automation and supports analysis or
+              prediction without depending entirely on continuous internet
+              access.
             </p>
 
             <ul class="development-list">
-
-              <li>
-                Distributed environmental and equipment sensor nodes
-              </li>
-
-              <li>
-                LoRa or wired communication to a central concentrator
-              </li>
-
-              <li>
-                Embedded Linux gateway for coordination and data handling
-              </li>
-
-              <li>
-                Local control of pumps, fans, motors, relays and alarms
-              </li>
-
-              <li>
-                Structured data collection and predictive analysis
-              </li>
-
+              <li>Distributed environmental and equipment sensor nodes</li>
+              <li>LoRa or wired communication to a central concentrator</li>
+              <li>Embedded Linux gateway for coordination and data handling</li>
+              <li>Local control of pumps, fans, motors, relays and alarms</li>
+              <li>Structured data collection and predictive analysis</li>
             </ul>
-
           </div>
 
-          <div
-            class="architecture"
-            aria-label="System architecture summary"
-          >
-
+          <div class="architecture" aria-label="System architecture summary">
             <div class="architecture-step">
-
-              <span class="step-number">
-                01
-              </span>
-
+              <span class="step-number">01</span>
               <div>
-                <strong>
-                  Sensor nodes
-                </strong>
-
-                <span>
-                  Measure conditions across the monitored environment
-                </span>
+                <strong>Sensor nodes</strong>
+                <span>Measure conditions across the monitored environment</span>
               </div>
-
             </div>
 
-            <span
-              class="architecture-line"
-              aria-hidden="true"
-            ></span>
+            <span class="architecture-line" aria-hidden="true"></span>
 
             <div class="architecture-step">
-
-              <span class="step-number">
-                02
-              </span>
-
+              <span class="step-number">02</span>
               <div>
-                <strong>
-                  Communication network
-                </strong>
-
-                <span>
-                  Transfers data using LoRa or suitable wired interfaces
-                </span>
+                <strong>Communication network</strong>
+                <span>Transfers data using LoRa or suitable wired interfaces</span>
               </div>
-
             </div>
 
-            <span
-              class="architecture-line"
-              aria-hidden="true"
-            ></span>
+            <span class="architecture-line" aria-hidden="true"></span>
 
             <div class="architecture-step">
-
-              <span class="step-number">
-                03
-              </span>
-
+              <span class="step-number">03</span>
               <div>
-                <strong>
-                  Central concentrator
-                </strong>
-
-                <span>
-                  Runs gateway services, data handling and decision logic
-                </span>
+                <strong>Central concentrator</strong>
+                <span>Runs gateway services, data handling and decision logic</span>
               </div>
-
             </div>
 
-            <span
-              class="architecture-line"
-              aria-hidden="true"
-            ></span>
+            <span class="architecture-line" aria-hidden="true"></span>
 
             <div class="architecture-step">
-
-              <span class="step-number">
-                04
-              </span>
-
+              <span class="step-number">04</span>
               <div>
-                <strong>
-                  Control and intelligence
-                </strong>
-
-                <span>
-                  Operates equipment and supports analysis or prediction
-                </span>
+                <strong>Control and intelligence</strong>
+                <span>Operates equipment and supports analysis or prediction</span>
               </div>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
     </section>
 
-    <section
-      class="section how-we-work"
-      id="how-we-work"
-    >
+
+    <section class="section meet-the-team" id="meet-the-team">
       <div class="container">
-
         <div class="section-header">
+          <p class="section-label">Meet the team</p>
 
-          <p class="section-label">
-            How we work
-          </p>
-
-          <h2>
-            Collaborative engineering with practical validation.
-          </h2>
+          <h2>A multidisciplinary team building one connected system.</h2>
 
           <p class="section-intro">
-            We approach each project as a complete system,
-            connecting hardware, software, communication, data
-            and physical operation.
+            Our team combines embedded systems, artificial intelligence,
+            data analysis and mechanical design to develop and validate the
+            complete monitoring and automation platform.
           </p>
+        </div>
 
+        <div class="team-grid">
+          <article class="team-card lead">
+            <img
+              class="team-photo"
+              src="joshva.jpg"
+              alt="Joshva Jonathan Joseph"
+            >
+
+            <div class="team-content">
+              <span class="team-role">
+                 Embedded Systems Project Engineer
+              </span>
+
+              <h3>Joshva Jonathan Joseph</h3>
+
+              <p>
+                Proposed the original project concept and designed the overall
+                system architecture. Leads the embedded systems development,
+                sensor and communication integration, gateway and control
+                design, system testing, and coordination of the complete
+                engineering project.
+              </p>
+            </div>
+          </article>
+
+          <article class="team-card">
+            <img
+              class="team-photo"
+              src="rahul.jpg"
+              alt="Rahul"
+            >
+
+            <div class="team-content">
+              <span class="team-role">Mechanical Design Engineer</span>
+              <h3>Rahul</h3>
+
+              <p>
+                Designs the system enclosure and supports the mechanical
+                arrangement, protection, mounting and practical assembly of
+                the device.
+              </p>
+            </div>
+          </article>
+
+          <article class="team-card">
+            <img
+              class="team-photo"
+              src="sarath.jpg"
+              alt="Sarath"
+            >
+
+            <div class="team-content">
+              <span class="team-role">AI Engineer</span>
+              <h3>Sarath</h3>
+
+              <p>
+                Develops the artificial intelligence models used for
+                predictions, intelligent decision support and smart control
+                within the monitoring system.
+              </p>
+            </div>
+          </article>
+
+          <article class="team-card">
+            <img
+              class="team-photo"
+              src="samrudhhi.jpg"
+              alt="Samrudhhi"
+            >
+
+            <div class="team-content">
+              <span class="team-role">Data Analyst</span>
+              <h3>Samrudhhi</h3>
+
+              <p>
+                Prepares, cleans and analyses collected data, identifies
+                meaningful patterns, and supports the creation of reliable
+                datasets for analysis and AI model development.
+              </p>
+            </div>
+          </article>
+
+          <article class="team-card">
+            <img
+              class="team-photo"
+              src="swathi.jpg"
+              alt="Swathi"
+            >
+
+            <div class="team-content">
+              <span class="team-role">
+                AI &amp; Embedded Systems Support Engineer
+              </span>
+
+              <h3>Swathi</h3>
+
+              <p>
+                Supports embedded and AI development activities, assists with
+                integration and testing, and helps connect sensing, data and
+                intelligent system functions.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section how-we-work" id="how-we-work">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-label">How we work</p>
+
+          <h2>Collaborative engineering with practical validation.</h2>
+
+          <p class="section-intro">
+            We approach each project as a complete system, connecting hardware,
+            software, communication, data and physical operation.
+          </p>
         </div>
 
         <div class="work-grid">
-
           <article class="work-card">
-
-            <span class="work-number">
-              01
-            </span>
-
-            <h3>
-              Understand
-            </h3>
-
+            <span class="work-number">01</span>
+            <h3>Understand</h3>
             <p>
-              We define the real problem, operating environment,
-              system requirements and practical constraints before
-              selecting a solution.
+              We define the real problem, operating environment, system
+              requirements and practical constraints before selecting a
+              solution.
             </p>
-
           </article>
 
           <article class="work-card">
-
-            <span class="work-number">
-              02
-            </span>
-
-            <h3>
-              Design
-            </h3>
-
+            <span class="work-number">02</span>
+            <h3>Design</h3>
             <p>
-              We create a modular architecture covering sensors,
-              embedded devices, communication links, gateways,
-              control and data flow.
+              We create a modular architecture covering sensors, embedded
+              devices, communication links, gateways, control and data flow.
             </p>
-
           </article>
 
           <article class="work-card">
-
-            <span class="work-number">
-              03
-            </span>
-
-            <h3>
-              Prototype
-            </h3>
-
+            <span class="work-number">03</span>
+            <h3>Prototype</h3>
             <p>
-              We build working prototypes to validate communication,
-              sensor behaviour, control logic, integration and
-              failure handling.
+              We build working prototypes to validate communication, sensor
+              behaviour, control logic, integration and failure handling.
             </p>
-
           </article>
 
           <article class="work-card">
-
-            <span class="work-number">
-              04
-            </span>
-
-            <h3>
-              Improve
-            </h3>
-
+            <span class="work-number">04</span>
+            <h3>Improve</h3>
             <p>
-              We use test results and measured data to refine
-              reliability, maintainability, energy use and complete
-              system performance.
+              We use test results and measured data to refine reliability,
+              maintainability, energy use and complete system performance.
             </p>
-
           </article>
-
         </div>
-
       </div>
     </section>
-
   </main>
 
   <footer class="site-footer">
-
     <div class="container footer-inner">
-
-      <strong>
-        Green AI Engineering
-      </strong>
-
+      <strong>Green AI Engineering</strong>
       <span>
         Embedded systems · Connected sensing · Edge intelligence · Automation
       </span>
-
-      <span>
-        © <span id="year"></span>
-      </span>
-
+      <span>© <span id="year"></span></span>
     </div>
-
   </footer>
 
   <script>
@@ -1077,25 +1088,16 @@
     if (navigation && navToggle) {
       navToggle.addEventListener("click", () => {
         const isOpen = navigation.classList.toggle("open");
-
-        navToggle.setAttribute(
-          "aria-expanded",
-          String(isOpen)
-        );
+        navToggle.setAttribute("aria-expanded", String(isOpen));
       });
 
       navigation.querySelectorAll("a").forEach((link) => {
         link.addEventListener("click", () => {
           navigation.classList.remove("open");
-
-          navToggle.setAttribute(
-            "aria-expanded",
-            "false"
-          );
+          navToggle.setAttribute("aria-expanded", "false");
         });
       });
     }
   </script>
-
 </body>
 </html>
