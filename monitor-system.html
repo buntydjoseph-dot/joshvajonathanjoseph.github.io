@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <meta
     name="description"
@@ -13,17 +17,21 @@
 
   <title>Green AI Engineering</title>
 
+  <link
+    rel="icon"
+    type="image/png"
+    href="logo.png"
+  >
+
   <style>
     :root {
       --forest: #31572c;
       --forest-dark: #203c24;
       --leaf: #5f7f35;
       --leaf-light: #8eaa58;
-      --sky: #9ecfe5;
       --sky-light: #d9edf3;
       --cream: #f5f2e9;
       --paper: #fffdf7;
-      --earth: #75644d;
       --text: #263126;
       --muted: #647064;
       --line: rgba(49, 87, 44, 0.16);
@@ -47,13 +55,13 @@
       line-height: 1.6;
     }
 
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
     a {
       color: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
     }
 
     h1,
@@ -70,12 +78,14 @@
       margin: 0 auto;
     }
 
+    /* Header */
+
     .site-header {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      z-index: 10;
+      z-index: 20;
       padding: 22px 0;
     }
 
@@ -84,10 +94,10 @@
       align-items: center;
       justify-content: space-between;
       gap: 24px;
-      padding: 12px 16px;
+      padding: 10px 16px;
       border: 1px solid rgba(255, 255, 255, 0.28);
       border-radius: 16px;
-      background: rgba(24, 50, 30, 0.34);
+      background: rgba(24, 50, 30, 0.38);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
@@ -95,29 +105,24 @@
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
-      color: white;
       text-decoration: none;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 20px;
-      font-weight: 600;
-      letter-spacing: 0.1px;
     }
 
     .brand-logo {
-  width: 85px;
-  height: 58px;
-  object-fit: contain;
-  border-radius: 8px;
-  background: white;
-  padding: 4px;
-}
+      width: 110px;
+      height: 70px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: white;
+      padding: 4px 7px;
+      box-shadow: 0 8px 24px rgba(14, 45, 25, 0.18);
+    }
 
     .nav-toggle {
       display: none;
+      padding: 9px 12px;
       border: 1px solid rgba(255, 255, 255, 0.4);
       border-radius: 10px;
-      padding: 9px 12px;
       color: white;
       background: rgba(255, 255, 255, 0.08);
       cursor: pointer;
@@ -131,20 +136,24 @@
 
     .main-nav a {
       padding: 9px 12px;
-      color: rgba(255, 255, 255, 0.88);
-      text-decoration: none;
       border-radius: 9px;
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
       font-size: 14px;
       font-weight: 600;
-      transition: background 0.2s ease, color 0.2s ease;
+      transition:
+        background 0.2s ease,
+        color 0.2s ease;
     }
 
     .main-nav a:hover,
     .main-nav a:focus-visible {
       color: white;
-      background: rgba(255, 255, 255, 0.13);
+      background: rgba(255, 255, 255, 0.14);
       outline: none;
     }
+
+    /* Hero section */
 
     .hero {
       position: relative;
@@ -153,11 +162,12 @@
       align-items: center;
       overflow: hidden;
       color: white;
+
       background:
         linear-gradient(
           90deg,
-          rgba(24, 48, 26, 0.82) 0%,
-          rgba(31, 58, 33, 0.62) 44%,
+          rgba(24, 48, 26, 0.84) 0%,
+          rgba(31, 58, 33, 0.64) 44%,
           rgba(31, 58, 33, 0.18) 100%
         ),
         url("gai.jpg") center center / cover no-repeat;
@@ -170,18 +180,20 @@
       right: 0;
       bottom: 0;
       height: 150px;
-      background: linear-gradient(
-        transparent,
-        rgba(245, 242, 233, 0.96)
-      );
       pointer-events: none;
+
+      background:
+        linear-gradient(
+          transparent,
+          rgba(245, 242, 233, 0.97)
+        );
     }
 
     .hero-content {
       position: relative;
       z-index: 2;
       max-width: 720px;
-      padding: 150px 0 120px;
+      padding: 165px 0 125px;
     }
 
     .eyebrow {
@@ -218,7 +230,7 @@
     .hero p {
       max-width: 650px;
       margin: 0;
-      color: rgba(255, 255, 255, 0.88);
+      color: rgba(255, 255, 255, 0.9);
       font-size: clamp(17px, 1.8vw, 20px);
       line-height: 1.7;
     }
@@ -239,7 +251,9 @@
       border-radius: 10px;
       text-decoration: none;
       font-weight: 700;
-      transition: transform 0.2s ease, background 0.2s ease;
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease;
     }
 
     .button:hover,
@@ -253,11 +267,17 @@
       background: #f1f4d7;
     }
 
+    .button-primary:hover {
+      background: white;
+    }
+
     .button-secondary {
       color: white;
       border: 1px solid rgba(255, 255, 255, 0.45);
       background: rgba(255, 255, 255, 0.08);
     }
+
+    /* General sections */
 
     .section {
       padding: 94px 0;
@@ -291,10 +311,13 @@
       line-height: 1.75;
     }
 
+    /* Featured development */
+
     .featured-development {
       position: relative;
       margin-top: -36px;
       padding-top: 120px;
+
       background:
         radial-gradient(
           circle at 85% 18%,
@@ -306,7 +329,9 @@
 
     .development-card {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(340px, 0.92fr);
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(340px, 0.92fr);
       gap: 34px;
       align-items: stretch;
       padding: 18px;
@@ -357,68 +382,82 @@
       height: 10px;
       border-radius: 50%;
       background: var(--leaf-light);
-      box-shadow: 0 0 0 5px rgba(142, 170, 88, 0.13);
+      box-shadow:
+        0 0 0 5px rgba(142, 170, 88, 0.13);
     }
+
+    /* Architecture panel */
 
     .architecture {
       display: grid;
       align-content: center;
-      gap: 12px;
+      gap: 0;
       min-height: 500px;
       padding: clamp(25px, 4vw, 42px);
       border-radius: 20px;
+      color: white;
+
       background:
         linear-gradient(
           145deg,
           rgba(40, 76, 44, 0.98),
           rgba(27, 52, 31, 0.98)
         );
-      color: white;
     }
 
     .architecture-step {
       display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 14px;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 20px;
       align-items: center;
-      padding: 15px;
+      min-height: 105px;
+      padding: 20px 22px;
       border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 14px;
+      border-radius: 18px;
       background: rgba(255, 255, 255, 0.06);
     }
 
     .step-number {
-      width: 38px;
-      height: 38px;
+      width: 42px;
+      height: 42px;
       display: grid;
       place-items: center;
+      margin: 0;
+      flex-shrink: 0;
       border-radius: 50%;
       color: var(--forest-dark);
       background: #dce8b5;
+      font-family: Arial, Helvetica, sans-serif;
       font-size: 12px;
       font-weight: 800;
+      line-height: 1;
     }
 
     .architecture-step strong {
       display: block;
+      margin: 0;
       font-family: Georgia, "Times New Roman", serif;
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 500;
+      line-height: 1.25;
     }
 
-    .architecture-step span {
+    .architecture-step div span {
       display: block;
-      margin-top: 3px;
-      color: rgba(255, 255, 255, 0.7);
+      margin-top: 5px;
+      color: rgba(255, 255, 255, 0.72);
       font-size: 12px;
+      line-height: 1.5;
     }
 
     .architecture-line {
       width: 1px;
-      height: 17px;
-      margin: 0 0 0 34px;
-      background: rgba(255, 255, 255, 0.3);
+      height: 28px;
+      margin-left: 43px;
+      background: rgba(255, 255, 255, 0.32);
     }
+
+    /* How we work */
 
     .how-we-work {
       background:
@@ -431,7 +470,8 @@
 
     .work-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
       gap: 16px;
     }
 
@@ -440,8 +480,9 @@
       padding: 28px;
       border: 1px solid rgba(49, 87, 44, 0.14);
       border-radius: 18px;
-      background: rgba(255, 253, 247, 0.82);
-      box-shadow: 0 12px 30px rgba(40, 59, 40, 0.08);
+      background: rgba(255, 253, 247, 0.84);
+      box-shadow:
+        0 12px 30px rgba(40, 59, 40, 0.08);
     }
 
     .work-number {
@@ -466,6 +507,8 @@
       line-height: 1.7;
     }
 
+    /* Footer */
+
     .site-footer {
       padding: 32px 0;
       color: rgba(255, 255, 255, 0.76);
@@ -487,19 +530,24 @@
       font-weight: 500;
     }
 
+    /* Tablet */
+
     @media (max-width: 980px) {
       .development-card {
         grid-template-columns: 1fr;
       }
 
       .work-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
       }
 
       .architecture {
         min-height: auto;
       }
     }
+
+    /* Mobile */
 
     @media (max-width: 760px) {
       .site-header {
@@ -508,6 +556,11 @@
 
       .header-inner {
         position: relative;
+      }
+
+      .brand-logo {
+        width: 92px;
+        height: 60px;
       }
 
       .nav-toggle {
@@ -526,7 +579,8 @@
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 14px;
         background: rgba(25, 51, 30, 0.97);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.24);
+        box-shadow:
+          0 20px 40px rgba(0, 0, 0, 0.24);
       }
 
       .main-nav.open {
@@ -539,7 +593,7 @@
       }
 
       .hero-content {
-        padding-top: 135px;
+        padding-top: 150px;
       }
 
       .hero h1 {
@@ -554,6 +608,21 @@
         grid-template-columns: 1fr;
       }
 
+      .architecture-step {
+        grid-template-columns: 40px minmax(0, 1fr);
+        gap: 16px;
+        padding: 18px;
+      }
+
+      .step-number {
+        width: 40px;
+        height: 40px;
+      }
+
+      .architecture-line {
+        margin-left: 38px;
+      }
+
       .footer-inner {
         align-items: flex-start;
         flex-direction: column;
@@ -561,13 +630,9 @@
     }
 
     @media (max-width: 520px) {
-      .brand {
-        font-size: 16px;
-      }
-
-      .brand-mark {
-        width: 38px;
-        height: 38px;
+      .brand-logo {
+        width: 78px;
+        height: 52px;
       }
 
       .hero {
@@ -594,6 +659,10 @@
       .architecture {
         padding: 22px 15px;
       }
+
+      .architecture-step strong {
+        font-size: 17px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -608,19 +677,20 @@
 </head>
 
 <body>
+
   <header class="site-header">
     <div class="container header-inner">
+
       <a
         class="brand"
         href="#home"
         aria-label="Green AI Engineering homepage"
       >
         <img
-  src="logo1.png"
-  alt="Green AI Engineering logo"
-  class="brand-logo"
->
-        <span>Green AI Engineering</span>
+          src="logo.png"
+          alt="Green AI Engineering logo"
+          class="brand-logo"
+        >
       </a>
 
       <button
@@ -638,16 +708,29 @@
         aria-label="Main navigation"
       >
         <a href="#home">Home</a>
-        <a href="#featured-development">Featured Development</a>
-        <a href="#how-we-work">How We Work</a>
+
+        <a href="#featured-development">
+          Featured Development
+        </a>
+
+        <a href="#how-we-work">
+          How We Work
+        </a>
       </nav>
+
     </div>
   </header>
 
   <main>
-    <section class="hero" id="home">
+
+    <section
+      class="hero"
+      id="home"
+    >
       <div class="container">
+
         <div class="hero-content">
+
           <span class="eyebrow">
             <span class="eyebrow-dot"></span>
             Engineering initiative in development
@@ -658,12 +741,14 @@
           </h1>
 
           <p>
-            Green AI Engineering combines embedded systems, connected
-            sensing, local intelligence and automation to develop practical
-            monitoring and control technologies.
+            Green AI Engineering combines embedded systems,
+            connected sensing, local intelligence and automation
+            to develop practical monitoring and control
+            technologies.
           </p>
 
           <div class="hero-actions">
+
             <a
               class="button button-primary"
               href="#featured-development"
@@ -677,8 +762,11 @@
             >
               See how we work
             </a>
+
           </div>
+
         </div>
+
       </div>
     </section>
 
@@ -687,7 +775,9 @@
       id="featured-development"
     >
       <div class="container">
+
         <div class="section-header">
+
           <p class="section-label">
             Featured development
           </p>
@@ -698,13 +788,16 @@
 
           <p class="section-intro">
             Our current collaborative development brings together
-            distributed sensors, reliable communication, embedded Linux,
-            local control and data-driven intelligence.
+            distributed sensors, reliable communication, embedded
+            Linux, local control and data-driven intelligence.
           </p>
+
         </div>
 
         <div class="development-card">
+
           <div class="development-copy">
+
             <p class="section-label">
               Current collaborative project
             </p>
@@ -714,14 +807,16 @@
             </h3>
 
             <p>
-              The concept uses sensor nodes placed around a monitored area
-              and connects them to a central concentrator. The concentrator
-              gathers data, coordinates local automation and supports
-              analysis or prediction without depending entirely on
+              The concept uses sensor nodes placed around a
+              monitored area and connects them to a central
+              concentrator. The concentrator gathers data,
+              coordinates local automation and supports analysis
+              or prediction without depending entirely on
               continuous internet access.
             </p>
 
             <ul class="development-list">
+
               <li>
                 Distributed environmental and equipment sensor nodes
               </li>
@@ -741,22 +836,32 @@
               <li>
                 Structured data collection and predictive analysis
               </li>
+
             </ul>
+
           </div>
 
           <div
             class="architecture"
             aria-label="System architecture summary"
           >
+
             <div class="architecture-step">
-              <span class="step-number">01</span>
+
+              <span class="step-number">
+                01
+              </span>
 
               <div>
-                <strong>Sensor nodes</strong>
+                <strong>
+                  Sensor nodes
+                </strong>
+
                 <span>
                   Measure conditions across the monitored environment
                 </span>
               </div>
+
             </div>
 
             <span
@@ -765,14 +870,21 @@
             ></span>
 
             <div class="architecture-step">
-              <span class="step-number">02</span>
+
+              <span class="step-number">
+                02
+              </span>
 
               <div>
-                <strong>Communication network</strong>
+                <strong>
+                  Communication network
+                </strong>
+
                 <span>
                   Transfers data using LoRa or suitable wired interfaces
                 </span>
               </div>
+
             </div>
 
             <span
@@ -781,14 +893,21 @@
             ></span>
 
             <div class="architecture-step">
-              <span class="step-number">03</span>
+
+              <span class="step-number">
+                03
+              </span>
 
               <div>
-                <strong>Central concentrator</strong>
+                <strong>
+                  Central concentrator
+                </strong>
+
                 <span>
                   Runs gateway services, data handling and decision logic
                 </span>
               </div>
+
             </div>
 
             <span
@@ -797,17 +916,27 @@
             ></span>
 
             <div class="architecture-step">
-              <span class="step-number">04</span>
+
+              <span class="step-number">
+                04
+              </span>
 
               <div>
-                <strong>Control and intelligence</strong>
+                <strong>
+                  Control and intelligence
+                </strong>
+
                 <span>
                   Operates equipment and supports analysis or prediction
                 </span>
               </div>
+
             </div>
+
           </div>
+
         </div>
+
       </div>
     </section>
 
@@ -816,7 +945,9 @@
       id="how-we-work"
     >
       <div class="container">
+
         <div class="section-header">
+
           <p class="section-label">
             How we work
           </p>
@@ -826,64 +957,101 @@
           </h2>
 
           <p class="section-intro">
-            We approach each project as a complete system, connecting
-            hardware, software, communication, data and physical operation.
+            We approach each project as a complete system,
+            connecting hardware, software, communication, data
+            and physical operation.
           </p>
+
         </div>
 
         <div class="work-grid">
-          <article class="work-card">
-            <span class="work-number">01</span>
 
-            <h3>Understand</h3>
+          <article class="work-card">
+
+            <span class="work-number">
+              01
+            </span>
+
+            <h3>
+              Understand
+            </h3>
 
             <p>
-              We define the real problem, operating environment, system
-              requirements and practical constraints before selecting a
-              solution.
+              We define the real problem, operating environment,
+              system requirements and practical constraints before
+              selecting a solution.
             </p>
+
           </article>
 
           <article class="work-card">
-            <span class="work-number">02</span>
 
-            <h3>Design</h3>
+            <span class="work-number">
+              02
+            </span>
+
+            <h3>
+              Design
+            </h3>
 
             <p>
-              We create a modular architecture covering sensors, embedded
-              devices, communication links, gateways, control and data flow.
+              We create a modular architecture covering sensors,
+              embedded devices, communication links, gateways,
+              control and data flow.
             </p>
+
           </article>
 
           <article class="work-card">
-            <span class="work-number">03</span>
 
-            <h3>Prototype</h3>
+            <span class="work-number">
+              03
+            </span>
+
+            <h3>
+              Prototype
+            </h3>
 
             <p>
-              We build working prototypes to validate communication, sensor
-              behaviour, control logic, integration and failure handling.
+              We build working prototypes to validate communication,
+              sensor behaviour, control logic, integration and
+              failure handling.
             </p>
+
           </article>
 
           <article class="work-card">
-            <span class="work-number">04</span>
 
-            <h3>Improve</h3>
+            <span class="work-number">
+              04
+            </span>
+
+            <h3>
+              Improve
+            </h3>
 
             <p>
-              We use test results and measured data to refine reliability,
-              maintainability, energy use and complete system performance.
+              We use test results and measured data to refine
+              reliability, maintainability, energy use and complete
+              system performance.
             </p>
+
           </article>
+
         </div>
+
       </div>
     </section>
+
   </main>
 
   <footer class="site-footer">
+
     <div class="container footer-inner">
-      <strong>Green AI Engineering</strong>
+
+      <strong>
+        Green AI Engineering
+      </strong>
 
       <span>
         Embedded systems · Connected sensing · Edge intelligence · Automation
@@ -892,7 +1060,9 @@
       <span>
         © <span id="year"></span>
       </span>
+
     </div>
+
   </footer>
 
   <script>
@@ -926,5 +1096,6 @@
       });
     }
   </script>
+
 </body>
 </html>
