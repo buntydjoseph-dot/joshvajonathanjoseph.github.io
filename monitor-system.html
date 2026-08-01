@@ -11,7 +11,7 @@
 
   <meta name="theme-color" content="#31572c">
 
-  <title>Green AI Engineering</title>
+  <title>Green AI Engineering | Main Project Page</title>
 
   <link rel="icon" type="image/png" href="logo1.png">
 
@@ -146,6 +146,23 @@
       font-size: 14px;
       font-weight: 600;
       transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .main-nav .project-tab {
+      margin-left: 5px;
+      padding: 12px 17px;
+      color: var(--forest-dark);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      background: #e7efc4;
+      box-shadow: 0 9px 24px rgba(13, 38, 20, 0.22);
+      font-size: 14px;
+    }
+
+    .main-nav .project-tab:hover,
+    .main-nav .project-tab:focus-visible {
+      color: var(--forest-dark);
+      background: white;
+      transform: translateY(-1px);
     }
 
     .main-nav a:hover,
@@ -736,485 +753,102 @@
     }
 
 
-    /* Live monitoring dashboard */
+    /* Dedicated project page preview */
 
-    .live-dashboard-section {
+    .project-page-preview {
       background:
-        radial-gradient(
-          circle at 88% 10%,
-          rgba(158, 207, 229, 0.38),
-          transparent 28%
-        ),
-        radial-gradient(
-          circle at 10% 90%,
-          rgba(142, 170, 88, 0.14),
-          transparent 28%
-        ),
+        radial-gradient(circle at 88% 12%, rgba(158, 207, 229, 0.35), transparent 28%),
+        radial-gradient(circle at 12% 88%, rgba(142, 170, 88, 0.15), transparent 30%),
         var(--cream);
     }
 
-    .monitor-block + .monitor-block {
-      margin-top: 42px;
-    }
-
-    .section-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin: 0 0 16px;
-    }
-
-    .section-title h3 {
-      margin: 0;
-      color: var(--forest-dark);
-      font-size: 29px;
-      letter-spacing: -0.7px;
-    }
-
-    .tiny {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-
-    .dashboard-update {
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 14px;
-    }
-
-    .dashboard {
-      overflow: hidden;
-      padding: clamp(18px, 3vw, 28px);
+    .project-preview-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(310px, 0.85fr);
+      gap: 28px;
+      padding: clamp(24px, 4vw, 46px);
       border: 1px solid var(--line);
       border-radius: 26px;
-      background: rgba(255, 253, 247, 0.9);
+      background: rgba(255, 253, 247, 0.94);
       box-shadow: var(--shadow);
     }
 
-    .alert {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 18px;
-      padding: 16px 18px;
-      border: 1px solid rgba(153, 112, 35, 0.22);
-      border-radius: 16px;
-      color: #6b5425;
-      background: rgba(232, 206, 132, 0.24);
-      line-height: 1.45;
-    }
-
-    .alert.live {
+    .project-preview-copy h2 {
+      margin-bottom: 17px;
       color: var(--forest-dark);
-      border-color: rgba(49, 87, 44, 0.24);
-      background: rgba(142, 170, 88, 0.19);
-    }
-
-    .alert.stale,
-    .alert.offline {
-      color: #7a3940;
-      border-color: rgba(154, 61, 71, 0.24);
-      background: rgba(206, 130, 138, 0.16);
-    }
-
-    .alert strong {
-      flex: 0 0 auto;
-      font-size: 12px;
-      letter-spacing: 0.7px;
-    }
-
-    .dashboard-layout {
-      display: block;
-    }
-
-    .metric-section {
-      margin-bottom: 22px;
-    }
-
-    .metric-section:last-child {
-      margin-bottom: 0;
-    }
-
-    .metric-section-heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin: 0 0 12px;
-    }
-
-    .metric-section-heading h3 {
-      margin: 0;
-      color: var(--forest-dark);
-      font-size: 19px;
-    }
-
-    .metric-section-heading span {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .metric-card,
-    .control-panel,
-    .status-panel,
-    .raw-panel {
-      min-width: 0;
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: rgba(245, 242, 233, 0.76);
-    }
-
-    .metric-card {
-      position: relative;
-      min-height: 160px;
-      overflow: hidden;
-    }
-
-    .metric-card.real {
-      border-color: rgba(95, 127, 53, 0.3);
-      background:
-        linear-gradient(
-          145deg,
-          rgba(142, 170, 88, 0.1),
-          transparent 60%
-        ),
-        rgba(255, 253, 247, 0.9);
-    }
-
-    .metric-card.simulated {
-      border-color: rgba(92, 148, 174, 0.3);
-      background:
-        linear-gradient(
-          145deg,
-          rgba(158, 207, 229, 0.2),
-          transparent 60%
-        ),
-        rgba(255, 253, 247, 0.9);
-    }
-
-    .metric-label-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .metric-label {
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.8px;
-      line-height: 1.4;
-      text-transform: uppercase;
-    }
-
-    .source-badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 4px 7px;
-      border: 1px solid rgba(95, 127, 53, 0.24);
-      border-radius: 999px;
-      color: var(--forest);
-      background: rgba(142, 170, 88, 0.14);
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .source-badge.simulated {
-      color: #386476;
-      border-color: rgba(92, 148, 174, 0.25);
-      background: rgba(158, 207, 229, 0.24);
-    }
-
-    .metric-value {
-      margin-top: 15px;
-      color: var(--forest-dark);
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: clamp(29px, 4vw, 46px);
-      font-weight: 800;
+      font-size: clamp(36px, 5vw, 58px);
       letter-spacing: -1.7px;
-      line-height: 1;
-      white-space: nowrap;
     }
 
-    .metric-value.status-text {
-      font-size: clamp(28px, 3.5vw, 41px);
-    }
-
-    .metric-unit {
-      margin-left: 4px;
-      color: var(--leaf);
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .mini-line {
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.45;
-    }
-
-    .bar {
-      width: 100%;
-      height: 8px;
-      margin-top: 13px;
-      overflow: hidden;
-      border-radius: 99px;
-      background: rgba(49, 87, 44, 0.11);
-    }
-
-    .bar span {
-      display: block;
-      width: 0%;
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--leaf), var(--sky));
-      transition: width 0.45s ease;
-    }
-
-    .side-column {
-      position: sticky;
-      top: 14px;
-      display: grid;
-      gap: 14px;
-    }
-
-    .control-panel,
-    .status-panel,
-    .raw-panel {
-      background: rgba(255, 253, 247, 0.92);
-    }
-
-    .control-panel h3,
-    .status-panel h3,
-    .raw-panel h3 {
-      margin: 0 0 8px;
-      color: var(--forest-dark);
-      font-size: 22px;
-    }
-
-    .control-panel p,
-    .status-panel p,
-    .raw-panel p {
+    .project-preview-copy p {
+      max-width: 690px;
       margin: 0;
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
+      font-size: 16px;
+      line-height: 1.75;
     }
 
-    .controls {
+    .preview-features {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
-      margin-top: 18px;
+      margin-top: 27px;
     }
 
-    .control-btn {
+    .preview-feature {
       padding: 15px;
-      border: 0;
-      border-radius: 12px;
-      color: white;
-      background: var(--forest);
-      cursor: pointer;
-      font-weight: 800;
-      letter-spacing: 0.2px;
-      transition:
-        transform 0.2s ease,
-        background 0.2s ease;
-    }
-
-    .control-btn.alt {
-      color: var(--forest-dark);
-      background: var(--sky);
-    }
-
-    .control-btn:hover,
-    .control-btn:focus-visible {
-      transform: translateY(-2px);
-      outline: none;
-    }
-
-    .control-btn:hover {
-      background: var(--leaf);
-    }
-
-    .control-btn.alt:hover {
-      background: #b7dbe9;
-    }
-
-    .status-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .status-card {
-      min-width: 0;
-      padding: 13px;
       border: 1px solid var(--line);
       border-radius: 14px;
+      color: var(--forest-dark);
       background: var(--cream);
-    }
-
-    .status-card small {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.7px;
-      text-transform: uppercase;
-    }
-
-    .status-card strong {
-      display: block;
-      color: var(--forest-dark);
-      font-size: 17px;
-      letter-spacing: -0.3px;
-      word-break: break-word;
-    }
-
-    .raw-json {
-      max-height: 330px;
-      margin-top: 14px;
-      overflow: auto;
-      padding: 13px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 13px;
-      color: #eef5e9;
-      background: var(--forest-dark);
-      font-family:
-        ui-monospace,
-        SFMono-Regular,
-        Menlo,
-        Monaco,
-        Consolas,
-        "Liberation Mono",
-        monospace;
-      font-size: 11px;
-      line-height: 1.55;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .notice {
-      margin-top: 14px;
-      padding: 13px 14px;
-      border: 1px solid rgba(92, 148, 174, 0.24);
-      border-radius: 13px;
-      color: #355c69;
-      background: rgba(158, 207, 229, 0.24);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .monitor-architecture-block {
-      padding-top: 10px;
-    }
-
-    .flow {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .node {
-      position: relative;
-      min-height: 158px;
-      padding: 18px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: rgba(255, 253, 247, 0.92);
-      box-shadow: 0 10px 26px rgba(40, 59, 40, 0.07);
-    }
-
-    .node::before {
-      content: "";
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--leaf-light);
-      box-shadow: 0 0 0 5px rgba(142, 170, 88, 0.12);
-    }
-
-    .node-icon {
-      font-size: 25px;
-    }
-
-    .node h3 {
-      margin: 12px 0 8px;
-      color: var(--forest-dark);
-      font-size: 18px;
-    }
-
-    .node p {
-      margin: 0;
-      color: var(--muted);
       font-size: 13px;
-      line-height: 1.5;
+      font-weight: 700;
     }
 
-    .toast-stack {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 50;
+    .preview-panel {
       display: grid;
-      gap: 10px;
-      width: min(360px, calc(100vw - 36px));
-    }
-
-    .toast {
-      padding: 13px 14px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 14px;
+      align-content: center;
+      gap: 13px;
+      padding: 24px;
+      border-radius: 20px;
       color: white;
-      background: rgba(32, 60, 36, 0.96);
-      box-shadow: 0 18px 44px rgba(31, 48, 34, 0.24);
+      background: linear-gradient(145deg, var(--forest), var(--forest-dark));
+    }
+
+    .preview-panel strong {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 27px;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .preview-panel p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.76);
       font-size: 14px;
-      line-height: 1.4;
     }
 
-    @media (max-width: 1180px) {
-      .dashboard-layout {
+    .preview-panel .button {
+      margin-top: 7px;
+      color: var(--forest-dark);
+      background: #e7efc4;
+    }
+
+    @media (max-width: 840px) {
+      .project-preview-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .preview-features {
         grid-template-columns: 1fr;
       }
 
-    }
-
-    @media (max-width: 900px) {
-      .metric-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 680px) {
-      .metric-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .metric-section-heading {
-        align-items: flex-start;
-        flex-direction: column;
+      .main-nav .project-tab {
+        margin-left: 0;
+        margin-top: 5px;
+        text-align: center;
       }
     }
 
@@ -1232,7 +866,7 @@
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="#home" aria-label="Green AI Engineering homepage">
+      <a class="brand" href="index.html#home" aria-label="Green AI Engineering homepage">
         <img
           class="brand-logo"
           src="logo1.png"
@@ -1255,7 +889,7 @@
         <a href="#featured-development">Featured Development</a>
         <a href="#meet-the-team">Meet the Team</a>
         <a href="#how-we-work">How We Work</a>
-        <a href="#live-dashboard">Live Dashboard</a>
+        <a class="project-tab" href="indoor-automation.html">Indoor Automation</a>
       </nav>
     </div>
   </header>
@@ -1279,7 +913,9 @@
           </p>
 
           <div class="hero-actions">
-            
+            <a class="button button-primary" href="indoor-automation.html">
+              View indoor automation project
+            </a>
           </div>
         </div>
       </div>
@@ -1550,252 +1186,37 @@
       </div>
     </section>
 
-    <section class="section live-dashboard-section" aria-labelledby="live-dashboard-heading">
+    <section class="section project-page-preview" id="indoor-automation-project">
       <div class="container">
-        <div class="section-header">
-          <p class="section-label">Live project dashboard</p>
+        <div class="project-preview-card">
+          <div class="project-preview-copy">
+            <p class="section-label">Real indoor automation project</p>
+            <h2>Monitor the plants and control the growing system.</h2>
+            <p>
+              The real indoor cultivation setup now has its own project page.
+              It is prepared for soil moisture, lighting, temperature and
+              humidity readings, together with pump and grow-light control.
+            </p>
 
-          <h2 id="live-dashboard-heading">
-            Real-time monitoring.
-          </h2>
-
-          <p class="section-intro">
-            This dashboard displays the current MQTT data packet, device
-            status.
-          </p>
-        </div>
-
-    <div class="monitor-block" id="live-dashboard">
-      <div class="dashboard-update">
-        <span class="tiny" id="last-seen">Last update: --</span>
-      </div>
-<div class="glass dashboard">
-<div class="dashboard-layout">
-          <div>
-            <section class="metric-section">
-              <div class="metric-section-heading">
-                <h3>Real sensor measurements</h3>
-                
-              </div>
-
-              <div class="metric-grid">
-                <article class="metric-card real">
-                  <div class="metric-label-row">
-                    <div class="metric-label">Temperature</div>
-                    <span class="source-badge" id="temperature-source"></span>
-                  </div>
-                  <div class="metric-value">
-                    <span id="temperature-value">--</span>
-                    <span class="metric-unit">°C</span>
-                  </div>
-                  <div class="bar"><span id="temperature-bar"></span></div>
-                  <div class="mini-line">Air temperature measured by the sensor</div>
-                </article>
-
-                <article class="metric-card real">
-                  <div class="metric-label-row">
-                    <div class="metric-label">Atmospheric pressure</div>
-                    <span class="source-badge" id="pressure-source"></span>
-                  </div>
-                  <div class="metric-value">
-                    <span id="pressure-value">--</span>
-                    <span class="metric-unit">hPa</span>
-                  </div>
-                  <div class="bar"><span id="pressure-bar"></span></div>
-                  <div class="mini-line">Real atmospheric pressure measurement</div>
-                </article>
-
-                <article class="metric-card">
-                  <div class="metric-label-row">
-                    <div class="metric-label">Approximate altitude</div>
-                    <span class="source-badge">Calculated</span>
-                  </div>
-                  <div class="metric-value">
-                    <span id="altitude-value">--</span>
-                    <span class="metric-unit">m</span>
-                  </div>
-                  <div class="bar"><span id="altitude-bar"></span></div>
-                  <div class="mini-line">Estimated from atmospheric pressure</div>
-                </article>
-              </div>
-            </section>
-
-            <section class="metric-section">
-              <div class="metric-section-heading">
-                <h3>Greenhouse humidity and plant climate</h3>
-                
-              </div>
-
-              <div class="metric-grid">
-                <article class="metric-card simulated">
-                  <div class="metric-label-row">
-                    <div class="metric-label">Relative humidity</div>
-                    <span class="source-badge simulated" id="humidity-source">Simulated</span>
-                  </div>
-                  <div class="metric-value">
-                    <span id="humidity-value">--</span>
-                    <span class="metric-unit">%</span>
-                  </div>
-                  <div class="bar"><span id="humidity-bar"></span></div>
-                  
-                </article>
-
-                <article class="metric-card simulated">
-                  <div class="metric-label-row">
-                    <div class="metric-label">Air VPD</div>
-                    <span class="source-badge simulated">Calculated</span>
-                  </div>
-                  <div class="metric-value">
-                    <span id="vpd-value">--</span>
-                    <span class="metric-unit">kPa</span>
-                  </div>
-                  <div class="bar"><span id="vpd-bar"></span></div>
-                  <div class="mini-line" id="vpd-note">Vapour pressure deficit</div>
-                </article>
-
-                <article class="metric-card simulated">
-                  <div class="metric-label-row">
-                    <div class="metric-label">Dew point</div>
-                    <span class="source-badge simulated">Calculated</span>
-                  </div>
-                  <div class="metric-value">
-                    <span id="dew-point-value">--</span>
-                    <span class="metric-unit">°C</span>
-                  </div>
-                  <div class="bar"><span id="dew-point-bar"></span></div>
-                  <div class="mini-line">Temperature at which condensation may begin</div>
-                </article>
-
-                <article class="metric-card simulated">
-                  <div class="metric-label-row">
-                    <div class="metric-label">Wet-bulb temperature</div>
-                    <span class="source-badge simulated">Calculated</span>
-                  </div>
-                  <div class="metric-value">
-                    <span id="wet-bulb-value">--</span>
-                    <span class="metric-unit">°C</span>
-                  </div>
-                  <div class="bar"><span id="wet-bulb-bar"></span></div>
-                  <div class="mini-line">Approximate evaporative cooling temperature</div>
-                </article>
-
-                <article class="metric-card simulated">
-                  <div class="metric-label-row">
-                    <div class="metric-label">Condensation margin</div>
-                    <span class="source-badge simulated">Calculated</span>
-                  </div>
-                  <div class="metric-value">
-                    <span id="condensation-value">--</span>
-                    <span class="metric-unit">°C</span>
-                  </div>
-                  <div class="bar"><span id="condensation-bar"></span></div>
-                  <div class="mini-line" id="condensation-note">Air temperature minus dew point</div>
-                </article>
-
-                <article class="metric-card simulated">
-                  <div class="metric-label-row">
-                    <div class="metric-label">Absolute humidity</div>
-                    <span class="source-badge simulated">Calculated</span>
-                  </div>
-                  <div class="metric-value">
-                    <span id="absolute-humidity-value">--</span>
-                    <span class="metric-unit">g/m³</span>
-                  </div>
-                  <div class="bar"><span id="absolute-humidity-bar"></span></div>
-                  <div class="mini-line">Water vapour mass per cubic metre of air</div>
-                </article>
-              </div>
-            </section>
-
-            <section class="metric-section">
-              <div class="metric-section-heading">
-                <h3>Psychrometric and air properties</h3>
-                <span>Calculated from temperature, pressure and humidity</span>
-              </div>
-
-              <div class="metric-grid">
-                <article class="metric-card simulated">
-                  <div class="metric-label-row">
-                    <div class="metric-label">Saturation vapour pressure</div>
-                    <span class="source-badge simulated">Calculated</span>
-                  </div>
-                  <div class="metric-value">
-                    <span id="svp-value">--</span>
-                    <span class="metric-unit">kPa</span>
-                  </div>
-                  <div class="bar"><span id="svp-bar"></span></div>
-                  <div class="mini-line">Maximum vapour pressure at the current temperature</div>
-                </article>
-
-                <article class="metric-card simulated">
-                  <div class="metric-label-row">
-                    <div class="metric-label">Actual vapour pressure</div>
-                    <span class="source-badge simulated">Calculated</span>
-                  </div>
-                  <div class="metric-value">
-                    <span id="avp-value">--</span>
-                    <span class="metric-unit">kPa</span>
-                  </div>
-                  <div class="bar"><span id="avp-bar"></span></div>
-                  <div class="mini-line">Current water vapour pressure in the air</div>
-                </article>
-
-                <article class="metric-card simulated">
-                  <div class="metric-label-row">
-                    <div class="metric-label">Humidity ratio</div>
-                    <span class="source-badge simulated">Calculated</span>
-                  </div>
-                  <div class="metric-value">
-                    <span id="humidity-ratio-value">--</span>
-                    <span class="metric-unit">g/kg</span>
-                  </div>
-                  <div class="bar"><span id="humidity-ratio-bar"></span></div>
-                  <div class="mini-line">Water vapour mass per kilogram of dry air</div>
-                </article>
-
-                <article class="metric-card simulated">
-                  <div class="metric-label-row">
-                    <div class="metric-label">Moist-air enthalpy</div>
-                    <span class="source-badge simulated">Calculated</span>
-                  </div>
-                  <div class="metric-value">
-                    <span id="enthalpy-value">--</span>
-                    <span class="metric-unit">kJ/kg</span>
-                  </div>
-                  <div class="bar"><span id="enthalpy-bar"></span></div>
-                  <div class="mini-line">Combined sensible and latent energy in the air</div>
-                </article>
-
-                <article class="metric-card simulated">
-                  <div class="metric-label-row">
-                    <div class="metric-label">Air density</div>
-                    <span class="source-badge simulated">Calculated</span>
-                  </div>
-                  <div class="metric-value">
-                    <span id="air-density-value">--</span>
-                    <span class="metric-unit">kg/m³</span>
-                  </div>
-                  <div class="bar"><span id="air-density-bar"></span></div>
-                  <div class="mini-line">Approximate density of the moist air</div>
-                </article>
-
-                <article class="metric-card">
-                  <div class="metric-label-row">
-                    <div class="metric-label">Fan / relay state</div>
-                    <span class="source-badge">Device</span>
-                  </div>
-                  <div class="metric-value status-text">
-                    <span id="fan-value">--</span>
-                  </div>
-                  <div class="bar"><span id="fan-bar"></span></div>
-                  <div class="mini-line" id="fan-note">Waiting for device state</div>
-                </article>
-              </div>
-            </section>
+            <div class="preview-features" aria-label="Indoor automation features">
+              <div class="preview-feature">Live plant-environment values</div>
+              <div class="preview-feature">Pump and lighting status</div>
+              <div class="preview-feature">24-hour water usage</div>
+              <div class="preview-feature">Manual pump and light controls</div>
+            </div>
           </div>
-</div>
-      </div>
-    </div>
+
+          <aside class="preview-panel">
+            <strong>Dedicated dashboard and control page</strong>
+            <p>
+              Demonstration values are included until the final MQTT data
+              packet names are connected.
+            </p>
+            <a class="button" href="indoor-automation.html">
+              Open project dashboard
+            </a>
+          </aside>
+        </div>
       </div>
     </section>
 
@@ -1810,450 +1231,6 @@
       <span>© <span id="year"></span></span>
     </div>
   </footer>
-
-  <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
-
-  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-
-  <script>
-    const dataTopic = "esp32/bmp280/data";
-    const commandTopic = "esp32/bmp280/command";
-
-    let mqttClient = null;
-    let brokerConnected = false;
-    let lastTelemetryTime = null;
-    let packetsReceived = 0;
-
-    const el = (id) => document.getElementById(id);
-
-    function setText(id, value) {
-      const target = el(id);
-      if (target) target.textContent = value;
-    }
-
-    function setBar(id, percent) {
-      const target = el(id);
-      if (!target) return;
-      const safePercent = Math.max(0, Math.min(100, Number(percent) || 0));
-      target.style.width = safePercent + "%";
-    }
-
-    function formatNumber(value, decimalPlaces = 2) {
-      const number = Number(value);
-      return Number.isFinite(number) ? number.toFixed(decimalPlaces) : "--";
-    }
-
-    function readNumber(data, key) {
-      if (data[key] === undefined || data[key] === null || data[key] === "") {
-        return null;
-      }
-
-      const value = Number(data[key]);
-      return Number.isFinite(value) ? value : null;
-    }
-
-    function readText(data, key, fallback = "--") {
-      if (data[key] === undefined || data[key] === null) return fallback;
-      const value = String(data[key]).trim();
-      return value || fallback;
-    }
-
-    function formatTime(date = new Date()) {
-      return date.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit"
-      });
-    }
-
-    function showToast(message) {
-      const stack = el("toast-stack");
-      if (!stack) return;
-
-      const toast = document.createElement("div");
-      toast.className = "toast";
-      toast.textContent = message;
-      stack.appendChild(toast);
-
-      setTimeout(() => {
-        toast.style.opacity = "0";
-        toast.style.transform = "translateY(8px)";
-        toast.style.transition = "0.22s ease";
-        setTimeout(() => toast.remove(), 260);
-      }, 2600);
-    }
-
-    function setAlert(mode, text, pill) {
-      const alert = el("telemetry-alert");
-      if (!alert) return;
-
-      alert.classList.remove("live", "stale", "offline");
-      if (mode) alert.classList.add(mode);
-
-      setText("telemetry-alert-text", text);
-      setText("telemetry-pill", pill);
-    }
-
-    function updateBrokerUi() {
-      if (brokerConnected) {
-        setText("broker-status", "Connected");
-        setText(
-          "mqtt-status",
-          "Connected to HiveMQ WebSocket and listening on " + dataTopic + "."
-        );
-      } else {
-        setText("broker-status", "Offline");
-        setText(
-          "mqtt-status",
-          "MQTT disconnected. Check internet access, broker address and topic names."
-        );
-      }
-    }
-
-    function setMetric(id, value, decimals, barId, barPercent) {
-      setText(id, value === null ? "--" : formatNumber(value, decimals));
-      setBar(barId, value === null ? 0 : barPercent);
-    }
-
-    function getVpdDescription(vpd) {
-      if (vpd === null) return "Vapour pressure deficit";
-      if (vpd < 0.4) return "Very humid air / low transpiration demand";
-      if (vpd < 0.8) return "Low VPD";
-      if (vpd <= 1.2) return "Moderate greenhouse range";
-      if (vpd <= 1.6) return "High transpiration demand";
-      return "Very dry air / high transpiration demand";
-    }
-
-    function getCondensationDescription(margin) {
-      if (margin === null) return "Air temperature minus dew point";
-      if (margin < 2) return "High condensation risk";
-      if (margin < 4) return "Condensation risk should be watched";
-      return "Lower immediate condensation risk";
-    }
-
-    function updateTelemetryUi(data) {
-      packetsReceived += 1;
-      lastTelemetryTime = new Date();
-
-      const temperature = readNumber(data, "temperature_c");
-      const pressure = readNumber(data, "pressure_hpa");
-      const humidity = readNumber(data, "humidity_pct");
-      const dewPoint = readNumber(data, "dew_point_c");
-      const wetBulb = readNumber(data, "wet_bulb_temperature_c");
-      const vpd = readNumber(data, "vpd_kpa");
-      const saturationVapourPressure = readNumber(data, "saturation_vapour_pressure_kpa");
-      const actualVapourPressure = readNumber(data, "actual_vapour_pressure_kpa");
-      const condensationMargin = readNumber(data, "condensation_margin_c");
-      const absoluteHumidity = readNumber(data, "absolute_humidity_g_m3");
-      const humidityRatio = readNumber(data, "humidity_ratio_g_kg");
-      const enthalpy = readNumber(data, "moist_air_enthalpy_kj_kg");
-      const airDensity = readNumber(data, "air_density_kg_m3");
-      const altitude = readNumber(data, "approximate_altitude_m");
-      const fan = readText(data, "fan", "--").toUpperCase();
-
-      const temperatureSource = readText(data, "temperature_source", "sensor");
-      const pressureSource = readText(data, "pressure_source", "sensor");
-      const humiditySource = readText(data, "humidity_source", "unknown");
-      const simulated = data.humidity_derived_values_simulated === true;
-
-      setMetric(
-        "temperature-value",
-        temperature,
-        2,
-        "temperature-bar",
-        temperature === null ? 0 : ((temperature + 5) / 50) * 100
-      );
-
-      setMetric(
-        "pressure-value",
-        pressure,
-        2,
-        "pressure-bar",
-        pressure === null ? 0 : ((pressure - 900) / 200) * 100
-      );
-
-      setMetric(
-        "altitude-value",
-        altitude,
-        1,
-        "altitude-bar",
-        altitude === null ? 0 : (Math.abs(altitude) / 500) * 100
-      );
-
-      setMetric(
-        "humidity-value",
-        humidity,
-        2,
-        "humidity-bar",
-        humidity
-      );
-
-      setMetric(
-        "vpd-value",
-        vpd,
-        3,
-        "vpd-bar",
-        vpd === null ? 0 : (vpd / 2.5) * 100
-      );
-
-      setMetric(
-        "dew-point-value",
-        dewPoint,
-        2,
-        "dew-point-bar",
-        dewPoint === null ? 0 : ((dewPoint + 10) / 50) * 100
-      );
-
-      setMetric(
-        "wet-bulb-value",
-        wetBulb,
-        2,
-        "wet-bulb-bar",
-        wetBulb === null ? 0 : ((wetBulb + 10) / 50) * 100
-      );
-
-      setMetric(
-        "condensation-value",
-        condensationMargin,
-        2,
-        "condensation-bar",
-        condensationMargin === null ? 0 : (condensationMargin / 15) * 100
-      );
-
-      setMetric(
-        "absolute-humidity-value",
-        absoluteHumidity,
-        2,
-        "absolute-humidity-bar",
-        absoluteHumidity === null ? 0 : (absoluteHumidity / 30) * 100
-      );
-
-      setMetric(
-        "svp-value",
-        saturationVapourPressure,
-        3,
-        "svp-bar",
-        saturationVapourPressure === null ? 0 : (saturationVapourPressure / 6) * 100
-      );
-
-      setMetric(
-        "avp-value",
-        actualVapourPressure,
-        3,
-        "avp-bar",
-        actualVapourPressure === null ? 0 : (actualVapourPressure / 6) * 100
-      );
-
-      setMetric(
-        "humidity-ratio-value",
-        humidityRatio,
-        2,
-        "humidity-ratio-bar",
-        humidityRatio === null ? 0 : (humidityRatio / 30) * 100
-      );
-
-      setMetric(
-        "enthalpy-value",
-        enthalpy,
-        2,
-        "enthalpy-bar",
-        enthalpy === null ? 0 : (enthalpy / 100) * 100
-      );
-
-      setMetric(
-        "air-density-value",
-        airDensity,
-        3,
-        "air-density-bar",
-        airDensity === null ? 0 : (airDensity / 1.5) * 100
-      );
-
-      setText("temperature-source", temperatureSource);
-      setText("pressure-source", pressureSource);
-      setText("humidity-source", humiditySource);
-
-      setText("vpd-note", getVpdDescription(vpd));
-      setText("condensation-note", getCondensationDescription(condensationMargin));
-
-      setText("fan-value", fan);
-      setText("fan-note", "State received in the latest telemetry packet");
-      setBar("fan-bar", fan === "ON" ? 100 : fan === "OFF" ? 18 : 45);
-
-      setText("packet-count", String(packetsReceived));
-      setText("data-status", "Live");
-      setText("system-status", "Live");
-      setText("last-seen", "Last update: " + formatTime(lastTelemetryTime));
-      setText("simulation-status", simulated ? "Simulated" : "Measured");
-
-      setText(
-        "simulation-notice",
-        simulated
-          ? "Humidity, dew point, VPD, wet-bulb temperature and other humidity-derived values are simulated."
-          : "Humidity and humidity-derived values are reported as measured or sensor-based."
-      );
-
-      setText("raw-json", JSON.stringify(data, null, 2));
-
-      setAlert(
-        "live",
-        simulated
-          ? "Live ESP32 packet received. Temperature and pressure are real; humidity-dependent values are simulated."
-          : "Live ESP32 telemetry received. Dashboard is showing the complete MQTT packet.",
-        "LIVE"
-      );
-    }
-
-    function checkFreshness() {
-      if (!lastTelemetryTime) {
-        setText("data-status", "Waiting");
-        setText("system-status", brokerConnected ? "Waiting" : "Offline");
-        setAlert(
-          brokerConnected ? "" : "offline",
-          brokerConnected
-            ? "Connected to MQTT. Waiting for an ESP32 data packet."
-            : "MQTT is offline. Waiting for the broker connection.",
-          brokerConnected ? "WAITING" : "OFFLINE"
-        );
-        return;
-      }
-
-      const ageMs = Date.now() - lastTelemetryTime.getTime();
-
-      if (ageMs > 30000) {
-        setText("data-status", "Stale");
-        setText("system-status", "Stale");
-        setAlert(
-          "stale",
-          "Telemetry is stale. No new packet has been received for " +
-            Math.round(ageMs / 1000) +
-            " seconds.",
-          "STALE"
-        );
-      } else {
-        setText("data-status", "Live");
-        setText("system-status", "Live");
-      }
-    }
-
-    function sendFanCommand(state) {
-      if (!mqttClient || !brokerConnected) {
-        setText("command-status", "Not sent");
-        showToast("Command not sent because MQTT is disconnected.");
-        return;
-      }
-
-      const payload = JSON.stringify({ fan: state });
-
-      mqttClient.publish(commandTopic, payload, { qos: 0 }, (error) => {
-        if (error) {
-          setText("command-status", "Failed");
-          showToast("Command failed: " + error.message);
-          return;
-        }
-
-        setText("command-status", state + " sent");
-        showToast("Fan command sent: " + state);
-      });
-    }
-
-    function startMqtt() {
-      if (typeof mqtt === "undefined") {
-        brokerConnected = false;
-        updateBrokerUi();
-        setText("broker-status", "Library missing");
-        setAlert(
-          "offline",
-          "The MQTT JavaScript library could not be loaded.",
-          "OFFLINE"
-        );
-        return;
-      }
-
-      try {
-        mqttClient = mqtt.connect("wss://broker.hivemq.com:8884/mqtt", {
-          clientId:
-            "greenhouse_dashboard_" +
-            Math.random().toString(16).slice(2, 10),
-          protocolVersion: 4,
-          reconnectPeriod: 2500,
-          connectTimeout: 8000,
-          clean: true
-        });
-
-        mqttClient.on("connect", () => {
-          brokerConnected = true;
-          updateBrokerUi();
-          setText("command-status", "Ready");
-          showToast("MQTT connected");
-
-          mqttClient.subscribe(dataTopic, (error) => {
-            if (error) {
-              setText("data-status", "Subscribe failed");
-              showToast("Subscribe failed: " + error.message);
-              return;
-            }
-
-            setText("data-status", "Waiting");
-          });
-        });
-
-        mqttClient.on("message", (topic, message) => {
-          if (topic !== dataTopic) return;
-
-          try {
-            const raw = message.toString().trim();
-            const data = JSON.parse(raw);
-            updateTelemetryUi(data);
-          } catch (error) {
-            setText("data-status", "Parse error");
-            setAlert(
-              "stale",
-              "A message arrived, but it was not valid JSON.",
-              "ERROR"
-            );
-            setText("raw-json", message.toString());
-            showToast("Telemetry JSON parse error");
-          }
-        });
-
-        mqttClient.on("error", (error) => {
-          brokerConnected = false;
-          updateBrokerUi();
-          setAlert(
-            "offline",
-            "MQTT error. Check the broker, network and topic names.",
-            "ERROR"
-          );
-          showToast("MQTT error: " + error.message);
-        });
-
-        mqttClient.on("close", () => {
-          brokerConnected = false;
-          updateBrokerUi();
-
-          if (!lastTelemetryTime) {
-            setAlert(
-              "offline",
-              "MQTT disconnected before telemetry arrived.",
-              "OFFLINE"
-            );
-          }
-        });
-      } catch (error) {
-        brokerConnected = false;
-        updateBrokerUi();
-        setAlert(
-          "offline",
-          "MQTT could not start in this browser or network.",
-          "OFFLINE"
-        );
-        showToast("MQTT initialisation failed: " + error.message);
-      }
-    }
-
-    startMqtt();
-    setInterval(checkFreshness, 5000);
-  </script>
 
   <script>
     const navigation = document.querySelector(".main-nav");
