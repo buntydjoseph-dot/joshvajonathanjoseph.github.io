@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="description"
+    content="Green AI Engineering indoor plant monitoring and automation dashboard."
+  >
+  <meta name="theme-color" content="#31572c">
+
+  <title>Indoor Plant Automation | Green AI Engineering</title>
+  <link rel="icon" type="image/png" href="logo1.png">
+
+  <style>
+    :root {
+      --forest: #31572c;
+      --forest-dark: #203c24;
+      --leaf: #5f7f35;
+      --leaf-light: #8eaa58;
+      --sky: #9ecfe5;
+      --sky-light: #d9edf3;
+      --cream: #f5f2e9;
+      --paper: #fffdf7;
+      --text: #263126;
+      --muted: #647064;
+      --line: rgba(49, 87, 44, 0.16);
+      --shadow: 0 20px 50px rgba(40, 59, 40, 0.12);
+      --content-width: 1180px;
+      --danger: #a2484f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--cream);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin-top: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 500;
+      line-height: 1.08;
+    }
+
+    .container {
+      width: min(var(--content-width), 92%);
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      padding: 22px 0;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 16px;
+      background: rgba(24, 50, 30, 0.4);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+      text-decoration: none;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .brand-logo {
+      width: 88px;
+      height: 58px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.96);
+      padding: 4px 7px;
+      box-shadow: 0 8px 24px rgba(14, 45, 25, 0.18);
+    }
+
+    .brand-name {
+      white-space: nowrap;
+    }
+
+    .nav-toggle {
+      display: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 10px;
+      padding: 9px 12px;
+      color: white;
+      background: rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .main-nav a {
+      padding: 9px 12px;
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .main-nav a:hover,
+    .main-nav a:focus-visible {
+      color: white;
+      background: rgba(255, 255, 255, 0.13);
+      outline: none;
+    }
+
+    .main-nav .active-tab {
+      padding: 12px 17px;
+      color: var(--forest-dark);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      background: #e7efc4;
+      box-shadow: 0 9px 24px rgba(13, 38, 20, 0.22);
+    }
+
+    .main-nav .active-tab:hover,
+    .main-nav .active-tab:focus-visible {
+      color: var(--forest-dark);
+      background: white;
+    }
+
+    .project-hero {
+      position: relative;
+      min-height: 610px;
+      display: grid;
+      align-items: center;
+      overflow: hidden;
+      color: white;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(24, 48, 26, 0.91) 0%,
+          rgba(31, 58, 33, 0.72) 52%,
+          rgba(31, 58, 33, 0.32) 100%
+        ),
+        url("gai.jpg") center center / cover no-repeat;
+    }
+
+    .project-hero::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 120px;
+      background: linear-gradient(transparent, var(--cream));
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 790px;
+      padding: 155px 0 105px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 20px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.11);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.9px;
+      text-transform: uppercase;
+    }
+
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #c9e265;
+      box-shadow: 0 0 14px rgba(201, 226, 101, 0.72);
+    }
+
+    .project-hero h1 {
+      margin-bottom: 20px;
+      font-size: clamp(47px, 7vw, 82px);
+      letter-spacing: -2.5px;
+      text-wrap: balance;
+    }
+
+    .project-hero p {
+      max-width: 710px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: clamp(17px, 1.8vw, 20px);
+      line-height: 1.7;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    .hero-pill {
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.09);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .section {
+      padding: 88px 0;
+    }
+
+    .section.alt {
+      background:
+        radial-gradient(circle at 88% 12%, rgba(158, 207, 229, 0.32), transparent 28%),
+        var(--paper);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 34px;
+    }
+
+    .section-heading-copy {
+      max-width: 780px;
+    }
+
+    .section-label {
+      margin: 0 0 11px;
+      color: var(--leaf);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+    }
+
+    .section h2 {
+      margin-bottom: 15px;
+      color: var(--forest-dark);
+      font-size: clamp(35px, 5vw, 57px);
+      letter-spacing: -1.7px;
+    }
+
+    .section-intro {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    .live-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      padding: 9px 13px;
+      border: 1px solid rgba(95, 127, 53, 0.22);
+      border-radius: 999px;
+      color: var(--forest-dark);
+      background: rgba(142, 170, 88, 0.15);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .live-chip::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--leaf-light);
+      box-shadow: 0 0 0 5px rgba(142, 170, 88, 0.13);
+    }
+
+    .data-note {
+      margin-bottom: 22px;
+      padding: 15px 17px;
+      border: 1px solid rgba(92, 148, 174, 0.24);
+      border-radius: 15px;
+      color: #355c69;
+      background: rgba(158, 207, 229, 0.22);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .metric-card {
+      position: relative;
+      min-height: 220px;
+      overflow: hidden;
+      padding: 23px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 253, 247, 0.94);
+      box-shadow: 0 14px 34px rgba(40, 59, 40, 0.08);
+    }
+
+    .metric-card::after {
+      content: "";
+      position: absolute;
+      right: -40px;
+      bottom: -55px;
+      width: 135px;
+      height: 135px;
+      border-radius: 50%;
+      background: rgba(158, 207, 229, 0.17);
+    }
+
+    .metric-top {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .metric-icon {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: rgba(142, 170, 88, 0.14);
+      font-size: 20px;
+    }
+
+    .metric-value {
+      position: relative;
+      z-index: 1;
+      margin-top: 23px;
+      color: var(--forest-dark);
+      font-size: clamp(34px, 4.2vw, 51px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .metric-unit {
+      margin-left: 3px;
+      color: var(--leaf);
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    .metric-description {
+      position: relative;
+      z-index: 1;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .meter {
+      position: relative;
+      z-index: 1;
+      height: 8px;
+      margin-top: 14px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(49, 87, 44, 0.1);
+    }
+
+    .meter span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--leaf), var(--sky));
+      transition: width 0.35s ease;
+    }
+
+    .activity-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .activity-card {
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: 21px;
+      background: var(--cream);
+      box-shadow: 0 13px 31px rgba(40, 59, 40, 0.07);
+    }
+
+    .activity-card h3 {
+      margin-bottom: 9px;
+      color: var(--forest-dark);
+      font-size: 23px;
+    }
+
+    .activity-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .status-value {
+      color: var(--forest-dark);
+      font-size: 35px;
+      font-weight: 800;
+      letter-spacing: -1.3px;
+    }
+
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      border-radius: 999px;
+      color: #7a3940;
+      background: rgba(206, 130, 138, 0.16);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+    }
+
+    .status-indicator::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .status-indicator.on {
+      color: var(--forest);
+      background: rgba(142, 170, 88, 0.18);
+    }
+
+    .water-value {
+      margin-top: 21px;
+      color: var(--forest-dark);
+      font-size: clamp(38px, 5vw, 57px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1;
+    }
+
+    .water-value span {
+      color: var(--leaf);
+      font-size: 15px;
+      letter-spacing: 0;
+    }
+
+    .controls-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    .control-card {
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(25px, 4vw, 40px);
+      border: 1px solid var(--line);
+      border-radius: 25px;
+      background: rgba(255, 253, 247, 0.95);
+      box-shadow: var(--shadow);
+    }
+
+    .control-card h3 {
+      margin-bottom: 10px;
+      color: var(--forest-dark);
+      font-size: 31px;
+      letter-spacing: -0.8px;
+    }
+
+    .control-card p {
+      max-width: 530px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .pump-display {
+      display: grid;
+      place-items: center;
+      width: 155px;
+      height: 155px;
+      margin: 33px auto;
+      border: 12px solid rgba(49, 87, 44, 0.1);
+      border-radius: 50%;
+      color: var(--danger);
+      background: var(--cream);
+      box-shadow: inset 0 0 0 1px var(--line);
+      font-size: 28px;
+      font-weight: 800;
+      transition: 0.25s ease;
+    }
+
+    .pump-display.on {
+      color: var(--forest);
+      border-color: rgba(142, 170, 88, 0.34);
+      box-shadow:
+        inset 0 0 0 1px rgba(95, 127, 53, 0.18),
+        0 0 35px rgba(142, 170, 88, 0.2);
+    }
+
+    .pump-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .control-button {
+      min-height: 52px;
+      border: 1px solid rgba(49, 87, 44, 0.2);
+      border-radius: 13px;
+      color: var(--forest-dark);
+      background: var(--cream);
+      cursor: pointer;
+      font-weight: 800;
+      transition: 0.2s ease;
+    }
+
+    .control-button:hover,
+    .control-button:focus-visible {
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .control-button.active {
+      color: white;
+      border-color: var(--forest);
+      background: var(--forest);
+      box-shadow: 0 10px 24px rgba(49, 87, 44, 0.2);
+    }
+
+    .knob-area {
+      display: grid;
+      place-items: center;
+      margin: 22px 0 14px;
+    }
+
+    .rotary-knob {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      color: var(--forest-dark);
+      background:
+        radial-gradient(circle at 42% 36%, #fffef9 0%, #e9eadf 53%, #cfd4c2 100%);
+      box-shadow:
+        inset -14px -17px 30px rgba(32, 60, 36, 0.12),
+        inset 12px 11px 24px rgba(255, 255, 255, 0.78),
+        0 21px 40px rgba(40, 59, 40, 0.18);
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .rotary-knob:active {
+      cursor: grabbing;
+    }
+
+    .rotary-knob:focus-visible {
+      outline: 4px solid rgba(158, 207, 229, 0.72);
+      outline-offset: 6px;
+    }
+
+    .knob-marker {
+      position: absolute;
+      top: 18px;
+      left: calc(50% - 4px);
+      width: 8px;
+      height: 52px;
+      border-radius: 999px;
+      background: var(--forest);
+      transform-origin: 4px 92px;
+      transform: rotate(-135deg);
+      transition: transform 0.08s linear;
+    }
+
+    .knob-centre {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      width: 124px;
+      height: 124px;
+      border: 1px solid rgba(49, 87, 44, 0.12);
+      border-radius: 50%;
+      background: rgba(255, 253, 247, 0.76);
+      text-align: center;
+    }
+
+    .knob-value {
+      display: block;
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1;
+    }
+
+    .knob-unit {
+      display: block;
+      margin-top: 6px;
+      color: var(--leaf);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .knob-scale {
+      width: min(310px, 100%);
+      display: flex;
+      justify-content: space-between;
+      margin-top: 13px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .control-status {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      color: var(--muted);
+      background: var(--cream);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .integration-box {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(330px, 0.8fr);
+      gap: 22px;
+      padding: clamp(26px, 4vw, 42px);
+      border-radius: 25px;
+      color: white;
+      background: linear-gradient(145deg, var(--forest), var(--forest-dark));
+    }
+
+    .integration-box h2 {
+      color: white;
+    }
+
+    .integration-box p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.76);
+      line-height: 1.7;
+    }
+
+    .packet-fields {
+      margin: 0;
+      padding: 18px;
+      overflow: auto;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      color: #eef5e9;
+      background: rgba(0, 0, 0, 0.16);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+    }
+
+    .site-footer {
+      padding: 32px 0;
+      color: rgba(255, 255, 255, 0.76);
+      background: var(--forest-dark);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      font-size: 13px;
+    }
+
+    .footer-inner strong {
+      color: white;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .toast-stack {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 50;
+      display: grid;
+      gap: 10px;
+      width: min(370px, calc(100vw - 36px));
+    }
+
+    .toast {
+      padding: 13px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      color: white;
+      background: rgba(32, 60, 36, 0.97);
+      box-shadow: 0 18px 44px rgba(31, 48, 34, 0.24);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 1000px) {
+      .metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .controls-layout,
+      .integration-box {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .site-header {
+        padding-top: 12px;
+      }
+
+      .header-inner {
+        position: relative;
+      }
+
+      .nav-toggle {
+        display: inline-flex;
+      }
+
+      .main-nav {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        right: 0;
+        display: none;
+        align-items: stretch;
+        flex-direction: column;
+        padding: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 14px;
+        background: rgba(25, 51, 30, 0.97);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.24);
+      }
+
+      .main-nav.open {
+        display: flex;
+      }
+
+      .main-nav .active-tab {
+        text-align: center;
+      }
+
+      .project-hero {
+        min-height: 590px;
+      }
+
+      .hero-content {
+        padding-top: 145px;
+      }
+
+      .section {
+        padding: 70px 0;
+      }
+
+      .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .activity-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .brand-logo {
+        width: 72px;
+        height: 48px;
+      }
+
+      .brand-name {
+        display: none;
+      }
+
+      .metric-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .metric-card {
+        min-height: 195px;
+      }
+
+      .pump-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .rotary-knob {
+        width: 190px;
+        height: 190px;
+      }
+
+      .knob-marker {
+        transform-origin: 4px 77px;
+      }
+
+      .knob-centre {
+        width: 108px;
+        height: 108px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Return to Green AI Engineering main page">
+        <img class="brand-logo" src="logo1.png" alt="Green AI Engineering logo">
+        <span class="brand-name">Green AI Engineering</span>
+      </a>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="main-navigation"
+      >
+        Menu
+      </button>
+
+      <nav class="main-nav" id="main-navigation" aria-label="Project navigation">
+        <a href="index.html">Main Page</a>
+        <a href="#environment">Environment</a>
+        <a href="#activity">System Status</a>
+        <a href="#controls">Controls</a>
+        <a class="active-tab" href="#project-top">Indoor Automation</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="project-top">
+    <section class="project-hero">
+      <div class="container">
+        <div class="hero-content">
+          <span class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            Real indoor cultivation prototype
+          </span>
+
+          <h1>Indoor plant monitoring and automation.</h1>
+
+          <p>
+            A dedicated page for the physical growing setup, showing plant
+            conditions, irrigation and lighting activity, and manual control
+            of the water pump and grow-light intensity.
+          </p>
+
+          <div class="hero-meta">
+            <span class="hero-pill">Sensor monitoring</span>
+            <span class="hero-pill">Water control</span>
+            <span class="hero-pill">Lighting control</span>
+            <span class="hero-pill">MQTT-ready structure</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="environment">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-heading-copy">
+            <p class="section-label">Plant environment</p>
+            <h2>Current growing conditions.</h2>
+            <p class="section-intro">
+              These four cards are prepared for the real values measured around
+              the plants and inside the soil.
+            </p>
+          </div>
+          <span class="live-chip" id="data-mode-chip">Demonstration data</span>
+        </div>
+
+        <div class="data-note" id="data-note">
+          The numbers below are temporary demonstration values. Replace the field
+          names in <strong>applyTelemetryPacket()</strong> when your final data
+          packet is ready.
+        </div>
+
+        <div class="metric-grid">
+          <article class="metric-card">
+            <div class="metric-top">
+              <span class="metric-label">Soil moisture</span>
+              <span class="metric-icon" aria-hidden="true">💧</span>
+            </div>
+            <div class="metric-value">
+              <span id="soil-moisture-value">--</span><span class="metric-unit">%</span>
+            </div>
+            <div class="meter"><span id="soil-moisture-meter"></span></div>
+            <div class="metric-description">Moisture level measured near the plant roots.</div>
+          </article>
+
+          <article class="metric-card">
+            <div class="metric-top">
+              <span class="metric-label">Light level</span>
+              <span class="metric-icon" aria-hidden="true">☀️</span>
+            </div>
+            <div class="metric-value">
+              <span id="light-level-value">--</span><span class="metric-unit">%</span>
+            </div>
+            <div class="meter"><span id="light-level-meter"></span></div>
+            <div class="metric-description" id="light-lux-description">Grow-area light intensity.</div>
+          </article>
+
+          <article class="metric-card">
+            <div class="metric-top">
+              <span class="metric-label">Temperature</span>
+              <span class="metric-icon" aria-hidden="true">🌡️</span>
+            </div>
+            <div class="metric-value">
+              <span id="temperature-value">--</span><span class="metric-unit">°C</span>
+            </div>
+            <div class="meter"><span id="temperature-meter"></span></div>
+            <div class="metric-description">Air temperature around the indoor plants.</div>
+          </article>
+
+          <article class="metric-card">
+            <div class="metric-top">
+              <span class="metric-label">Relative humidity</span>
+              <span class="metric-icon" aria-hidden="true">🌫️</span>
+            </div>
+            <div class="metric-value">
+              <span id="humidity-value">--</span><span class="metric-unit">%</span>
+            </div>
+            <div class="meter"><span id="humidity-meter"></span></div>
+            <div class="metric-description">Humidity in the air surrounding the plants.</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="activity">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-heading-copy">
+            <p class="section-label">System activity</p>
+            <h2>Lighting and irrigation status.</h2>
+            <p class="section-intro">
+              See what the automation system is currently doing and how much
+              water has been delivered during the previous 24 hours.
+            </p>
+          </div>
+          <span class="live-chip" id="last-update">Updated: --</span>
+        </div>
+
+        <div class="activity-grid">
+          <article class="activity-card">
+            <h3>Grow light</h3>
+            <p>Current output state of the plant lighting system.</p>
+            <div class="status-row">
+              <strong class="status-value" id="light-status-text">--</strong>
+              <span class="status-indicator" id="light-status-indicator">OFF</span>
+            </div>
+          </article>
+
+          <article class="activity-card">
+            <h3>Water pump</h3>
+            <p>Current operating state of the irrigation pump.</p>
+            <div class="status-row">
+              <strong class="status-value" id="pump-status-text">--</strong>
+              <span class="status-indicator" id="pump-status-indicator">OFF</span>
+            </div>
+          </article>
+
+          <article class="activity-card">
+            <h3>Water supplied</h3>
+            <p>Total calculated or measured irrigation delivered in the last 24 hours.</p>
+            <div class="water-value">
+              <strong id="water-24h-value">--</strong> <span id="water-24h-unit">mL</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="controls">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-heading-copy">
+            <p class="section-label">Manual control</p>
+            <h2>Operate the pump and adjust the light.</h2>
+            <p class="section-intro">
+              The controls work locally in demonstration mode. Later, connect
+              the command function to your MQTT command topic.
+            </p>
+          </div>
+        </div>
+
+        <div class="controls-layout">
+          <article class="control-card">
+            <div>
+              <p class="section-label">Irrigation control</p>
+              <h3>Water pump</h3>
+              <p>
+                Use the two buttons to send a clear pump ON or pump OFF command.
+              </p>
+            </div>
+
+            <div class="pump-display" id="pump-control-display" aria-live="polite">OFF</div>
+
+            <div>
+              <div class="pump-buttons" aria-label="Water pump controls">
+                <button class="control-button" id="pump-on-button" type="button">Pump ON</button>
+                <button class="control-button active" id="pump-off-button" type="button">Pump OFF</button>
+              </div>
+              <div class="control-status" id="pump-command-status">
+                No pump command has been sent during this page visit.
+              </div>
+            </div>
+          </article>
+
+          <article class="control-card">
+            <div>
+              <p class="section-label">Lighting control</p>
+              <h3>Grow-light intensity</h3>
+              <p>
+                Drag the knob clockwise or anticlockwise. You can also use the
+                arrow keys or mouse wheel while the knob is focused.
+              </p>
+            </div>
+
+            <div class="knob-area">
+              <button
+                class="rotary-knob"
+                id="light-knob"
+                type="button"
+                role="slider"
+                aria-label="Grow-light intensity"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+              >
+                <span class="knob-marker" id="knob-marker" aria-hidden="true"></span>
+                <span class="knob-centre">
+                  <span>
+                    <span class="knob-value" id="knob-value">0</span>
+                    <span class="knob-unit">percent</span>
+                  </span>
+                </span>
+              </button>
+              <div class="knob-scale" aria-hidden="true">
+                <span>0% · OFF</span>
+                <span>100% · MAX</span>
+              </div>
+            </div>
+
+            <div class="control-status" id="light-command-status">
+              Rotate the knob to select a light level.
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="data-integration">
+      <div class="container">
+        <div class="integration-box">
+          <div>
+            <p class="section-label" style="color:#dce8b5;">Packet integration point</p>
+            <h2>Ready for your final data package.</h2>
+            <p>
+              The dashboard is deliberately using simple placeholder field
+              names. When you confirm the actual ESP32 or Raspberry Pi JSON
+              packet, update the mapping inside the JavaScript function named
+              <strong>applyTelemetryPacket()</strong>. The rest of the page can
+              remain unchanged.
+            </p>
+          </div>
+
+          <pre class="packet-fields" aria-label="Example telemetry packet">{
+  "soil_moisture_pct": 64,
+  "light_intensity_pct": 72,
+  "light_lux": 8400,
+  "temperature_c": 23.8,
+  "humidity_pct": 58,
+  "light_state": "ON",
+  "pump_state": "OFF",
+  "water_24h_ml": 620
+}</pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <strong>Green AI Engineering</strong>
+      <span>Indoor monitoring · Irrigation · Grow lighting · Automation</span>
+      <span>© <span id="year"></span></span>
+    </div>
+  </footer>
+
+  <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+
+  <script>
+    /*
+      TEMPORARY PAGE DATA
+      -------------------
+      Keep DEMO_MODE true until the real MQTT packet is connected.
+      Later, call applyTelemetryPacket(realPacket, false) whenever a packet arrives.
+    */
+    const DEMO_MODE = true;
+
+    const demoPacket = {
+      soil_moisture_pct: 64,
+      light_intensity_pct: 72,
+      light_lux: 8400,
+      temperature_c: 23.8,
+      humidity_pct: 58,
+      light_state: "ON",
+      pump_state: "OFF",
+      water_24h_ml: 620
+    };
+
+    const state = {
+      pump: "OFF",
+      lightIntensity: 0
+    };
+
+    const el = (id) => document.getElementById(id);
+
+    function clamp(value, minimum, maximum) {
+      return Math.min(maximum, Math.max(minimum, Number(value) || 0));
+    }
+
+    function setText(id, value) {
+      const target = el(id);
+      if (target) target.textContent = value;
+    }
+
+    function setMeter(id, value) {
+      const target = el(id);
+      if (target) target.style.width = clamp(value, 0, 100) + "%";
+    }
+
+    function numberOrNull(value) {
+      const number = Number(value);
+      return Number.isFinite(number) ? number : null;
+    }
+
+    function formatValue(value, decimals = 0) {
+      const number = numberOrNull(value);
+      return number === null ? "--" : number.toFixed(decimals);
+    }
+
+    function normaliseOnOff(value) {
+      const text = String(value ?? "").trim().toUpperCase();
+      return text === "ON" || text === "1" || text === "TRUE" ? "ON" : "OFF";
+    }
+
+    function formatUpdateTime() {
+      return new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
+    }
+
+    function showToast(message) {
+      const stack = el("toast-stack");
+      if (!stack) return;
+
+      const toast = document.createElement("div");
+      toast.className = "toast";
+      toast.textContent = message;
+      stack.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(8px)";
+        toast.style.transition = "0.22s ease";
+        setTimeout(() => toast.remove(), 250);
+      }, 2400);
+    }
+
+    function updateStatus(prefix, stateValue) {
+      const stateText = normaliseOnOff(stateValue);
+      setText(prefix + "-status-text", stateText);
+      setText(prefix + "-status-indicator", stateText);
+
+      const indicator = el(prefix + "-status-indicator");
+      if (indicator) indicator.classList.toggle("on", stateText === "ON");
+    }
+
+    /*
+      MAIN TELEMETRY MAPPING FUNCTION
+      Change only the packet field names here when your final JSON is ready.
+    */
+    function applyTelemetryPacket(packet, isDemo = false) {
+      const soilMoisture = numberOrNull(packet.soil_moisture_pct);
+      const lightLevel = numberOrNull(packet.light_intensity_pct);
+      const lightLux = numberOrNull(packet.light_lux);
+      const temperature = numberOrNull(packet.temperature_c);
+      const humidity = numberOrNull(packet.humidity_pct);
+      const water24h = numberOrNull(packet.water_24h_ml);
+      const lightState = normaliseOnOff(packet.light_state);
+      const pumpState = normaliseOnOff(packet.pump_state);
+
+      setText("soil-moisture-value", formatValue(soilMoisture, 0));
+      setMeter("soil-moisture-meter", soilMoisture);
+
+      setText("light-level-value", formatValue(lightLevel, 0));
+      setMeter("light-level-meter", lightLevel);
+      setText(
+        "light-lux-description",
+        lightLux === null
+          ? "Grow-area light intensity."
+          : "Approximate measured light: " + formatValue(lightLux, 0) + " lux."
+      );
+
+      setText("temperature-value", formatValue(temperature, 1));
+      setMeter(
+        "temperature-meter",
+        temperature === null ? 0 : ((temperature - 5) / 35) * 100
+      );
+
+      setText("humidity-value", formatValue(humidity, 0));
+      setMeter("humidity-meter", humidity);
+
+      updateStatus("light", lightState);
+      updateStatus("pump", pumpState);
+      setText("water-24h-value", formatValue(water24h, 0));
+      setText("last-update", "Updated: " + formatUpdateTime());
+
+      state.pump = pumpState;
+      state.lightIntensity = clamp(lightLevel, 0, 100);
+      updatePumpControl(state.pump, false);
+      updateKnob(state.lightIntensity, false);
+
+      setText("data-mode-chip", isDemo ? "Demonstration data" : "Live data");
+      setText(
+        "data-note",
+        isDemo
+          ? "The numbers below are temporary demonstration values. Replace the field names in applyTelemetryPacket() when your final data packet is ready."
+          : "Live values are being displayed from the connected telemetry packet."
+      );
+    }
+
+    /*
+      COMMAND HOOK
+      ------------
+      Replace this function body with your MQTT publish command later.
+      Suggested packets:
+        { "pump": "ON" }
+        { "pump": "OFF" }
+        { "light_intensity_pct": 75 }
+    */
+    function sendControlCommand(command) {
+      console.log("Control command ready for MQTT:", command);
+      showToast("Demo command: " + JSON.stringify(command));
+      return true;
+    }
+
+    function updatePumpControl(nextState, sendCommand = true) {
+      const pumpState = normaliseOnOff(nextState);
+      state.pump = pumpState;
+
+      const display = el("pump-control-display");
+      const onButton = el("pump-on-button");
+      const offButton = el("pump-off-button");
+
+      if (display) {
+        display.textContent = pumpState;
+        display.classList.toggle("on", pumpState === "ON");
+      }
+
+      if (onButton) onButton.classList.toggle("active", pumpState === "ON");
+      if (offButton) offButton.classList.toggle("active", pumpState === "OFF");
+
+      updateStatus("pump", pumpState);
+
+      if (sendCommand) {
+        sendControlCommand({ pump: pumpState });
+        setText(
+          "pump-command-status",
+          "Pump " + pumpState + " command selected at " + formatUpdateTime() + "."
+        );
+      }
+    }
+
+    function updateKnob(value, sendCommand = false) {
+      const percentage = Math.round(clamp(value, 0, 100));
+      state.lightIntensity = percentage;
+      const angle = -135 + (percentage / 100) * 270;
+
+      const marker = el("knob-marker");
+      if (marker) marker.style.transform = "rotate(" + angle + "deg)";
+
+      setText("knob-value", String(percentage));
+
+      const knob = el("light-knob");
+      if (knob) knob.setAttribute("aria-valuenow", String(percentage));
+
+      setText("light-level-value", String(percentage));
+      setMeter("light-level-meter", percentage);
+      updateStatus("light", percentage > 0 ? "ON" : "OFF");
+
+      if (sendCommand) {
+        sendControlCommand({ light_intensity_pct: percentage });
+        setText(
+          "light-command-status",
+          "Light intensity set to " + percentage + "% at " + formatUpdateTime() + "."
+        );
+      } else {
+        setText("light-command-status", "Selected light intensity: " + percentage + "%.");
+      }
+    }
+
+    function knobValueFromPointer(event) {
+      const knob = el("light-knob");
+      const rectangle = knob.getBoundingClientRect();
+      const centreX = rectangle.left + rectangle.width / 2;
+      const centreY = rectangle.top + rectangle.height / 2;
+
+      let degrees = Math.atan2(event.clientY - centreY, event.clientX - centreX) * 180 / Math.PI + 90;
+      if (degrees < 0) degrees += 360;
+
+      // Convert the usable 270-degree arc (-135 to +135) to 0-100.
+      let signedAngle = degrees > 180 ? degrees - 360 : degrees;
+      signedAngle = clamp(signedAngle, -135, 135);
+      return ((signedAngle + 135) / 270) * 100;
+    }
+
+    function installKnobControls() {
+      const knob = el("light-knob");
+      if (!knob) return;
+
+      let dragging = false;
+
+      knob.addEventListener("pointerdown", (event) => {
+        dragging = true;
+        knob.setPointerCapture(event.pointerId);
+        updateKnob(knobValueFromPointer(event), false);
+      });
+
+      knob.addEventListener("pointermove", (event) => {
+        if (!dragging) return;
+        updateKnob(knobValueFromPointer(event), false);
+      });
+
+      const finishDrag = (event) => {
+        if (!dragging) return;
+        dragging = false;
+        if (knob.hasPointerCapture(event.pointerId)) {
+          knob.releasePointerCapture(event.pointerId);
+        }
+        updateKnob(state.lightIntensity, true);
+      };
+
+      knob.addEventListener("pointerup", finishDrag);
+      knob.addEventListener("pointercancel", finishDrag);
+
+      knob.addEventListener("keydown", (event) => {
+        let step = event.shiftKey ? 10 : 2;
+        let nextValue = state.lightIntensity;
+
+        if (event.key === "ArrowRight" || event.key === "ArrowUp") {
+          nextValue += step;
+        } else if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
+          nextValue -= step;
+        } else if (event.key === "Home") {
+          nextValue = 0;
+        } else if (event.key === "End") {
+          nextValue = 100;
+        } else {
+          return;
+        }
+
+        event.preventDefault();
+        updateKnob(nextValue, true);
+      });
+
+      knob.addEventListener("wheel", (event) => {
+        event.preventDefault();
+        const direction = event.deltaY < 0 ? 1 : -1;
+        updateKnob(state.lightIntensity + direction * 2, true);
+      }, { passive: false });
+    }
+
+    function installNavigation() {
+      const navigation = document.querySelector(".main-nav");
+      const navToggle = document.querySelector(".nav-toggle");
+
+      if (!navigation || !navToggle) return;
+
+      navToggle.addEventListener("click", () => {
+        const isOpen = navigation.classList.toggle("open");
+        navToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      navigation.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          navigation.classList.remove("open");
+          navToggle.setAttribute("aria-expanded", "false");
+        });
+      });
+    }
+
+    el("pump-on-button")?.addEventListener("click", () => updatePumpControl("ON", true));
+    el("pump-off-button")?.addEventListener("click", () => updatePumpControl("OFF", true));
+
+    setText("year", new Date().getFullYear());
+    installNavigation();
+    installKnobControls();
+    applyTelemetryPacket(demoPacket, DEMO_MODE);
+  </script>
+</body>
+</html>
