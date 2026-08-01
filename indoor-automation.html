@@ -1323,14 +1323,6 @@
       state.lightIntensity = clamp(lightLevel, 0, 100);
       updatePumpControl(state.pump, false);
       updateKnob(state.lightIntensity, false);
-
-      setText("data-mode-chip", isDemo ? "Demonstration data" : "Live data");
-      setText(
-        "data-note",
-        isDemo
-          ? "The numbers below are temporary demonstration values. Replace the field names in applyTelemetryPacket() when your final data packet is ready."
-          : "Live values are being displayed from the connected telemetry packet."
-      );
     }
 
     /*
