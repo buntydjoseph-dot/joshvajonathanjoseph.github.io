@@ -974,10 +974,8 @@
             Real indoor cultivation prototype
           </span>
 <h1>Indoor plant monitoring and automation.</h1>
-<p>Live sensor readings from the ESP32 are received through MQTT. The page also sends irrigation and grow-light relay commands back through the Raspberry Pi bridge.</p>
 <div class="hero-meta">
 <span class="hero-pill">Live MQTT telemetry</span>
-<span class="hero-pill">Three soil sensors</span>
 <span class="hero-pill">Irrigation relay control</span>
 <span class="hero-pill">Grow-light relay control</span>
 </div>
@@ -990,15 +988,9 @@
 <div class="section-heading-copy">
 <p class="section-label">Plant environment</p>
 <h2>Current growing conditions.</h2>
-<p class="section-intro">The dashboard displays every field in the current ESP32 telemetry package, including the three individual soil readings.</p>
 </div>
 <span class="live-chip connecting" id="data-mode-chip">MQTT connecting</span>
 </div>
-<div class="data-note" id="data-note">
-        This page connects to the public MQTT broker through secure WebSockets.
-        Keep the Raspberry Pi bridge running so local ESP32 data reaches this page
-        and commands return to the ESP32.
-        </div>
 <div class="metric-grid">
 <article class="metric-card">
 <div class="metric-top">
@@ -1009,7 +1001,7 @@
 <span id="temperature-value">--</span><span class="metric-unit">°C</span>
 </div>
 <div class="meter"><span id="temperature-meter"></span></div>
-<div class="metric-description">Air temperature measured by the BME280.</div>
+<div class="metric-description"></div>
 </article>
 <article class="metric-card">
 <div class="metric-top">
@@ -1020,7 +1012,7 @@
 <span id="humidity-value">--</span><span class="metric-unit">%</span>
 </div>
 <div class="meter"><span id="humidity-meter"></span></div>
-<div class="metric-description">Air humidity measured by the BME280.</div>
+<div class="metric-description"></div>
 </article>
 <article class="metric-card">
 <div class="metric-top">
@@ -1031,7 +1023,7 @@
 <span id="pressure-value">--</span><span class="metric-unit">hPa</span>
 </div>
 <div class="meter"><span id="pressure-meter"></span></div>
-<div class="metric-description">Atmospheric pressure measured by the BME280.</div>
+<div class="metric-description"></div>
 </article>
 <article class="metric-card">
 <div class="metric-top">
@@ -1042,7 +1034,7 @@
 <span id="light-lux-value">--</span><span class="metric-unit">lux</span>
 </div>
 <div class="meter"><span id="light-lux-meter"></span></div>
-<div class="metric-description">Grow-area light level measured by the BH1750.</div>
+<div class="metric-description"></div>
 </article>
 <article class="metric-card">
 <div class="metric-top">
@@ -1053,7 +1045,7 @@
 <span id="soil-1-value">--</span><span class="metric-unit">%</span>
 </div>
 <div class="meter"><span id="soil-1-meter"></span></div>
-<div class="metric-description">Moisture percentage from soil probe 1.</div>
+<div class="metric-description"></div>
 </article>
 <article class="metric-card">
 <div class="metric-top">
@@ -1064,7 +1056,7 @@
 <span id="soil-2-value">--</span><span class="metric-unit">%</span>
 </div>
 <div class="meter"><span id="soil-2-meter"></span></div>
-<div class="metric-description">Moisture percentage from soil probe 2.</div>
+<div class="metric-description"></div>
 </article>
 <article class="metric-card">
 <div class="metric-top">
@@ -1075,7 +1067,7 @@
 <span id="soil-3-value">--</span><span class="metric-unit">%</span>
 </div>
 <div class="meter"><span id="soil-3-meter"></span></div>
-<div class="metric-description">Moisture percentage from soil probe 3.</div>
+<div class="metric-description"></div>
 </article>
 <article class="metric-card">
 <div class="metric-top">
@@ -1086,7 +1078,7 @@
 <span id="soil-average-value">--</span><span class="metric-unit">%</span>
 </div>
 <div class="meter"><span id="soil-average-meter"></span></div>
-<div class="metric-description">Average of all three calibrated soil probes.</div>
+<div class="metric-description"></div>
 </article>
 <article class="metric-card">
 <div class="metric-top">
@@ -1097,7 +1089,7 @@
 <span id="dew-point-value">--</span><span class="metric-unit">°C</span>
 </div>
 <div class="meter"><span id="dew-point-meter"></span></div>
-<div class="metric-description">Calculated dew-point temperature.</div>
+<div class="metric-description"></div>
 </article>
 <article class="metric-card">
 <div class="metric-top">
@@ -1108,7 +1100,7 @@
 <span id="vpd-value">--</span><span class="metric-unit">kPa</span>
 </div>
 <div class="meter"><span id="vpd-meter"></span></div>
-<div class="metric-description">Calculated VPD based on temperature and humidity.</div>
+<div class="metric-description"></div>
 </article>
 </div>
 </div>
@@ -1119,14 +1111,14 @@
 <div class="section-heading-copy">
 <p class="section-label">System activity</p>
 <h2>Lighting and irrigation status.</h2>
-<p class="section-intro">Relay states are confirmed from MQTT state messages. The node card shows the retained ESP32 online or offline status.</p>
+<p class="section-intro"></p>
 </div>
 <span class="live-chip" id="last-update">Last telemetry: --</span>
 </div>
 <div class="activity-grid">
 <article class="activity-card">
 <h3>Grow light</h3>
-<p>Confirmed state received from the light relay state topic.</p>
+<p></p>
 <div class="status-row">
 <strong class="status-value" id="light-status-text">--</strong>
 <span class="status-indicator" id="light-status-indicator">OFF</span>
@@ -1134,7 +1126,7 @@
 </article>
 <article class="activity-card">
 <h3>Irrigation pump</h3>
-<p>Confirmed state received from the irrigation relay state topic.</p>
+<p></p>
 <div class="status-row">
 <strong class="status-value" id="pump-status-text">--</strong>
 <span class="status-indicator" id="pump-status-indicator">OFF</span>
@@ -1142,7 +1134,7 @@
 </article>
 <article class="activity-card">
 <h3>ESP32 node</h3>
-<p>Retained status forwarded by the Raspberry Pi MQTT bridge.</p>
+<p></p>
 <div class="status-row">
 <strong class="status-value" id="node-status-text">--</strong>
 <span class="status-indicator" id="node-status-indicator">OFFLINE</span>
@@ -1157,27 +1149,27 @@
 <div class="section-heading-copy">
 <p class="section-label">Manual control</p>
 <h2>Operate the pump and adjust the light.</h2>
-<p class="section-intro">These controls publish plain ON or OFF payloads to the exact command topics used by the current ESP32 firmware.</p>
+<p class="section-intro"></p>
 </div>
 </div>
 <div class="controls-layout">
 <article class="control-card">
 <div>
-<p class="section-label">Irrigation control</p>
-<h3>Water pump relay</h3>
+<p class="section-label">Lighting Control</p>
+<h3>Grow Light Relay</h3>
 <p>
-          Publishes ON or OFF to
-          <strong>indoorfarm/node1/command/irrigation</strong>.
+          
+          <strong></strong>.
         </p>
 </div>
 <div aria-live="polite" class="pump-display" id="pump-control-display">--</div>
 <div>
 <div aria-label="Water pump controls" class="pump-buttons">
 <button class="control-button" disabled="" id="pump-on-button" type="button">
-            Pump ON
+            LIGHT ON
           </button>
 <button class="control-button" disabled="" id="pump-off-button" type="button">
-            Pump OFF
+            LIGHT OFF
           </button>
 </div>
 <div class="control-status" id="pump-command-status">
@@ -1187,8 +1179,8 @@
 </article>
 <article class="control-card">
 <div>
-<p class="section-label">Lighting control</p>
-<h3>Grow-light relay</h3>
+<p class="section-label">Irrigation Control</p>
+<h3>Water Pump Relay</h3>
 <p>
           Publishes ON or OFF to
           <strong>indoorfarm/node1/command/light</strong>.
@@ -1198,10 +1190,10 @@
 <div>
 <div aria-label="Grow-light controls" class="pump-buttons">
 <button class="control-button" disabled="" id="light-on-button" type="button">
-            Light ON
+            PUMP ON
           </button>
 <button class="control-button" disabled="" id="light-off-button" type="button">
-            Light OFF
+            PUMP OFF
           </button>
 </div>
 <div class="control-status" id="light-command-status">
@@ -1215,34 +1207,7 @@
 <section class="section alt" id="data-integration">
 <div class="container">
 <div class="integration-box">
-<div>
-<p class="section-label" style="color:#dce8b5;">Live MQTT integration</p>
-<h2>Current packet and topics.</h2>
-<p>
-        The packet shown on the right updates whenever telemetry arrives.
-        Commands are sent to the public broker and forwarded by the Raspberry Pi
-        bridge to the ESP32.
-      </p>
-<div aria-label="MQTT topics" class="topic-list">
-<span>Data: indoorfarm/node1/data</span>
-<span>Status: indoorfarm/node1/status</span>
-<span>Irrigation command: indoorfarm/node1/command/irrigation</span>
-<span>Light command: indoorfarm/node1/command/light</span>
-<span>Irrigation state: indoorfarm/node1/state/irrigation</span>
-<span>Light state: indoorfarm/node1/state/light</span>
-</div>
-</div>
-<pre aria-label="Latest MQTT telemetry packet" class="packet-fields live-packet" id="live-packet">Waiting for telemetry...</pre>
-</div>
-</div>
-</section>
-</main>
-<footer class="site-footer">
-<div class="container footer-inner">
-<strong>Green AI Engineering</strong>
-<span>Indoor monitoring · Irrigation · Grow lighting · Automation</span>
-<span>© <span id="year"></span></span>
-</div>
+
 </footer>
 <div aria-live="polite" class="toast-stack" id="toast-stack"></div>
 <script>
