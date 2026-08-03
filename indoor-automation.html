@@ -511,6 +511,62 @@
       letter-spacing: 0;
     }
 
+    .control-lock {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 253, 247, 0.95);
+      box-shadow: 0 12px 28px rgba(40, 59, 40, 0.07);
+    }
+
+    .control-lock-field label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--forest-dark);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .control-lock-field input {
+      width: 100%;
+      min-height: 50px;
+      padding: 10px 13px;
+      border: 1px solid rgba(49, 87, 44, 0.22);
+      border-radius: 12px;
+      color: var(--forest-dark);
+      background: var(--cream);
+      outline: none;
+    }
+
+    .control-lock-field input:focus {
+      border-color: var(--leaf);
+      box-shadow: 0 0 0 4px rgba(142, 170, 88, 0.14);
+    }
+
+    .unlock-button {
+      min-width: 190px;
+      align-self: end;
+      padding: 0 18px;
+    }
+
+    .lock-status {
+      grid-column: 1 / -1;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .lock-status.unlocked {
+      color: var(--forest);
+      font-weight: 800;
+    }
+
     .controls-layout {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -917,6 +973,15 @@
         min-height: 195px;
       }
 
+      .control-lock {
+        grid-template-columns: 1fr;
+      }
+
+      .unlock-button {
+        width: 100%;
+        min-width: 0;
+      }
+
       .pump-buttons {
         grid-template-columns: 1fr;
       }
@@ -1152,27 +1217,36 @@
 <p class="section-intro"></p>
 </div>
 </div>
+<div class="control-lock">
+<div class="control-lock-field">
+<label for="control-passcode">Control passcode</label>
+<input autocomplete="off" id="control-passcode" inputmode="text" placeholder="Enter passcode" type="password"/>
+</div>
+<button class="control-button unlock-button" id="unlock-controls-button" type="button">
+          UNLOCK CONTROLS
+        </button>
+<div aria-live="polite" class="lock-status" id="control-lock-status">
+          Enter the passcode to enable pump and light commands.
+        </div>
+</div>
 <div class="controls-layout">
 <article class="control-card">
 <div>
 <p class="section-label">Lighting Control</p>
 <h3>Grow Light Relay</h3>
-<p>
-          
-          <strong></strong>.
-        </p>
+
 </div>
-<div aria-live="polite" class="pump-display" id="pump-control-display">--</div>
+<div aria-live="polite" class="pump-display" id="light-control-display">--</div>
 <div>
-<div aria-label="Water pump controls" class="pump-buttons">
-<button class="control-button" disabled="" id="pump-on-button" type="button">
+<div aria-label="Grow-light controls" class="pump-buttons">
+<button class="control-button" disabled="" id="light-on-button" type="button">
             LIGHT ON
           </button>
-<button class="control-button" disabled="" id="pump-off-button" type="button">
+<button class="control-button" disabled="" id="light-off-button" type="button">
             LIGHT OFF
           </button>
 </div>
-<div class="control-status" id="pump-command-status">
+<div class="control-status" id="light-command-status">
           Waiting for the MQTT connection.
         </div>
 </div>
@@ -1181,22 +1255,19 @@
 <div>
 <p class="section-label">Irrigation Control</p>
 <h3>Water Pump Relay</h3>
-<p>
-          
-          <strong></strong>.
-        </p>
+
 </div>
-<div aria-live="polite" class="pump-display" id="light-control-display">--</div>
+<div aria-live="polite" class="pump-display" id="pump-control-display">--</div>
 <div>
-<div aria-label="Grow-light controls" class="pump-buttons">
-<button class="control-button" disabled="" id="light-on-button" type="button">
+<div aria-label="Water pump controls" class="pump-buttons">
+<button class="control-button" disabled="" id="pump-on-button" type="button">
             PUMP ON
           </button>
-<button class="control-button" disabled="" id="light-off-button" type="button">
+<button class="control-button" disabled="" id="pump-off-button" type="button">
             PUMP OFF
           </button>
 </div>
-<div class="control-status" id="light-command-status">
+<div class="control-status" id="pump-command-status">
           Waiting for the MQTT connection.
         </div>
 </div>
@@ -1204,11 +1275,7 @@
 </div>
 </div>
 </section>
-<section class="section alt" id="data-integration">
-<div class="container">
-<div class="integration-box">
-
-</footer>
+</main>
 <div aria-live="polite" class="toast-stack" id="toast-stack"></div>
 <script>
     const MQTT_BROKER_URL =
@@ -1225,8 +1292,11 @@
       lightState: "indoorfarm/node1/state/light"
     });
 
+    const DASHBOARD_PASSCODE = "Luffy";
+
     const state = {
       mqttConnected: false,
+      controlsUnlocked: false,
       irrigation: null,
       light: null,
       nodeStatus: null,
@@ -1329,7 +1399,9 @@
       chip.className = "live-chip " + statusClass;
     }
 
-    function setControlsEnabled(enabled) {
+    function setControlsEnabled(mqttAvailable) {
+      const enabled = Boolean(mqttAvailable) && state.controlsUnlocked;
+
       [
         "pump-on-button",
         "pump-off-button",
@@ -1340,9 +1412,52 @@
         if (button) button.disabled = !enabled;
       });
 
-      if (!enabled) {
+      if (!mqttAvailable) {
         setText("pump-command-status", "Waiting for the MQTT connection.");
         setText("light-command-status", "Waiting for the MQTT connection.");
+      } else if (!state.controlsUnlocked) {
+        setText("pump-command-status", "Controls locked. Enter the dashboard passcode.");
+        setText("light-command-status", "Controls locked. Enter the dashboard passcode.");
+      } else {
+        setText("pump-command-status", "Controls unlocked. Select a pump command.");
+        setText("light-command-status", "Controls unlocked. Select a light command.");
+      }
+    }
+
+    function unlockDashboardControls() {
+      const input = el("control-passcode");
+      const lockStatus = el("control-lock-status");
+      const enteredPasscode = input ? input.value : "";
+
+      if (enteredPasscode === DASHBOARD_PASSCODE) {
+        state.controlsUnlocked = true;
+
+        if (input) input.value = "";
+
+        if (lockStatus) {
+          lockStatus.textContent =
+            "Controls unlocked for this page session. The passcode is not sent through MQTT.";
+          lockStatus.classList.add("unlocked");
+        }
+
+        setControlsEnabled(state.mqttConnected);
+        showToast("Pump and light commands unlocked.");
+        return;
+      }
+
+      state.controlsUnlocked = false;
+
+      if (lockStatus) {
+        lockStatus.textContent = "Incorrect passcode. Controls remain locked.";
+        lockStatus.classList.remove("unlocked");
+      }
+
+      setControlsEnabled(state.mqttConnected);
+      showToast("Incorrect control passcode.");
+
+      if (input) {
+        input.focus();
+        input.select();
       }
     }
 
@@ -1461,7 +1576,6 @@
       }
 
       state.latestPacket = packet;
-      setText("live-packet", JSON.stringify(packet, null, 2));
       setText("last-update", "Last telemetry: " + formatUpdateTime());
     }
 
@@ -1492,6 +1606,11 @@
 
     function publishRelayCommand(device, command) {
       const normalised = normaliseOnOff(command);
+
+      if (!state.controlsUnlocked) {
+        showToast("Enter the correct dashboard passcode first.");
+        return;
+      }
 
       if (!normalised) {
         showToast("Invalid relay command.");
@@ -1643,10 +1762,21 @@
       });
     }
 
-    setText("year", new Date().getFullYear());
     installNavigation();
     setControlsEnabled(false);
     updateConnectionChip("MQTT connecting", "connecting");
+
+    el("unlock-controls-button")?.addEventListener(
+      "click",
+      unlockDashboardControls
+    );
+
+    el("control-passcode")?.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        unlockDashboardControls();
+      }
+    });
 
     el("pump-on-button")?.addEventListener(
       "click",
@@ -1670,10 +1800,6 @@
 
     if (typeof mqtt === "undefined") {
       updateConnectionChip("MQTT library failed", "error");
-      setText(
-        "data-note",
-        "The MQTT.js library could not be loaded. Check the internet connection and browser console."
-      );
       throw new Error("MQTT.js is not available.");
     }
 
