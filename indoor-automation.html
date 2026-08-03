@@ -1,18 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta
-    name="description"
-    content="Green AI Engineering indoor plant monitoring and automation dashboard."
-  >
-  <meta name="theme-color" content="#31572c">
-
-  <title>Indoor Plant Automation | Green AI Engineering</title>
-  <link rel="icon" type="image/png" href="logo1.png">
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Live MQTT indoor plant monitoring and relay-control dashboard." name="description"/>
+<meta content="#31572c" name="theme-color"/>
+<title>Live Indoor Plant Automation | Green AI Engineering</title>
+<link href="logo1.png" rel="icon" type="image/png"/>
+<style>
     :root {
       --forest: #31572c;
       --forest-dark: #203c24;
@@ -778,6 +774,57 @@
       line-height: 1.4;
     }
 
+
+    .live-chip.connecting::before {
+      background: #d6a832;
+      box-shadow: 0 0 0 5px rgba(214, 168, 50, 0.14);
+    }
+
+    .live-chip.online::before {
+      background: #75a83d;
+      box-shadow: 0 0 0 5px rgba(117, 168, 61, 0.14);
+    }
+
+    .live-chip.offline::before,
+    .live-chip.error::before {
+      background: var(--danger);
+      box-shadow: 0 0 0 5px rgba(162, 72, 79, 0.13);
+    }
+
+    .control-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.48;
+      transform: none;
+    }
+
+    .control-button.pending {
+      color: var(--forest-dark);
+      border-color: rgba(214, 168, 50, 0.55);
+      background: rgba(214, 168, 50, 0.14);
+    }
+
+    .topic-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 22px;
+      color: rgba(255, 255, 255, 0.84);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+    }
+
+    .topic-list span {
+      display: block;
+      padding: 9px 11px;
+      overflow-wrap: anywhere;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.12);
+    }
+
+    .packet-fields.live-packet {
+      min-height: 340px;
+    }
+
     @media (max-width: 1000px) {
       .metric-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -898,319 +945,335 @@
       }
     }
   </style>
-</head>
-
+<script src="https://unpkg.com/mqtt@5/dist/mqtt.min.js"></script></head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="monitor-system.html" aria-label="Return to Green AI Engineering main page">
-        <img class="brand-logo" src="logo1.png" alt="Green AI Engineering logo">
-        <span class="brand-name">Green AI Engineering</span>
-      </a>
-
-      <button
-        class="nav-toggle"
-        type="button"
-        aria-expanded="false"
-        aria-controls="main-navigation"
-      >
+<header class="site-header">
+<div class="container header-inner">
+<a aria-label="Return to Green AI Engineering main page" class="brand" href="monitor-system.html">
+<img alt="Green AI Engineering logo" class="brand-logo" src="logo1.png"/>
+<span class="brand-name">Green AI Engineering</span>
+</a>
+<button aria-controls="main-navigation" aria-expanded="false" class="nav-toggle" type="button">
         Menu
       </button>
-
-      <nav class="main-nav" id="main-navigation" aria-label="Project navigation">
-        <a href="index.html">Main Page</a>
-        <a href="#environment">Environment</a>
-        <a href="#activity">System Status</a>
-        <a href="#controls">Controls</a>
-        <a class="active-tab" href="#project-top">Indoor Automation</a>
-      </nav>
-    </div>
-  </header>
-
-  <main id="project-top">
-    <section class="project-hero">
-      <div class="container">
-        <div class="hero-content">
-          <span class="eyebrow">
-            <span class="eyebrow-dot"></span>
+<nav aria-label="Project navigation" class="main-nav" id="main-navigation">
+<a href="index.html">Main Page</a>
+<a href="#environment">Environment</a>
+<a href="#activity">System Status</a>
+<a href="#controls">Controls</a>
+<a class="active-tab" href="#project-top">Indoor Automation</a>
+</nav>
+</div>
+</header>
+<main id="project-top">
+<section class="project-hero">
+<div class="container">
+<div class="hero-content">
+<span class="eyebrow">
+<span class="eyebrow-dot"></span>
             Real indoor cultivation prototype
           </span>
-
-          <h1>Indoor plant monitoring and automation.</h1>
-
-          <p>
-            A dedicated page for the physical growing setup, showing plant
-            conditions, irrigation and lighting activity, and manual control
-            of the water pump and grow-light intensity.
-          </p>
-
-          <div class="hero-meta">
-            <span class="hero-pill">Sensor monitoring</span>
-            <span class="hero-pill">Water control</span>
-            <span class="hero-pill">Lighting control</span>
-            <span class="hero-pill">MQTT-ready structure</span>
-          </div>
+<h1>Indoor plant monitoring and automation.</h1>
+<p>Live sensor readings from the ESP32 are received through MQTT. The page also sends irrigation and grow-light relay commands back through the Raspberry Pi bridge.</p>
+<div class="hero-meta">
+<span class="hero-pill">Live MQTT telemetry</span>
+<span class="hero-pill">Three soil sensors</span>
+<span class="hero-pill">Irrigation relay control</span>
+<span class="hero-pill">Grow-light relay control</span>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="environment">
+<div class="container">
+<div class="section-header">
+<div class="section-heading-copy">
+<p class="section-label">Plant environment</p>
+<h2>Current growing conditions.</h2>
+<p class="section-intro">The dashboard displays every field in the current ESP32 telemetry package, including the three individual soil readings.</p>
+</div>
+<span class="live-chip connecting" id="data-mode-chip">MQTT connecting</span>
+</div>
+<div class="data-note" id="data-note">
+        This page connects to the public MQTT broker through secure WebSockets.
+        Keep the Raspberry Pi bridge running so local ESP32 data reaches this page
+        and commands return to the ESP32.
         </div>
-      </div>
-    </section>
-
-    <section class="section" id="environment">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-heading-copy">
-            <p class="section-label">Plant environment</p>
-            <h2>Current growing conditions.</h2>
-            <p class="section-intro">
-              These four cards are prepared for the real values measured around
-              the plants and inside the soil.
-            </p>
-          </div>
-          <span class="live-chip" id="data-mode-chip">Demonstration data</span>
+<div class="metric-grid">
+<article class="metric-card">
+<div class="metric-top">
+<span class="metric-label">Temperature</span>
+<span aria-hidden="true" class="metric-icon">🌡️</span>
+</div>
+<div class="metric-value">
+<span id="temperature-value">--</span><span class="metric-unit">°C</span>
+</div>
+<div class="meter"><span id="temperature-meter"></span></div>
+<div class="metric-description">Air temperature measured by the BME280.</div>
+</article>
+<article class="metric-card">
+<div class="metric-top">
+<span class="metric-label">Relative humidity</span>
+<span aria-hidden="true" class="metric-icon">🌫️</span>
+</div>
+<div class="metric-value">
+<span id="humidity-value">--</span><span class="metric-unit">%</span>
+</div>
+<div class="meter"><span id="humidity-meter"></span></div>
+<div class="metric-description">Air humidity measured by the BME280.</div>
+</article>
+<article class="metric-card">
+<div class="metric-top">
+<span class="metric-label">Air pressure</span>
+<span aria-hidden="true" class="metric-icon">🧭</span>
+</div>
+<div class="metric-value">
+<span id="pressure-value">--</span><span class="metric-unit">hPa</span>
+</div>
+<div class="meter"><span id="pressure-meter"></span></div>
+<div class="metric-description">Atmospheric pressure measured by the BME280.</div>
+</article>
+<article class="metric-card">
+<div class="metric-top">
+<span class="metric-label">Light level</span>
+<span aria-hidden="true" class="metric-icon">☀️</span>
+</div>
+<div class="metric-value">
+<span id="light-lux-value">--</span><span class="metric-unit">lux</span>
+</div>
+<div class="meter"><span id="light-lux-meter"></span></div>
+<div class="metric-description">Grow-area light level measured by the BH1750.</div>
+</article>
+<article class="metric-card">
+<div class="metric-top">
+<span class="metric-label">Soil sensor 1</span>
+<span aria-hidden="true" class="metric-icon">💧</span>
+</div>
+<div class="metric-value">
+<span id="soil-1-value">--</span><span class="metric-unit">%</span>
+</div>
+<div class="meter"><span id="soil-1-meter"></span></div>
+<div class="metric-description">Moisture percentage from soil probe 1.</div>
+</article>
+<article class="metric-card">
+<div class="metric-top">
+<span class="metric-label">Soil sensor 2</span>
+<span aria-hidden="true" class="metric-icon">💧</span>
+</div>
+<div class="metric-value">
+<span id="soil-2-value">--</span><span class="metric-unit">%</span>
+</div>
+<div class="meter"><span id="soil-2-meter"></span></div>
+<div class="metric-description">Moisture percentage from soil probe 2.</div>
+</article>
+<article class="metric-card">
+<div class="metric-top">
+<span class="metric-label">Soil sensor 3</span>
+<span aria-hidden="true" class="metric-icon">💧</span>
+</div>
+<div class="metric-value">
+<span id="soil-3-value">--</span><span class="metric-unit">%</span>
+</div>
+<div class="meter"><span id="soil-3-meter"></span></div>
+<div class="metric-description">Moisture percentage from soil probe 3.</div>
+</article>
+<article class="metric-card">
+<div class="metric-top">
+<span class="metric-label">Average soil moisture</span>
+<span aria-hidden="true" class="metric-icon">🌱</span>
+</div>
+<div class="metric-value">
+<span id="soil-average-value">--</span><span class="metric-unit">%</span>
+</div>
+<div class="meter"><span id="soil-average-meter"></span></div>
+<div class="metric-description">Average of all three calibrated soil probes.</div>
+</article>
+<article class="metric-card">
+<div class="metric-top">
+<span class="metric-label">Dew point</span>
+<span aria-hidden="true" class="metric-icon">💦</span>
+</div>
+<div class="metric-value">
+<span id="dew-point-value">--</span><span class="metric-unit">°C</span>
+</div>
+<div class="meter"><span id="dew-point-meter"></span></div>
+<div class="metric-description">Calculated dew-point temperature.</div>
+</article>
+<article class="metric-card">
+<div class="metric-top">
+<span class="metric-label">Vapour-pressure deficit</span>
+<span aria-hidden="true" class="metric-icon">🍃</span>
+</div>
+<div class="metric-value">
+<span id="vpd-value">--</span><span class="metric-unit">kPa</span>
+</div>
+<div class="meter"><span id="vpd-meter"></span></div>
+<div class="metric-description">Calculated VPD based on temperature and humidity.</div>
+</article>
+</div>
+</div>
+</section>
+<section class="section alt" id="activity">
+<div class="container">
+<div class="section-header">
+<div class="section-heading-copy">
+<p class="section-label">System activity</p>
+<h2>Lighting and irrigation status.</h2>
+<p class="section-intro">Relay states are confirmed from MQTT state messages. The node card shows the retained ESP32 online or offline status.</p>
+</div>
+<span class="live-chip" id="last-update">Last telemetry: --</span>
+</div>
+<div class="activity-grid">
+<article class="activity-card">
+<h3>Grow light</h3>
+<p>Confirmed state received from the light relay state topic.</p>
+<div class="status-row">
+<strong class="status-value" id="light-status-text">--</strong>
+<span class="status-indicator" id="light-status-indicator">OFF</span>
+</div>
+</article>
+<article class="activity-card">
+<h3>Irrigation pump</h3>
+<p>Confirmed state received from the irrigation relay state topic.</p>
+<div class="status-row">
+<strong class="status-value" id="pump-status-text">--</strong>
+<span class="status-indicator" id="pump-status-indicator">OFF</span>
+</div>
+</article>
+<article class="activity-card">
+<h3>ESP32 node</h3>
+<p>Retained status forwarded by the Raspberry Pi MQTT bridge.</p>
+<div class="status-row">
+<strong class="status-value" id="node-status-text">--</strong>
+<span class="status-indicator" id="node-status-indicator">OFFLINE</span>
+</div>
+</article>
+</div>
+</div>
+</section>
+<section class="section" id="controls">
+<div class="container">
+<div class="section-header">
+<div class="section-heading-copy">
+<p class="section-label">Manual control</p>
+<h2>Operate the pump and adjust the light.</h2>
+<p class="section-intro">These controls publish plain ON or OFF payloads to the exact command topics used by the current ESP32 firmware.</p>
+</div>
+</div>
+<div class="controls-layout">
+<article class="control-card">
+<div>
+<p class="section-label">Irrigation control</p>
+<h3>Water pump relay</h3>
+<p>
+          Publishes ON or OFF to
+          <strong>indoorfarm/node1/command/irrigation</strong>.
+        </p>
+</div>
+<div aria-live="polite" class="pump-display" id="pump-control-display">--</div>
+<div>
+<div aria-label="Water pump controls" class="pump-buttons">
+<button class="control-button" disabled="" id="pump-on-button" type="button">
+            Pump ON
+          </button>
+<button class="control-button" disabled="" id="pump-off-button" type="button">
+            Pump OFF
+          </button>
+</div>
+<div class="control-status" id="pump-command-status">
+          Waiting for the MQTT connection.
         </div>
-
-        <div class="data-note" id="data-note">
-          The numbers below are temporary demonstration values. Replace the field
-          names in <strong>applyTelemetryPacket()</strong> when your final data
-          packet is ready.
+</div>
+</article>
+<article class="control-card">
+<div>
+<p class="section-label">Lighting control</p>
+<h3>Grow-light relay</h3>
+<p>
+          Publishes ON or OFF to
+          <strong>indoorfarm/node1/command/light</strong>.
+        </p>
+</div>
+<div aria-live="polite" class="pump-display" id="light-control-display">--</div>
+<div>
+<div aria-label="Grow-light controls" class="pump-buttons">
+<button class="control-button" disabled="" id="light-on-button" type="button">
+            Light ON
+          </button>
+<button class="control-button" disabled="" id="light-off-button" type="button">
+            Light OFF
+          </button>
+</div>
+<div class="control-status" id="light-command-status">
+          Waiting for the MQTT connection.
         </div>
+</div>
+</article>
+</div>
+</div>
+</section>
+<section class="section alt" id="data-integration">
+<div class="container">
+<div class="integration-box">
+<div>
+<p class="section-label" style="color:#dce8b5;">Live MQTT integration</p>
+<h2>Current packet and topics.</h2>
+<p>
+        The packet shown on the right updates whenever telemetry arrives.
+        Commands are sent to the public broker and forwarded by the Raspberry Pi
+        bridge to the ESP32.
+      </p>
+<div aria-label="MQTT topics" class="topic-list">
+<span>Data: indoorfarm/node1/data</span>
+<span>Status: indoorfarm/node1/status</span>
+<span>Irrigation command: indoorfarm/node1/command/irrigation</span>
+<span>Light command: indoorfarm/node1/command/light</span>
+<span>Irrigation state: indoorfarm/node1/state/irrigation</span>
+<span>Light state: indoorfarm/node1/state/light</span>
+</div>
+</div>
+<pre aria-label="Latest MQTT telemetry packet" class="packet-fields live-packet" id="live-packet">Waiting for telemetry...</pre>
+</div>
+</div>
+</section>
+</main>
+<footer class="site-footer">
+<div class="container footer-inner">
+<strong>Green AI Engineering</strong>
+<span>Indoor monitoring · Irrigation · Grow lighting · Automation</span>
+<span>© <span id="year"></span></span>
+</div>
+</footer>
+<div aria-live="polite" class="toast-stack" id="toast-stack"></div>
+<script>
+    const MQTT_BROKER_URL =
+      window.location.protocol === "http:"
+        ? "ws://broker.hivemq.com:8000/mqtt"
+        : "wss://broker.hivemq.com:8884/mqtt";
 
-        <div class="metric-grid">
-          <article class="metric-card">
-            <div class="metric-top">
-              <span class="metric-label">Soil moisture</span>
-              <span class="metric-icon" aria-hidden="true">💧</span>
-            </div>
-            <div class="metric-value">
-              <span id="soil-moisture-value">--</span><span class="metric-unit">%</span>
-            </div>
-            <div class="meter"><span id="soil-moisture-meter"></span></div>
-            <div class="metric-description">Moisture level measured near the plant roots.</div>
-          </article>
-
-          <article class="metric-card">
-            <div class="metric-top">
-              <span class="metric-label">Light level</span>
-              <span class="metric-icon" aria-hidden="true">☀️</span>
-            </div>
-            <div class="metric-value">
-              <span id="light-level-value">--</span><span class="metric-unit">%</span>
-            </div>
-            <div class="meter"><span id="light-level-meter"></span></div>
-            <div class="metric-description" id="light-lux-description">Grow-area light intensity.</div>
-          </article>
-
-          <article class="metric-card">
-            <div class="metric-top">
-              <span class="metric-label">Temperature</span>
-              <span class="metric-icon" aria-hidden="true">🌡️</span>
-            </div>
-            <div class="metric-value">
-              <span id="temperature-value">--</span><span class="metric-unit">°C</span>
-            </div>
-            <div class="meter"><span id="temperature-meter"></span></div>
-            <div class="metric-description">Air temperature around the indoor plants.</div>
-          </article>
-
-          <article class="metric-card">
-            <div class="metric-top">
-              <span class="metric-label">Relative humidity</span>
-              <span class="metric-icon" aria-hidden="true">🌫️</span>
-            </div>
-            <div class="metric-value">
-              <span id="humidity-value">--</span><span class="metric-unit">%</span>
-            </div>
-            <div class="meter"><span id="humidity-meter"></span></div>
-            <div class="metric-description">Humidity in the air surrounding the plants.</div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section alt" id="activity">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-heading-copy">
-            <p class="section-label">System activity</p>
-            <h2>Lighting and irrigation status.</h2>
-            <p class="section-intro">
-              See what the automation system is currently doing and how much
-              water has been delivered during the previous 24 hours.
-            </p>
-          </div>
-          <span class="live-chip" id="last-update">Updated: --</span>
-        </div>
-
-        <div class="activity-grid">
-          <article class="activity-card">
-            <h3>Grow light</h3>
-            <p>Current output state of the plant lighting system.</p>
-            <div class="status-row">
-              <strong class="status-value" id="light-status-text">--</strong>
-              <span class="status-indicator" id="light-status-indicator">OFF</span>
-            </div>
-          </article>
-
-          <article class="activity-card">
-            <h3>Water pump</h3>
-            <p>Current operating state of the irrigation pump.</p>
-            <div class="status-row">
-              <strong class="status-value" id="pump-status-text">--</strong>
-              <span class="status-indicator" id="pump-status-indicator">OFF</span>
-            </div>
-          </article>
-
-          <article class="activity-card">
-            <h3>Water supplied</h3>
-            <p>Total calculated or measured irrigation delivered in the last 24 hours.</p>
-            <div class="water-value">
-              <strong id="water-24h-value">--</strong> <span id="water-24h-unit">mL</span>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="controls">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-heading-copy">
-            <p class="section-label">Manual control</p>
-            <h2>Operate the pump and adjust the light.</h2>
-            <p class="section-intro">
-              The controls work locally in demonstration mode. Later, connect
-              the command function to your MQTT command topic.
-            </p>
-          </div>
-        </div>
-
-        <div class="controls-layout">
-          <article class="control-card">
-            <div>
-              <p class="section-label">Irrigation control</p>
-              <h3>Water pump</h3>
-              <p>
-                Use the two buttons to send a clear pump ON or pump OFF command.
-              </p>
-            </div>
-
-            <div class="pump-display" id="pump-control-display" aria-live="polite">OFF</div>
-
-            <div>
-              <div class="pump-buttons" aria-label="Water pump controls">
-                <button class="control-button" id="pump-on-button" type="button">Pump ON</button>
-                <button class="control-button active" id="pump-off-button" type="button">Pump OFF</button>
-              </div>
-              <div class="control-status" id="pump-command-status">
-                No pump command has been sent during this page visit.
-              </div>
-            </div>
-          </article>
-
-          <article class="control-card">
-            <div>
-              <p class="section-label">Lighting control</p>
-              <h3>Grow-light intensity</h3>
-              <p>
-                Drag the knob clockwise or anticlockwise. You can also use the
-                arrow keys or mouse wheel while the knob is focused.
-              </p>
-            </div>
-
-            <div class="knob-area">
-              <button
-                class="rotary-knob"
-                id="light-knob"
-                type="button"
-                role="slider"
-                aria-label="Grow-light intensity"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                aria-valuenow="0"
-              >
-                <span class="knob-marker" id="knob-marker" aria-hidden="true"></span>
-                <span class="knob-centre">
-                  <span>
-                    <span class="knob-value" id="knob-value">0</span>
-                    <span class="knob-unit">percent</span>
-                  </span>
-                </span>
-              </button>
-              <div class="knob-scale" aria-hidden="true">
-                <span>0% · OFF</span>
-                <span>100% · MAX</span>
-              </div>
-            </div>
-
-            <div class="control-status" id="light-command-status">
-              Rotate the knob to select a light level.
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section alt" id="data-integration">
-      <div class="container">
-        <div class="integration-box">
-          <div>
-            <p class="section-label" style="color:#dce8b5;">Packet integration point</p>
-            <h2>Ready for your final data package.</h2>
-          </div>
-
-          <pre class="packet-fields" aria-label="Example telemetry packet">{
-  "soil_moisture_pct": 64,
-  "light_intensity_pct": 72,
-  "light_lux": 8400,
-  "temperature_c": 23.8,
-  "humidity_pct": 58,
-  "light_state": "ON",
-  "pump_state": "OFF",
-  "water_24h_ml": 620
-}</pre>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <strong>Green AI Engineering</strong>
-      <span>Indoor monitoring · Irrigation · Grow lighting · Automation</span>
-      <span>© <span id="year"></span></span>
-    </div>
-  </footer>
-
-  <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
-
-  <script>
-    /*
-      TEMPORARY PAGE DATA
-      -------------------
-      Keep DEMO_MODE true until the real MQTT packet is connected.
-      Later, call applyTelemetryPacket(realPacket, false) whenever a packet arrives.
-    */
-    const DEMO_MODE = true;
-
-    const demoPacket = {
-      soil_moisture_pct: 64,
-      light_intensity_pct: 72,
-      light_lux: 8400,
-      temperature_c: 23.8,
-      humidity_pct: 58,
-      light_state: "ON",
-      pump_state: "OFF",
-      water_24h_ml: 620
-    };
+    const TOPICS = Object.freeze({
+      data: "indoorfarm/node1/data",
+      status: "indoorfarm/node1/status",
+      irrigationCommand: "indoorfarm/node1/command/irrigation",
+      lightCommand: "indoorfarm/node1/command/light",
+      irrigationState: "indoorfarm/node1/state/irrigation",
+      lightState: "indoorfarm/node1/state/light"
+    });
 
     const state = {
-      pump: "OFF",
-      lightIntensity: 0
+      mqttConnected: false,
+      irrigation: null,
+      light: null,
+      nodeStatus: null,
+      latestPacket: null
     };
 
     const el = (id) => document.getElementById(id);
 
     function clamp(value, minimum, maximum) {
-      return Math.min(maximum, Math.max(minimum, Number(value) || 0));
+      const number = Number(value);
+      if (!Number.isFinite(number)) return minimum;
+      return Math.min(maximum, Math.max(minimum, number));
     }
 
     function setText(id, value) {
@@ -1220,7 +1283,9 @@
 
     function setMeter(id, value) {
       const target = el(id);
-      if (target) target.style.width = clamp(value, 0, 100) + "%";
+      if (target) {
+        target.style.width = clamp(value, 0, 100) + "%";
+      }
     }
 
     function numberOrNull(value) {
@@ -1235,7 +1300,25 @@
 
     function normaliseOnOff(value) {
       const text = String(value ?? "").trim().toUpperCase();
-      return text === "ON" || text === "1" || text === "TRUE" ? "ON" : "OFF";
+
+      if (text === "ON" || text === "1" || text === "TRUE") {
+        return "ON";
+      }
+
+      if (text === "OFF" || text === "0" || text === "FALSE") {
+        return "OFF";
+      }
+
+      return null;
+    }
+
+    function normaliseOnlineOffline(value) {
+      const text = String(value ?? "").trim().toLowerCase();
+
+      if (text === "online") return "ONLINE";
+      if (text === "offline") return "OFFLINE";
+
+      return null;
     }
 
     function formatUpdateTime() {
@@ -1244,6 +1327,16 @@
         minute: "2-digit",
         second: "2-digit"
       });
+    }
+
+    function decodePayload(payload) {
+      if (typeof payload === "string") return payload;
+
+      try {
+        return new TextDecoder().decode(payload);
+      } catch (error) {
+        return String(payload);
+      }
     }
 
     function showToast(message) {
@@ -1260,43 +1353,91 @@
         toast.style.transform = "translateY(8px)";
         toast.style.transition = "0.22s ease";
         setTimeout(() => toast.remove(), 250);
-      }, 2400);
+      }, 2600);
     }
 
-    function updateStatus(prefix, stateValue) {
-      const stateText = normaliseOnOff(stateValue);
-      setText(prefix + "-status-text", stateText);
-      setText(prefix + "-status-indicator", stateText);
+    function updateConnectionChip(text, statusClass) {
+      const chip = el("data-mode-chip");
+      if (!chip) return;
 
+      chip.textContent = text;
+      chip.className = "live-chip " + statusClass;
+    }
+
+    function setControlsEnabled(enabled) {
+      [
+        "pump-on-button",
+        "pump-off-button",
+        "light-on-button",
+        "light-off-button"
+      ].forEach((id) => {
+        const button = el(id);
+        if (button) button.disabled = !enabled;
+      });
+
+      if (!enabled) {
+        setText("pump-command-status", "Waiting for the MQTT connection.");
+        setText("light-command-status", "Waiting for the MQTT connection.");
+      }
+    }
+
+    function updateStatusIndicator(prefix, value, onlineWord = "ON") {
       const indicator = el(prefix + "-status-indicator");
-      if (indicator) indicator.classList.toggle("on", stateText === "ON");
+      if (!indicator) return;
+
+      setText(prefix + "-status-text", value ?? "--");
+      setText(prefix + "-status-indicator", value ?? "--");
+      indicator.classList.toggle("on", value === onlineWord);
     }
 
-    /*
-      MAIN TELEMETRY MAPPING FUNCTION
-      Change only the packet field names here when your final JSON is ready.
-    */
-    function applyTelemetryPacket(packet, isDemo = false) {
-      const soilMoisture = numberOrNull(packet.soil_moisture_pct);
-      const lightLevel = numberOrNull(packet.light_intensity_pct);
-      const lightLux = numberOrNull(packet.light_lux);
+    function updateRelayDisplay(device, relayState) {
+      const normalised = normaliseOnOff(relayState);
+      if (!normalised) return;
+
+      const isIrrigation = device === "irrigation";
+      const prefix = isIrrigation ? "pump" : "light";
+      const display = el(prefix + "-control-display");
+      const onButton = el(prefix + "-on-button");
+      const offButton = el(prefix + "-off-button");
+
+      state[device] = normalised;
+      updateStatusIndicator(prefix, normalised, "ON");
+
+      if (display) {
+        display.textContent = normalised;
+        display.classList.toggle("on", normalised === "ON");
+      }
+
+      if (onButton) {
+        onButton.classList.toggle("active", normalised === "ON");
+        onButton.classList.remove("pending");
+      }
+
+      if (offButton) {
+        offButton.classList.toggle("active", normalised === "OFF");
+        offButton.classList.remove("pending");
+      }
+    }
+
+    function updateNodeStatus(value) {
+      const normalised = normaliseOnlineOffline(value);
+      if (!normalised) return;
+
+      state.nodeStatus = normalised;
+      updateStatusIndicator("node", normalised, "ONLINE");
+    }
+
+    function applyTelemetryPacket(packet) {
       const temperature = numberOrNull(packet.temperature_c);
       const humidity = numberOrNull(packet.humidity_pct);
-      const water24h = numberOrNull(packet.water_24h_ml);
-      const lightState = normaliseOnOff(packet.light_state);
-      const pumpState = normaliseOnOff(packet.pump_state);
-
-      setText("soil-moisture-value", formatValue(soilMoisture, 0));
-      setMeter("soil-moisture-meter", soilMoisture);
-
-      setText("light-level-value", formatValue(lightLevel, 0));
-      setMeter("light-level-meter", lightLevel);
-      setText(
-        "light-lux-description",
-        lightLux === null
-          ? "Grow-area light intensity."
-          : "Approximate measured light: " + formatValue(lightLux, 0) + " lux."
-      );
+      const pressure = numberOrNull(packet.pressure_hpa);
+      const lightLux = numberOrNull(packet.light_lux);
+      const soil1 = numberOrNull(packet.soil_1_pct);
+      const soil2 = numberOrNull(packet.soil_2_pct);
+      const soil3 = numberOrNull(packet.soil_3_pct);
+      const soilAverage = numberOrNull(packet.soil_average_pct);
+      const dewPoint = numberOrNull(packet.dew_point_c);
+      const vpd = numberOrNull(packet.vpd_kpa);
 
       setText("temperature-value", formatValue(temperature, 1));
       setMeter(
@@ -1304,159 +1445,218 @@
         temperature === null ? 0 : ((temperature - 5) / 35) * 100
       );
 
-      setText("humidity-value", formatValue(humidity, 0));
+      setText("humidity-value", formatValue(humidity, 1));
       setMeter("humidity-meter", humidity);
 
-      updateStatus("light", lightState);
-      updateStatus("pump", pumpState);
-      setText("water-24h-value", formatValue(water24h, 0));
-      setText("last-update", "Updated: " + formatUpdateTime());
+      setText("pressure-value", formatValue(pressure, 1));
+      setMeter(
+        "pressure-meter",
+        pressure === null ? 0 : ((pressure - 900) / 200) * 100
+      );
 
-      state.pump = pumpState;
-      state.lightIntensity = clamp(lightLevel, 0, 100);
-      updatePumpControl(state.pump, false);
-      updateKnob(state.lightIntensity, false);
-    }
+      setText("light-lux-value", formatValue(lightLux, 0));
+      setMeter(
+        "light-lux-meter",
+        lightLux === null ? 0 : (lightLux / 20000) * 100
+      );
 
-    /*
-      COMMAND HOOK
-      ------------
-      Replace this function body with your MQTT publish command later.
-      Suggested packets:
-        { "pump": "ON" }
-        { "pump": "OFF" }
-        { "light_intensity_pct": 75 }
-    */
-    function sendControlCommand(command) {
-      console.log("Control command ready for MQTT:", command);
-      showToast("Demo command: " + JSON.stringify(command));
-      return true;
-    }
+      setText("soil-1-value", formatValue(soil1, 1));
+      setMeter("soil-1-meter", soil1);
 
-    function updatePumpControl(nextState, sendCommand = true) {
-      const pumpState = normaliseOnOff(nextState);
-      state.pump = pumpState;
+      setText("soil-2-value", formatValue(soil2, 1));
+      setMeter("soil-2-meter", soil2);
 
-      const display = el("pump-control-display");
-      const onButton = el("pump-on-button");
-      const offButton = el("pump-off-button");
+      setText("soil-3-value", formatValue(soil3, 1));
+      setMeter("soil-3-meter", soil3);
 
-      if (display) {
-        display.textContent = pumpState;
-        display.classList.toggle("on", pumpState === "ON");
+      setText("soil-average-value", formatValue(soilAverage, 1));
+      setMeter("soil-average-meter", soilAverage);
+
+      setText("dew-point-value", formatValue(dewPoint, 1));
+      setMeter(
+        "dew-point-meter",
+        dewPoint === null ? 0 : ((dewPoint + 5) / 40) * 100
+      );
+
+      setText("vpd-value", formatValue(vpd, 3));
+      setMeter(
+        "vpd-meter",
+        vpd === null ? 0 : (vpd / 3) * 100
+      );
+
+      const irrigationState = normaliseOnOff(packet.irrigation);
+      const lightState = normaliseOnOff(packet.light);
+
+      if (irrigationState) {
+        updateRelayDisplay("irrigation", irrigationState);
       }
 
-      if (onButton) onButton.classList.toggle("active", pumpState === "ON");
-      if (offButton) offButton.classList.toggle("active", pumpState === "OFF");
+      if (lightState) {
+        updateRelayDisplay("light", lightState);
+      }
 
-      updateStatus("pump", pumpState);
+      state.latestPacket = packet;
+      setText("live-packet", JSON.stringify(packet, null, 2));
+      setText("last-update", "Last telemetry: " + formatUpdateTime());
+    }
 
-      if (sendCommand) {
-        sendControlCommand({ pump: pumpState });
+    function validateTelemetryPacket(packet) {
+      const requiredFields = [
+        "temperature_c",
+        "humidity_pct",
+        "pressure_hpa",
+        "light_lux",
+        "soil_1_pct",
+        "soil_2_pct",
+        "soil_3_pct",
+        "soil_average_pct",
+        "dew_point_c",
+        "vpd_kpa",
+        "irrigation",
+        "light"
+      ];
+
+      return (
+        packet &&
+        typeof packet === "object" &&
+        requiredFields.every((field) =>
+          Object.prototype.hasOwnProperty.call(packet, field)
+        )
+      );
+    }
+
+    function publishRelayCommand(device, command) {
+      const normalised = normaliseOnOff(command);
+
+      if (!normalised) {
+        showToast("Invalid relay command.");
+        return;
+      }
+
+      if (!state.mqttConnected || !mqttClient.connected) {
+        showToast("MQTT is not connected.");
+        return;
+      }
+
+      const isIrrigation = device === "irrigation";
+      const topic = isIrrigation
+        ? TOPICS.irrigationCommand
+        : TOPICS.lightCommand;
+      const prefix = isIrrigation ? "pump" : "light";
+      const selectedButton = el(
+        prefix + "-" + normalised.toLowerCase() + "-button"
+      );
+
+      if (selectedButton) {
+        selectedButton.classList.add("pending");
+      }
+
+      setText(
+        prefix + "-command-status",
+        normalised + " command sent. Waiting for ESP32 state confirmation..."
+      );
+
+      mqttClient.publish(
+        topic,
+        normalised,
+        {
+          qos: 0,
+          retain: false
+        },
+        (error) => {
+          if (error) {
+            if (selectedButton) {
+              selectedButton.classList.remove("pending");
+            }
+
+            setText(
+              prefix + "-command-status",
+              "Command publish failed: " + error.message
+            );
+            showToast("MQTT command failed.");
+            return;
+          }
+
+          showToast(
+            (isIrrigation ? "Pump " : "Light ") +
+            normalised +
+            " command published."
+          );
+        }
+      );
+    }
+
+    function subscribeToTopics() {
+      const subscriptions = [
+        TOPICS.data,
+        TOPICS.status,
+        TOPICS.irrigationState,
+        TOPICS.lightState
+      ];
+
+      mqttClient.subscribe(
+        subscriptions,
+        {
+          qos: 0
+        },
+        (error) => {
+          if (error) {
+            updateConnectionChip("MQTT subscription failed", "error");
+            showToast("Could not subscribe to MQTT topics.");
+          }
+        }
+      );
+    }
+
+    function handleMqttMessage(topic, payload) {
+      const text = decodePayload(payload).trim();
+
+      if (topic === TOPICS.data) {
+        try {
+          const packet = JSON.parse(text);
+
+          if (!validateTelemetryPacket(packet)) {
+            throw new Error("Required telemetry fields are missing.");
+          }
+
+          applyTelemetryPacket(packet);
+        } catch (error) {
+          console.error("Telemetry packet rejected:", error, text);
+          showToast("Invalid telemetry packet received.");
+        }
+
+        return;
+      }
+
+      if (topic === TOPICS.irrigationState) {
+        updateRelayDisplay("irrigation", text);
         setText(
           "pump-command-status",
-          "Pump " + pumpState + " command selected at " + formatUpdateTime() + "."
+          "ESP32 confirmed pump state: " +
+          normaliseOnOff(text) +
+          " at " +
+          formatUpdateTime() +
+          "."
         );
+        return;
       }
-    }
 
-    function updateKnob(value, sendCommand = false) {
-      const percentage = Math.round(clamp(value, 0, 100));
-      state.lightIntensity = percentage;
-      const angle = -135 + (percentage / 100) * 270;
-
-      const marker = el("knob-marker");
-      if (marker) marker.style.transform = "rotate(" + angle + "deg)";
-
-      setText("knob-value", String(percentage));
-
-      const knob = el("light-knob");
-      if (knob) knob.setAttribute("aria-valuenow", String(percentage));
-
-      setText("light-level-value", String(percentage));
-      setMeter("light-level-meter", percentage);
-      updateStatus("light", percentage > 0 ? "ON" : "OFF");
-
-      if (sendCommand) {
-        sendControlCommand({ light_intensity_pct: percentage });
+      if (topic === TOPICS.lightState) {
+        updateRelayDisplay("light", text);
         setText(
           "light-command-status",
-          "Light intensity set to " + percentage + "% at " + formatUpdateTime() + "."
+          "ESP32 confirmed light state: " +
+          normaliseOnOff(text) +
+          " at " +
+          formatUpdateTime() +
+          "."
         );
-      } else {
-        setText("light-command-status", "Selected light intensity: " + percentage + "%.");
+        return;
       }
-    }
 
-    function knobValueFromPointer(event) {
-      const knob = el("light-knob");
-      const rectangle = knob.getBoundingClientRect();
-      const centreX = rectangle.left + rectangle.width / 2;
-      const centreY = rectangle.top + rectangle.height / 2;
-
-      let degrees = Math.atan2(event.clientY - centreY, event.clientX - centreX) * 180 / Math.PI + 90;
-      if (degrees < 0) degrees += 360;
-
-      // Convert the usable 270-degree arc (-135 to +135) to 0-100.
-      let signedAngle = degrees > 180 ? degrees - 360 : degrees;
-      signedAngle = clamp(signedAngle, -135, 135);
-      return ((signedAngle + 135) / 270) * 100;
-    }
-
-    function installKnobControls() {
-      const knob = el("light-knob");
-      if (!knob) return;
-
-      let dragging = false;
-
-      knob.addEventListener("pointerdown", (event) => {
-        dragging = true;
-        knob.setPointerCapture(event.pointerId);
-        updateKnob(knobValueFromPointer(event), false);
-      });
-
-      knob.addEventListener("pointermove", (event) => {
-        if (!dragging) return;
-        updateKnob(knobValueFromPointer(event), false);
-      });
-
-      const finishDrag = (event) => {
-        if (!dragging) return;
-        dragging = false;
-        if (knob.hasPointerCapture(event.pointerId)) {
-          knob.releasePointerCapture(event.pointerId);
-        }
-        updateKnob(state.lightIntensity, true);
-      };
-
-      knob.addEventListener("pointerup", finishDrag);
-      knob.addEventListener("pointercancel", finishDrag);
-
-      knob.addEventListener("keydown", (event) => {
-        let step = event.shiftKey ? 10 : 2;
-        let nextValue = state.lightIntensity;
-
-        if (event.key === "ArrowRight" || event.key === "ArrowUp") {
-          nextValue += step;
-        } else if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
-          nextValue -= step;
-        } else if (event.key === "Home") {
-          nextValue = 0;
-        } else if (event.key === "End") {
-          nextValue = 100;
-        } else {
-          return;
-        }
-
-        event.preventDefault();
-        updateKnob(nextValue, true);
-      });
-
-      knob.addEventListener("wheel", (event) => {
-        event.preventDefault();
-        const direction = event.deltaY < 0 ? 1 : -1;
-        updateKnob(state.lightIntensity + direction * 2, true);
-      }, { passive: false });
+      if (topic === TOPICS.status) {
+        updateNodeStatus(text);
+      }
     }
 
     function installNavigation() {
@@ -1478,13 +1678,89 @@
       });
     }
 
-    el("pump-on-button")?.addEventListener("click", () => updatePumpControl("ON", true));
-    el("pump-off-button")?.addEventListener("click", () => updatePumpControl("OFF", true));
-
     setText("year", new Date().getFullYear());
     installNavigation();
-    installKnobControls();
-    applyTelemetryPacket(demoPacket, DEMO_MODE);
-  </script>
+    setControlsEnabled(false);
+    updateConnectionChip("MQTT connecting", "connecting");
+
+    el("pump-on-button")?.addEventListener(
+      "click",
+      () => publishRelayCommand("irrigation", "ON")
+    );
+
+    el("pump-off-button")?.addEventListener(
+      "click",
+      () => publishRelayCommand("irrigation", "OFF")
+    );
+
+    el("light-on-button")?.addEventListener(
+      "click",
+      () => publishRelayCommand("light", "ON")
+    );
+
+    el("light-off-button")?.addEventListener(
+      "click",
+      () => publishRelayCommand("light", "OFF")
+    );
+
+    if (typeof mqtt === "undefined") {
+      updateConnectionChip("MQTT library failed", "error");
+      setText(
+        "data-note",
+        "The MQTT.js library could not be loaded. Check the internet connection and browser console."
+      );
+      throw new Error("MQTT.js is not available.");
+    }
+
+    const clientId =
+      "green_ai_dashboard_" +
+      Math.random().toString(16).slice(2, 10);
+
+    const mqttClient = mqtt.connect(
+      MQTT_BROKER_URL,
+      {
+        clientId,
+        clean: true,
+        connectTimeout: 10000,
+        reconnectPeriod: 3000,
+        keepalive: 30,
+        protocolVersion: 4
+      }
+    );
+
+    mqttClient.on("connect", () => {
+      state.mqttConnected = true;
+      updateConnectionChip("MQTT connected", "online");
+      setControlsEnabled(true);
+      subscribeToTopics();
+    });
+
+    mqttClient.on("reconnect", () => {
+      state.mqttConnected = false;
+      updateConnectionChip("MQTT reconnecting", "connecting");
+      setControlsEnabled(false);
+    });
+
+    mqttClient.on("offline", () => {
+      state.mqttConnected = false;
+      updateConnectionChip("MQTT offline", "offline");
+      setControlsEnabled(false);
+    });
+
+    mqttClient.on("close", () => {
+      state.mqttConnected = false;
+      updateConnectionChip("MQTT disconnected", "offline");
+      setControlsEnabled(false);
+    });
+
+    mqttClient.on("error", (error) => {
+      state.mqttConnected = false;
+      updateConnectionChip("MQTT connection error", "error");
+      setControlsEnabled(false);
+      console.error("MQTT error:", error);
+    });
+
+    mqttClient.on("message", handleMqttMessage);
+</script>
 </body>
 </html>
