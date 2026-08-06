@@ -1125,17 +1125,6 @@
 </article>
 <article class="metric-card">
 <div class="metric-top">
-<span class="metric-label">Soil sensor 3</span>
-<span aria-hidden="true" class="metric-icon">💧</span>
-</div>
-<div class="metric-value">
-<span id="soil-3-value">--</span><span class="metric-unit">%</span>
-</div>
-<div class="meter"><span id="soil-3-meter"></span></div>
-<div class="metric-description"></div>
-</article>
-<article class="metric-card">
-<div class="metric-top">
 <span class="metric-label">Average soil moisture</span>
 <span aria-hidden="true" class="metric-icon">🌱</span>
 </div>
@@ -1545,9 +1534,6 @@
 
       setText("soil-2-value", formatValue(soil2, 1));
       setMeter("soil-2-meter", soil2);
-
-      setText("soil-3-value", formatValue(soil3, 1));
-      setMeter("soil-3-meter", soil3);
 
       setText("soil-average-value", formatValue(soilAverage, 1));
       setMeter("soil-average-meter", soilAverage);
